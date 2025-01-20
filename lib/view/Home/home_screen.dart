@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:towanto/utils/resources/colors.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:towanto/utils/resources/fonts.dart';
+import 'package:towanto/view/Cart/cart_screen.dart';
 import 'package:towanto/view/Home/product_details_screen.dart';
 import 'package:towanto/view/ManageAddress/address_list_screen.dart';
 import 'package:towanto/view/Profile/update_account_information_screen.dart';
@@ -105,10 +106,19 @@ class _HomeGridState extends State<HomeGrid> {
     //   id: 35,
     // ),
   ];
-
   Widget buildCarouselSlider(BuildContext context, List<String> imageUrls,
       {void Function(String)? onTap}) {
     int current = 0;
+
+    if (imageUrls.isEmpty) {
+      // Return a placeholder or an empty widget when there are no images
+      return Center(
+        child: Text(
+          'No images available',
+          style: TextStyle(fontSize: 16, color: Colors.grey),
+        ),
+      );
+    }
 
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
@@ -123,8 +133,7 @@ class _HomeGridState extends State<HomeGrid> {
                     if (onTap != null) onTap(imageUrls[itemIndex]);
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(
-                        4.0), // Use your desired padding here
+                    padding: const EdgeInsets.all(4.0), // Use your desired padding here
                     child: Image.network(
                       imageUrls[itemIndex],
                       width: MediaQuery.of(context).size.width,
@@ -150,24 +159,24 @@ class _HomeGridState extends State<HomeGrid> {
             imageUrls.length == 1
                 ? Container()
                 : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: imageUrls.asMap().entries.map((entry) {
-                      return Container(
-                        width: 8.0,
-                        height: 8.0,
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 4, horizontal: 6.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: (Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.white
-                                  : Colors.black)
-                              .withOpacity(current == entry.key ? 0.9 : 0.4),
-                        ),
-                      );
-                    }).toList(),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: imageUrls.asMap().entries.map((entry) {
+                return Container(
+                  width: 8.0,
+                  height: 8.0,
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 4, horizontal: 6.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: (Theme.of(context).brightness ==
+                        Brightness.dark
+                        ? Colors.white
+                        : Colors.black)
+                        .withOpacity(current == entry.key ? 0.9 : 0.4),
                   ),
+                );
+              }).toList(),
+            ),
           ],
         );
       },
@@ -210,7 +219,13 @@ class _HomeGridState extends State<HomeGrid> {
 
             builder: (BuildContext context, HomePageDataViewModel value, Widget? child) {
               return badges.Badge(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CartScreen(),
+                      ));
+                },
                 badgeContent: Text(
                   value.cartCount.toString(),
                   style: TextStyle(
@@ -232,7 +247,6 @@ class _HomeGridState extends State<HomeGrid> {
           ),
           // Cart Icon with Badge
           Consumer<HomePageDataViewModel>(
-            
             builder: (BuildContext context, HomePageDataViewModel value, Widget? child) {
               return  badges.Badge(
                 onTap: () {

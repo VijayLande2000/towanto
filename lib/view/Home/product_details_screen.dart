@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:towanto/view/Cart/cart_screen.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/add_to_cart_viewModel.dart';
+import '../../viewModel/CartViewModels/updateCart_viewModel.dart';
 import '../../viewModel/HomeViewModels/product_details_viewModel.dart';
 import '../../viewModel/WhishListViewModels/add_to_whishList_viewModel.dart';
 
@@ -35,6 +37,20 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   int quantity = 1;
   bool isInWishlist = false;
 
+
+  Future<void> updateCart(String productId,String qty,BuildContext context) async {
+    final updateCartViewModel = Provider.of<UpdateCartViewModel>(context, listen: false);
+    // Perform async update
+    await updateCartViewModel.updateCart(
+      productId.toString(),
+      qty.toString(),
+      context,
+    );
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(),));
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +74,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
           // Get the product details list from the view model
           final productDetailsList = viewModel.responseList;
-               print("frjbngvh"+productDetailsList[0].productPrice.toString());
+               // print("frjbngvh"+productDetailsList[0].productPrice.toString());
           // Check if the list is empty
           if (productDetailsList.isEmpty) {
             return Center(child: Text('No product details available.'));
@@ -225,6 +241,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         // Buy Now Button
                         productDetails.productPrice != 0.0?ElevatedButton(
                           onPressed: () {
+                            updateCart(productDetails.id.toString(),quantity.toString(),context);
                             // Implement buy now functionality
                           },
                           style: ElevatedButton.styleFrom(
