@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # towanto
 
 A new Flutter project.
@@ -14,3 +15,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# towanto
+>>>>>>> 8d45e6edd665524f4d0d602bff4fd1a24239420c
