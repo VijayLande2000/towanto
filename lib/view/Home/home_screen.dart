@@ -258,7 +258,7 @@ class _HomeGridState extends State<HomeGrid> {
                   value.wishlistCount.toString(),
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 10,
+                    fontSize: 10 ,
                     fontFamily: MyFonts.Lexenddeca_regular,
                     fontWeight: FontWeight.normal,
                   ),
