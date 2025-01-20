@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:towanto/utils/routes/route_names.dart';
+import 'package:towanto/view/Payments/checkout_address_screen.dart';
 
 import '../../../viewModel/Address_ViewModels/get_Address_list_view_model.dart';
 import '../../common_widgets/PreferencesHelper.dart';
@@ -604,7 +605,7 @@ class NetworkApiService extends BaseApiServices {
 
   @override
   Future editAddressListApiResponse(String url, data, BuildContext context,
-      String sessionId) async {
+      String sessionId,String navigateTo) async {
     try {
       print("fvb " + sessionId);
       var headers = {
@@ -625,7 +626,14 @@ class NetworkApiService extends BaseApiServices {
         Future.delayed(Duration(seconds: 0), () =>
             Utils.flushBarSuccessMessages(
                 "Address Updated successfully!", context));
-        Navigator.pushReplacementNamed(context, RoutesName.addressList);
+
+      print("dfhjv"+navigateTo);
+      if(navigateTo=="checkoutScreen"){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CheckoutAddressScreen(),));
+        }
+        else{
+          Navigator.pushReplacementNamed(context, RoutesName.addressList);
+        }
       }
       responseJson = returnResponse(response);
     } on SocketException {
@@ -641,7 +649,12 @@ class NetworkApiService extends BaseApiServices {
       var headers = {
         'Content-Type': 'application/json',
         'Accept': "application/json",
+        'Cookie': 'session_id=35bdbea092e7e543e60ab5065d69e51ba1999ee1',
       };
+      // var headers = {
+      //   'Content-Type': 'application/json',
+      //   'Accept': "application/json",
+      // };
       String finalUrl = '$url?category_ids=$categoryIds';
       print("finalUrl response =" + finalUrl);
 

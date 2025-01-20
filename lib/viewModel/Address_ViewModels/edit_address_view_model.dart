@@ -19,13 +19,13 @@ class EditAddressViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> editAddressPostApi(dynamic data, BuildContext context, String sessionId) async {
+  Future<void> editAddressPostApi(dynamic data, BuildContext context, String sessionId,String navigateTo) async {
     try {
       this.context = context;
       setLoading(true);
       developer.log('Starting login process with data: ${jsonEncode(data)}', name: 'EditAddressViewModel');
 
-      final value = await _myRepo.editAddressListApiResponse(data, context, sessionId);
+      final value = await _myRepo.editAddressListApiResponse(data, context, sessionId,navigateTo);
       developer.log('Account API response received: ${value.toString()}', name: 'EditAddressViewModel');
     } catch (e, stackTrace) {
       developer.log(
@@ -144,13 +144,13 @@ class EditAddressViewModel extends ChangeNotifier {
       dynamic selectedCountry,
       dynamic selectedState,
       dynamic selectedCity,
-      dynamic addressId
+      dynamic addressId, dynamic navigateTo
       ) async {
     // Validate all fields
     for (final field in formFields) {
       validateField(field['key']);
     }
-
+   print("FYUDG"+navigateTo.toString());
     // Validate country, state, and city dynamically
     validateLocationFields(selectedCountry, selectedState, selectedCity, context);
 
@@ -199,7 +199,7 @@ class EditAddressViewModel extends ChangeNotifier {
       };
 
       try {
-        await editAddressPostApi(jsonEncode(body), context, sessionId!);
+        await editAddressPostApi(jsonEncode(body), context, sessionId!,navigateTo);
       } finally {
         setLoading(false);
       }

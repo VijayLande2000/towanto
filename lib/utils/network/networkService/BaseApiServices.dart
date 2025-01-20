@@ -25,7 +25,7 @@ abstract class BaseApiServices {
   Future<dynamic> postAddressListApiResponse(String url, dynamic data, BuildContext context,String sessionId);
   Future<dynamic> removeAddressListApiResponse(String url, dynamic data, BuildContext context,String sessionId);
   Future<dynamic> addAddressListApiResponse(String url, dynamic data, BuildContext context,String sessionId);
-  Future<dynamic> editAddressListApiResponse(String url, dynamic data, BuildContext context,String sessionId);
+  Future<dynamic> editAddressListApiResponse(String url, dynamic data, BuildContext context,String sessionId,String navigateTo);
   Future<dynamic> postOrderDetailsApiResponse(String url, dynamic data, BuildContext context,String sessionId);
 
 // Future<dynamic> getGetApiResponse(String url);

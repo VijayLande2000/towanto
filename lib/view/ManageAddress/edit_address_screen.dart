@@ -10,13 +10,14 @@ import '../../viewModel/Address_ViewModels/add_address_view_model.dart';
 import '../../viewModel/profileViewModels/update_account_information_view_model.dart';
 import '../Auth/login_screen.dart';
 
-
 class EditAddressScreen extends StatefulWidget {
   final Map<String, dynamic> addressData;
+  final String? from; // Optional String parameter
 
   const EditAddressScreen({
     Key? key,
     required this.addressData,
+    this.from,
   }) : super(key: key);
 
   @override
@@ -29,20 +30,25 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
     return ChangeNotifierProvider(
       create: (_) => EditAddressViewModel(),
       // Pass the addressData to EditAddressScreenContent
-      child: EditAddressScreenContent(addressData: widget.addressData),
+      child: EditAddressScreenContent(
+          addressData: widget.addressData, from: widget.from),
     );
   }
 }
+
 class EditAddressScreenContent extends StatefulWidget {
   final Map<String, dynamic>? addressData;
+  String? from;
 
-  const EditAddressScreenContent({
-    Key? key,
+  EditAddressScreenContent({
+    super.key,
     this.addressData,
-  }) : super(key: key);
+    this.from,
+  });
 
   @override
-  State<EditAddressScreenContent> createState() => _EditAddressScreenContentState();
+  State<EditAddressScreenContent> createState() =>
+      _EditAddressScreenContentState();
 }
 
 class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
@@ -53,11 +59,18 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
   @override
   void initState() {
     super.initState();
+    print("dbfhbvhv" + widget.from.toString());
+    print("dbfhbvhv" + widget.addressData!['addressId'].toString());
 
     // Use Future.microtask to avoid calling Provider during build
     Future.microtask(() {
       if (widget.addressData != null) {
-        final provider = Provider.of<EditAddressViewModel>(context, listen: false);
+        // widget.addressData?.forEach((key, value) {
+        //   print("key = "+key);
+        //   print("value = "+value);
+        // });
+        final provider =
+            Provider.of<EditAddressViewModel>(context, listen: false);
 
         // Pre-fill form fields
         provider.formFields.forEach((field) {
@@ -66,7 +79,8 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
               field['controller'].text = widget.addressData!['name'] ?? '';
               break;
             case 'proprietorName':
-              field['controller'].text = widget.addressData!['company_name'] ?? '';
+              field['controller'].text =
+                  widget.addressData!['company_name'] ?? '';
               break;
             case 'email':
               field['controller'].text = widget.addressData!['email'] ?? '';
@@ -94,7 +108,6 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -125,12 +138,11 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   const SizedBox(height: 20),
 
                   // Form Fields
                   ...provider.formFields.map(
-                        (field) => Padding(
+                    (field) => Padding(
                       padding: const EdgeInsets.only(bottom: 24.0),
                       child: CustomTextField(
                         controller: field['controller'],
@@ -163,12 +175,12 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                       child: Theme(
                         data: Theme.of(context).copyWith(
                           textTheme: Theme.of(context).textTheme.copyWith(
-                            titleMedium: const TextStyle(
-                              fontFamily: MyFonts.LexendDeca_Bold,
-                              color: AppColors.cardcolor,
-                              fontSize: 14,
-                            ),
-                          ),
+                                titleMedium: const TextStyle(
+                                  fontFamily: MyFonts.LexendDeca_Bold,
+                                  color: AppColors.cardcolor,
+                                  fontSize: 14,
+                                ),
+                              ),
                         ),
                         child: SelectState(
                           onCountryChanged: (country) {
@@ -188,15 +200,21 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                   const SizedBox(height: 20),
 
                   Utils.createButton(
-                    text: "update Address",
-                    onClick: () => provider.submitAccountInfo(context, selectedCountry, selectedState, selectedCity,widget.addressData!['addressId'].toString()),
-                  ),
-
+                      text: "update Address",
+                      onClick: () {
+                        print("sdced"+widget.addressData!['addressId'].toString());
+                        provider.submitAccountInfo(
+                            context,
+                            selectedCountry,
+                            selectedState,
+                            selectedCity,
+                            widget.addressData!['addressId'].toString(),
+                            widget.from);
+                      }),
                 ],
               ),
             ),
           ),
-
           if (provider.loading) Utils.loadingIndicator(context),
         ],
       ),

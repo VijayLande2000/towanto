@@ -13,9 +13,9 @@ import '../../network/networkService/network_service.dart';
 class EditAddressRepository {
   final BaseApiServices _apiServices = NetworkApiService();
 
-  Future<EditAddressModel> editAddressListApiResponse(dynamic data, BuildContext context,String sessionId) async {
+  Future<EditAddressModel> editAddressListApiResponse(dynamic data, BuildContext context,String sessionId,String navigateTo) async {
     try {
-      dynamic response = await _apiServices.editAddressListApiResponse(AppUrl.editAddressUrl, data, context,sessionId);
+      dynamic response = await _apiServices.editAddressListApiResponse(AppUrl.editAddressUrl, data, context,sessionId,navigateTo);
       return EditAddressModel.fromJson(response);
     } catch (e,stactrace) {
       print("dfyusg" +stactrace.toString());
