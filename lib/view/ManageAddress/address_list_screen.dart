@@ -36,6 +36,7 @@ class _AddressManagerState extends State<AddressManager> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundcolormenu,
       appBar: AppBar(
         backgroundColor: AppColors.brightBlue,
         title: Text("Manage Address", style: TextStyle(
@@ -51,7 +52,6 @@ class _AddressManagerState extends State<AddressManager> {
         ),
       ),
       body: Consumer<GetAddressViewModel>(
-
         builder: (BuildContext context, GetAddressViewModel value, Widget? child) {
           if(value.loading){
             return Center(child: CircularProgressIndicator(color: AppColors.brightBlue,));
