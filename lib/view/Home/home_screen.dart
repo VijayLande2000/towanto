@@ -245,10 +245,7 @@ class _HomeGridState extends State<HomeGrid> {
               );
             },
           ),
-
-          SizedBox(
-            width: 24,
-          ),
+          SizedBox(width: 24,),
           // Cart Icon with Badge
           Consumer<HomePageDataViewModel>(
             builder: (BuildContext context, HomePageDataViewModel value, Widget? child) {
@@ -281,9 +278,7 @@ class _HomeGridState extends State<HomeGrid> {
             },
           ),
 
-          SizedBox(
-            width: 12,
-          ),
+          SizedBox(width: 12,),
         ],
       ),
       // drawer: CustomDrawer(selectedIndex: 1, categories: categories),
@@ -616,125 +611,125 @@ class _CustomDrawerState extends State<CustomDrawer> {
             colors: [AppColors.lightBlue, AppColors.brightBlue],
           ),
         ),
-        child: Column(
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.transparent,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/ic_launcher_foreground.png',
-                    height: 80,
-                    width: 80,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    savedUsername ?? "",
-                    style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.ellipsis),
-                  ),
-                ],
-              ),
-            ),
-            DrawerItem(
-              icon: Icons.grass,
-              title: 'Seeds',
-              isSelected: widget.selectedIndex == 0,
-              onTap: () => _handleNavigation(
-                context,
-                CategoryDetailScreen(category: _getCategoryByName('Seeds')),
-                0,
-              ),
-            ),
-            DrawerItem(
-              icon: Icons.science,
-              title: 'Pesticides',
-              isSelected: widget.selectedIndex == 1,
-              onTap: () => _handleNavigation(
-                context,
-                CategoryDetailScreen(
-                    category: _getCategoryByName('Pesticides')),
-                1,
-              ),
-            ),
-            DrawerItem(
-                icon: Icons.agriculture,
-                title: 'Machinery',
-                isSelected: widget.selectedIndex == 2,
-                onTap: () => _handleNavigation(
-                      context,
-                      CategoryDetailScreen(
-                          category: _getCategoryByName('Machinery')),
-                      2,
-                    )),
-            DrawerItem(
-              icon: Icons.business,
-              title: 'Brands',
-              isSelected: widget.selectedIndex == 3,
-              onTap: () => _handleNavigation(
-                context,
-                CategoryDetailScreen(category: _getCategoryByName('Brands')),
-                3,
-              ),
-            ),
-            DrawerItem(
-              icon: Icons.contact_mail,
-              title: 'Enquiry',
-              isSelected: widget.selectedIndex == 4,
-              onTap: () => _handleNavigation(
-                context,
-                EnquiryScreen(),
-                4,
-              ),
-            ),
-            DrawerItem(
-              icon: Icons.person,
-              title: 'Profile',
-              isSelected: widget.selectedIndex == 5,
-              onTap: () => _handleNavigation(
-                context,
-                AccountInfoScreen(),
-                5,
-              ),
-            ),
-            DrawerItem(
-                icon: Icons.home,
-                title: 'Manage Address',
-                isSelected: widget.selectedIndex == 6,
-                onTap: () => _handleNavigation(
-                      context,
-                      AddressManager(),
-                      6,
-                    )),
-            DrawerItem(
-              icon: Icons.list_alt_sharp,
-              title: 'Orders List',
-              isSelected: widget.selectedIndex == 7,
-              onTap: () => _handleNavigation(
-                context,
-                OrdersListScreen(),
-                7,
-              )
-            ),
-            const Spacer(),
-            const Divider(color: Colors.white30),
-            DrawerItem(
-              icon: Icons.logout_outlined,
-              title: 'Log Out',
-              isSelected: false,
-              onTap: () {
-                logOut();
-                // Add cart navigation logic here
-              },
-            ),
-            const SizedBox(height: 20),
-          ],
+        child: ListView(
+         children: [
+           DrawerHeader(
+             decoration: const BoxDecoration(
+               color: Colors.transparent,
+             ),
+             child: Column(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: [
+                 Image.asset(
+                   'assets/images/ic_launcher_foreground.png',
+                   height: 80,
+                   width: 80,
+                 ),
+                 const SizedBox(height: 10),
+                 Text(
+                   savedUsername ?? "",
+                   style: TextStyle(
+                       color: AppColors.white,
+                       fontSize: 16,
+                       fontWeight: FontWeight.bold,
+                       overflow: TextOverflow.ellipsis),
+                 ),
+               ],
+             ),
+           ),
+           DrawerItem(
+             icon: Icons.grass,
+             title: 'Seeds',
+             isSelected: widget.selectedIndex == 0,
+             onTap: () => _handleNavigation(
+               context,
+               CategoryDetailScreen(category: _getCategoryByName('Seeds')),
+               0,
+             ),
+           ),
+           DrawerItem(
+             icon: Icons.science,
+             title: 'Pesticides',
+             isSelected: widget.selectedIndex == 1,
+             onTap: () => _handleNavigation(
+               context,
+               CategoryDetailScreen(
+                   category: _getCategoryByName('Pesticides')),
+               1,
+             ),
+           ),
+           DrawerItem(
+               icon: Icons.agriculture,
+               title: 'Machinery',
+               isSelected: widget.selectedIndex == 2,
+               onTap: () => _handleNavigation(
+                 context,
+                 CategoryDetailScreen(
+                     category: _getCategoryByName('Machinery')),
+                 2,
+               )),
+           DrawerItem(
+             icon: Icons.business,
+             title: 'Brands',
+             isSelected: widget.selectedIndex == 3,
+             onTap: () => _handleNavigation(
+               context,
+               CategoryDetailScreen(category: _getCategoryByName('Brands')),
+               3,
+             ),
+           ),
+           DrawerItem(
+             icon: Icons.contact_mail,
+             title: 'Enquiry',
+             isSelected: widget.selectedIndex == 4,
+             onTap: () => _handleNavigation(
+               context,
+               EnquiryScreen(),
+               4,
+             ),
+           ),
+           DrawerItem(
+             icon: Icons.person,
+             title: 'Profile',
+             isSelected: widget.selectedIndex == 5,
+             onTap: () => _handleNavigation(
+               context,
+               AccountInfoScreen(),
+               5,
+             ),
+           ),
+           DrawerItem(
+               icon: Icons.home,
+               title: 'Manage Address',
+               isSelected: widget.selectedIndex == 6,
+               onTap: () => _handleNavigation(
+                 context,
+                 AddressManager(),
+                 6,
+               )),
+           DrawerItem(
+               icon: Icons.list_alt_sharp,
+               title: 'Orders List',
+               isSelected: widget.selectedIndex == 7,
+               onTap: () => _handleNavigation(
+                 context,
+                 OrdersListScreen(),
+                 7,
+               )
+           ),
+           const Spacer(),
+           const Divider(color: Colors.white30),
+           DrawerItem(
+             icon: Icons.logout_outlined,
+             title: 'Log Out',
+             isSelected: false,
+             onTap: () {
+               logOut();
+               // Add cart navigation logic here
+             },
+           ),
+           const SizedBox(height: 20),
+         ],
         ),
       ),
     );
