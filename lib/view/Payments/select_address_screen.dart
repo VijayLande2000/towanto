@@ -40,6 +40,8 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
     });
   }
 
+  String? selectedAddress;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,50 +74,68 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
               itemCount: _savedAddresses.length,
               itemBuilder: (context, index) {
                 final address = _savedAddresses[index];
-                final addressText = address['address'] ?? '';
-                final isSelected = addressText.split('\n')[0] ==
-                    widget.currentAddress['street'];
-
-                return  Card(
-
-                  elevation: 2,
-                  color: AppColors.whiteColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // User Info
-                        Row(
-                          children: [
-                            const Icon(Icons.person_outline, size: 20, color: Colors.grey),
-                            const SizedBox(width: 8),
-                            Text(
-                              value.addresses[index].name.toString(),
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color:  AppColors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: MyFonts.LexendDeca_Bold
+                return  InkWell(
+                  onTap: () {
+                    selectedAddress= value.addresses[index].id.toString();
+                    Navigator.pop(context, address);
+                  },
+                  child: Card(
+                    elevation: 2,
+                    color: AppColors.whiteColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // User Info
+                          Row(
+                            children: [
+                              const Icon(Icons.person_outline, size: 20, color: Colors.grey),
+                              const SizedBox(width: 8),
+                              Text(
+                                value.addresses[index].name.toString(),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color:  AppColors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: MyFonts.LexendDeca_Bold
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
 
-                        // Address
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(Icons.location_on_outlined,
-                                size: 20, color: Colors.grey),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                "${value.addresses[index].city.toString()+" "+value.addresses[index].street.toString()+" "+value.addresses[index].state.toString()+" "+value.addresses[index].country.toString()+" "+value.addresses[index].zip.toString()}",
+                          // Address
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.location_on_outlined,
+                                  size: 20, color: Colors.grey),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  "${value.addresses[index].city.toString()+" "+value.addresses[index].street.toString()+" "+value.addresses[index].state.toString()+" "+value.addresses[index].country.toString()+" "+value.addresses[index].zip.toString()}",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color:  AppColors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: MyFonts.LexendDeca_Bold
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          // Phone
+                          Row(
+                            children: [
+                              const Icon(Icons.phone_outlined, size: 20, color: Colors.grey),
+                              const SizedBox(width: 8),
+                              Text(
+                                value.addresses[index].phone.toString(),
                                 style: TextStyle(
                                     fontSize: 14,
                                     color:  AppColors.black,
@@ -123,27 +143,25 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                                     fontFamily: MyFonts.LexendDeca_Bold
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        // Phone
-                        Row(
-                          children: [
-                            const Icon(Icons.phone_outlined, size: 20, color: Colors.grey),
-                            const SizedBox(width: 8),
-                            Text(
-                              value.addresses[index].phone.toString(),
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color:  AppColors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: MyFonts.LexendDeca_Bold
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Icon(Icons.phone_outlined, size: 20, color: Colors.grey),
+                              const SizedBox(width: 8),
+                              Text(
+                                value.addresses[index].email.toString(),
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color:  AppColors.black,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: MyFonts.LexendDeca_Bold
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

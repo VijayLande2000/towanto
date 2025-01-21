@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:towanto/view/ManageAddress/add_address_screen.dart';
 import 'package:towanto/view/ManageAddress/edit_address_screen.dart';
 import 'package:towanto/view/Payments/select_address_screen.dart';
+import 'package:towanto/viewModel/CartViewModels/cart_list_view_model.dart';
 
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
@@ -38,7 +39,6 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
             'addressId': provider.addresses[0].id?.toString() ?? '',
             'name': provider.addresses[0].name?.toString() ?? '',
             'email': provider.addresses[0].email?.toString() ?? '',
-
           };
           shippingAddress = {
             'title': 'Shipping Address',
@@ -61,11 +61,9 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
 
   int currentStep = 1;
 
-  Map<String, dynamic> billingAddress = {
-  };
+ static Map<String, dynamic> billingAddress = {};
 
-  Map<String, dynamic> shippingAddress = {
-  };
+  static Map<String, dynamic> shippingAddress = {};
 
   void navigateToStep(int step) {
     setState(() {
@@ -87,21 +85,6 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundcolormenu,
-      appBar: AppBar(
-        backgroundColor: AppColors.brightBlue,
-        title: Text(
-          "Checkout Address",
-          style: TextStyle(
-              fontSize: 20,
-              color: AppColors.black,
-              fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.LexendDeca_Bold),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColors.black, size: 20),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
       body: Consumer<GetAddressViewModel>(builder:
           (BuildContext context, GetAddressViewModel value, Widget? child) {
         if (value.loading) {
@@ -120,44 +103,45 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          buildStepper(),
-                          const SizedBox(height: 24),
+                          // buildStepper(),
+                          // const SizedBox(height: 24),
                           AddressCard(
                             title: 'Billing Address',
                             icon: Icons.credit_card,
                             borderColor: Colors.green,
-                            address: "${billingAddress['street']}, ${billingAddress['city']}, ${billingAddress['state']}, ${billingAddress['country']}, ${billingAddress['zipcode']}",
+                            address:
+                                "${billingAddress['street']}, ${billingAddress['city']}, ${billingAddress['state']}, ${billingAddress['country']}, ${billingAddress['zipcode']}",
                             contact: billingAddress['phone'].toString(),
-                            email: shippingAddress['email'].toString(),
+                            email: billingAddress['email'].toString(),
                             onEdit: () => _handleEdit(context, billingAddress),
-                            onAddNew: () =>
-                                _handleAddNew(context, 'Billing Address'),
-                              onChangeAddress: () =>({
-                                _handleChangeAddress(
-                                    context, billingAddress, 'Billing Address')
-                            })/* _handleChangeAddress(
-                                context, billingAddress, 'Billing Address')*/,
+                            onChangeAddress: () => ({
+                              _handleChangeAddress(
+                                  context, billingAddress, 'Billing Address')
+                            }) /* _handleChangeAddress(
+                                context, billingAddress, 'Billing Address')*/
+                            ,
                           ),
                           const SizedBox(height: 16),
                           AddressCard(
                             title: 'Shipping Address',
                             icon: Icons.local_shipping,
                             borderColor: Colors.blue,
-                            address: "${shippingAddress['street']}, ${shippingAddress['city']}, ${shippingAddress['state']}, ${shippingAddress['country']}, ${shippingAddress['zipcode']}",
+                            address:
+                                "${shippingAddress['street']}, ${shippingAddress['city']}, ${shippingAddress['state']}, ${shippingAddress['country']}, ${shippingAddress['zipcode']}",
                             contact: shippingAddress['phone'].toString(),
                             email: shippingAddress['email'].toString(),
                             onEdit: () => _handleEdit(context, shippingAddress),
-                            onAddNew: () => _handleAddNew(context, 'Shipping Address'),
                             // Fix the syntax here
-                            onChangeAddress: () => _handleChangeAddress(context, shippingAddress, 'Shipping Address'),
+                            onChangeAddress: () => _handleChangeAddress(
+                                context, shippingAddress, 'Shipping Address'),
                           ),
                         ],
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                buildBottomSection(),
+                // const SizedBox(height: 16),
+                // buildBottomSection(),
               ],
             ),
           );
@@ -166,38 +150,30 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
     );
   }
 
-  Future<void> _handleEdit(BuildContext context, Map<String, dynamic> address) async {
+  Future<void> _handleEdit(
+      BuildContext context, Map<String, dynamic> address) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => EditAddressScreen(addressData: address,from: "checkoutScreen")
-      ),
+          builder: (context) =>
+              EditAddressScreen(addressData: address, from: "checkoutScreen")),
     );
     if (result != null) {
       updateAddress(address['title'], result);
     }
   }
 
-  Future<void> _handleAddNew(BuildContext context, String type) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const AddAddressInfoScreen(),
-      ),
-    );
-    if (result != null) {
-      updateAddress(type, result);
-    }
-  }
 // Update the _handleChangeAddress function to properly handle the address update:
-  Future<void> _handleChangeAddress(BuildContext context, Map<String, dynamic> currentAddress, String type) async {
+  Future<void> _handleChangeAddress(BuildContext context,
+      Map<String, dynamic> currentAddress, String type) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SelectAddressScreen(currentAddress: currentAddress),
+        builder: (context) =>
+            SelectAddressScreen(currentAddress: currentAddress),
       ),
     );
-    print(("ewcd"+result.toString()));
+    print(("ewcd" + result.toString()));
 
     if (result != null && result is Map<String, dynamic>) {
       // Create a properly formatted address map with all required fields
@@ -216,29 +192,16 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
             ? RegExp(r'\b\d{6}\b').firstMatch(addressLines[2])?.group(0) ?? ''
             : '',
         'phone': result['contact'] ?? '',
-        'addressId': currentAddress['addressId'] ?? '',
-        'name': currentAddress['name'] ?? '',
-        'email': currentAddress['email'] ?? '',
+        'addressId': result['addressId'] ?? '',
+        'name': result['name'] ?? '',
+        'email': result['email'] ?? '',
       };
 
-
+      print("dgyfwvg" + formattedAddress.toString());
       // Update the state using the existing updateAddress method
       updateAddress(type, formattedAddress);
     }
   }
-
-  // Future<void> _handleChangeAddress(
-  //     BuildContext context, Map<String, dynamic> address, String type) async {
-  //   final result = await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => SelectAddressScreen(currentAddress: address),
-  //     ),
-  //   );
-  //   if (result != null) {
-  //     updateAddress(type, result);
-  //   }
-  // }
 
   Widget buildStepper() {
     return Row(
@@ -329,19 +292,24 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
               const Text(
                 'Amount to be paid',
                 style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+                    fontSize: 16,
+                    color: AppColors.grey,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: MyFonts.Lexenddeca_regular),
               ),
               const SizedBox(height: 4),
-              Text(
-                '₹6,800.00',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green[700],
-                ),
+              Consumer<CartListViewModel>(
+                builder: (context, viewModel, child) {
+                  return Text(
+                    '₹ ${viewModel.totalAmount.toStringAsFixed(2)}', // Formats the amount to two decimal places
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: AppColors.black,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: MyFonts.LexendDeca_Bold,
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -355,17 +323,17 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              backgroundColor: Colors.green,
+              backgroundColor: AppColors.brightBlue,
               shadowColor: Colors.green.withOpacity(0.3),
               elevation: 5,
             ),
             child: const Text(
               'Proceed',
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
+                  fontSize: 16,
+                  color: AppColors.whiteColor,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: MyFonts.LexendDeca_Bold),
             ),
           ),
         ],
@@ -382,7 +350,6 @@ class AddressCard extends StatelessWidget {
   final String contact;
   final String email;
   final VoidCallback onEdit;
-  final VoidCallback onAddNew;
   final VoidCallback onChangeAddress;
 
   const AddressCard({
@@ -393,7 +360,6 @@ class AddressCard extends StatelessWidget {
     required this.address,
     required this.contact,
     required this.onEdit,
-    required this.onAddNew,
     required this.onChangeAddress,
     required this.email,
   }) : super(key: key);
@@ -421,7 +387,7 @@ class AddressCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: Colors.grey[600]),
+            Icon(icon, color: AppColors.black),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -429,43 +395,73 @@ class AddressCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: MyFonts.LexendDeca_SemiBold),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     address,
                     style: TextStyle(
-                      color: Colors.grey[600],
-                      height: 1.5,
-                    ),
+                        fontSize: 14,
+                        color: AppColors.grey,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: MyFonts.Lexenddeca_regular),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Contact: $contact',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                    ),
-                  ),Text(
-                    'Email: $email',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                    ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Text(
+                        'Contact: ',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: MyFonts.Lexenddeca_regular),
+                      ),
+                      Text(
+                        ' $contact',
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: AppColors.grey,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: MyFonts.Lexenddeca_regular),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Text(
+                        'Email: ',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: MyFonts.Lexenddeca_regular),
+                      ),
+                      Text(
+                        ' $email',
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: AppColors.grey,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: MyFonts.Lexenddeca_regular),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
             PopupMenuButton<String>(
-              icon: Icon(Icons.more_vert, color: Colors.grey[600]),
+              color: AppColors.backgroundcolormenu,
+              icon: Icon(Icons.more_vert, color: AppColors.black),
               onSelected: (value) {
                 switch (value) {
                   case 'edit':
                     onEdit();
-                    break;
-                  case 'add':
-                    onAddNew();
                     break;
                   case 'change':
                     onChangeAddress();
@@ -477,19 +473,20 @@ class AddressCard extends StatelessWidget {
                   value: 'edit',
                   child: Row(
                     children: [
-                      Icon(Icons.edit, size: 18),
+                      Icon(
+                        Icons.edit,
+                        size: 18,
+                        color: AppColors.black,
+                      ),
                       SizedBox(width: 8),
-                      Text('Edit'),
-                    ],
-                  ),
-                ),
-                const PopupMenuItem(
-                  value: 'add',
-                  child: Row(
-                    children: [
-                      Icon(Icons.add, size: 18),
-                      SizedBox(width: 8),
-                      Text('Add New'),
+                      Text(
+                        'Edit',
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: MyFonts.LexendDeca_Bold),
+                      ),
                     ],
                   ),
                 ),
@@ -497,9 +494,20 @@ class AddressCard extends StatelessWidget {
                   value: 'change',
                   child: Row(
                     children: [
-                      Icon(Icons.location_on, size: 18),
+                      Icon(
+                        Icons.location_on,
+                        size: 18,
+                        color: AppColors.black,
+                      ),
                       SizedBox(width: 8),
-                      Text('Change Address'),
+                      Text(
+                        'Change Address',
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: AppColors.black,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: MyFonts.LexendDeca_Bold),
+                      ),
                     ],
                   ),
                 ),
@@ -511,7 +519,3 @@ class AddressCard extends StatelessWidget {
     );
   }
 }
-
-
-
-

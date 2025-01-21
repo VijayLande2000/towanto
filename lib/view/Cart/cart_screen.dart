@@ -10,6 +10,7 @@ import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/cart_list_view_model.dart';
 import '../../viewModel/CartViewModels/updateCart_viewModel.dart';
+import '../Payments/check_out_flow.dart';
 import '../Payments/checkout_address_screen.dart';
 
 class CartScreen extends StatefulWidget {
@@ -279,9 +280,9 @@ class _CartScreenState extends State<CartScreen> {
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Utils.createButton(
-                  text: " Checkout  (\$${viewModel.totalAmount.toString()})",
+                  text: " Checkout  (\₹ ${viewModel.totalAmount.toString()})",
                   onClick: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CheckoutAddressScreen(),));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CheckoutFlowScreen(),));
 
                   },
                 ),

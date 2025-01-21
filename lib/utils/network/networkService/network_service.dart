@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:towanto/utils/routes/route_names.dart';
+import 'package:towanto/view/Payments/check_out_flow.dart';
 import 'package:towanto/view/Payments/checkout_address_screen.dart';
 
 import '../../../viewModel/Address_ViewModels/get_Address_list_view_model.dart';
@@ -178,9 +179,13 @@ class NetworkApiService extends BaseApiServices {
   Future getProductDetailsApiResponse(String url, String categoryId,
       BuildContext context) async {
     try {
+      String? sessionId = await PreferencesHelper.getString("session_id");
+
       var headers = {
         'Content-Type': 'application/json',
         'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+
       };
 
       String finalUrl = '$url?id=$categoryId';
@@ -629,7 +634,7 @@ class NetworkApiService extends BaseApiServices {
 
       print("dfhjv"+navigateTo);
       if(navigateTo=="checkoutScreen"){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => CheckoutAddressScreen(),));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CheckoutFlowScreen(),));
         }
         else{
           Navigator.pushReplacementNamed(context, RoutesName.addressList);
@@ -646,10 +651,12 @@ class NetworkApiService extends BaseApiServices {
   Future getHomePageDataApiResponse(String url, String categoryIds,
       BuildContext context) async {
     try {
+      String? sessionId = await PreferencesHelper.getString("session_id");
+
       var headers = {
         'Content-Type': 'application/json',
         'Accept': "application/json",
-        'Cookie': 'session_id=35bdbea092e7e543e60ab5065d69e51ba1999ee1',
+        'Cookie': 'session_id=$sessionId',
       };
       // var headers = {
       //   'Content-Type': 'application/json',
