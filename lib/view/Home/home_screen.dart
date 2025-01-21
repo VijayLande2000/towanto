@@ -216,62 +216,71 @@ class _HomeGridState extends State<HomeGrid> {
         actions: [
           // Wishlist Icon with Badge
           Consumer<HomePageDataViewModel>(
-
             builder: (BuildContext context, HomePageDataViewModel value, Widget? child) {
               return badges.Badge(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CartScreen(),
-                      ));
-                },
                 badgeContent: Text(
                   value.cartCount.toString(),
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 8,
-                      fontFamily: MyFonts.Lexenddeca_regular,
-                      fontWeight: FontWeight.normal),
+                    color: Colors.white,
+                    fontSize: 8,
+                    fontFamily: MyFonts.Lexenddeca_regular,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
                 badgeStyle: badges.BadgeStyle(badgeColor: AppColors.yellow_color),
-                child: Icon(
-                  Icons.add_shopping_cart,
-                  color: AppColors.black,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CartScreen(),
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    Icons.add_shopping_cart,
+                    color: AppColors.black,
+                  ),
                 ),
               );
             },
           ),
+
           SizedBox(
             width: 24,
           ),
           // Cart Icon with Badge
           Consumer<HomePageDataViewModel>(
             builder: (BuildContext context, HomePageDataViewModel value, Widget? child) {
-              return  badges.Badge(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WishlistScreen(),
-                      ));
-                },
+              return badges.Badge(
                 badgeStyle: badges.BadgeStyle(badgeColor: AppColors.yellow_color),
                 badgeContent: Text(
                   value.wishlistCount.toString(),
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontFamily: MyFonts.Lexenddeca_regular,
-                      fontWeight: FontWeight.normal),
+                    color: Colors.white,
+                    fontSize: 10 ,
+                    fontFamily: MyFonts.Lexenddeca_regular,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
-                child: Icon(
-                  Icons.favorite_border,
-                  color: AppColors.black,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WishlistScreen(),
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    Icons.favorite_border,
+                    color: AppColors.black,
+                  ),
                 ),
               );
             },
           ),
+
           SizedBox(
             width: 12,
           ),
