@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:towanto/view/Home/home_screen.dart';
 import 'package:towanto/viewModel/OrdersViewModels/orders_list_view_model.dart';
 
 import '../../utils/common_widgets/PreferencesHelper.dart';
@@ -90,7 +91,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
 
         leading: IconButton(
           icon: Icon(Icons.arrow_back,color: AppColors.black,size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomeGrid(),))
         ),
       ),
 

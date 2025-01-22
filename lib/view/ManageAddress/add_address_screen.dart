@@ -36,7 +36,7 @@ class _AddAddressInfoScreenContentState extends State<AddAddressInfoScreenConten
   String? selectedOption;
   String? errorText; // Add this variable to track the error
 
-  final List<String> options = ['invoice', 'delivery'];
+  final List<String> options = ['billing', 'shipping'];
 
   void validateDropDown() {
     if (selectedOption == null) {

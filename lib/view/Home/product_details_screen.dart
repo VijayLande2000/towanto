@@ -61,6 +61,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   Future<void> _addToCart(int productId) async {
     final addToCart = Provider.of<AddToCartViewModel>(context, listen: false);
     await addToCart.toggleCartStatus(partnerId!, productId, 1, context!);
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(),));
   }
 
 
@@ -258,9 +259,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           onPressed: () {
                             // print("_addToCart(productDetails.id): ${_addToCart(productDetails.id)}");
                             _addToCart(productDetails.id);
-                            print("before");
-                            updateCart(productDetails.id.toString(),quantity.toString(),context);
-                            print("after");
+                            // print("before");
+                            // updateCart(productDetails.id.toString(),quantity.toString(),context);
+                            // print("after");
                             // Implement buy now functionality
                           },
                           style: ElevatedButton.styleFrom(

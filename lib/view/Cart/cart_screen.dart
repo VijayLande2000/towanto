@@ -71,7 +71,7 @@ class _CartScreenState extends State<CartScreen> {
         cartItems[index].productUomQty.toString(),
         context,
       );
-
+      await cartListViewModel.updateCartListApi(partnerId!, sessionId!, context);
       setState(() {
         _incrementLoadingMap[itemId] = false;
       });
@@ -87,6 +87,7 @@ class _CartScreenState extends State<CartScreen> {
           cartItems[index].productUomQty.toString(),
           context,
         );
+        await cartListViewModel.updateCartListApi(partnerId!, sessionId!, context);
 
         setState(() {
           _decrementLoadingMap[itemId] = false;
@@ -274,7 +275,7 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ),
               SizedBox(height: 12.0),
-              _buildPriceRow('SubTotal', viewModel.totalSubtotal),
+              _buildPriceRow('SubTotal', viewModel.totalAmount),
               _buildPriceRow('Tax', viewModel.totalTax),
               _buildPriceRow('Discount', viewModel.totalDiscount),
               Padding(

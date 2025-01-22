@@ -85,7 +85,10 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Autom
       }
     });
     // TODO: implement initState
+    print("billingAddress length"+ billingAddress.length.toString() );
+    print("shippingAddress length"+ shippingAddress.length.toString() );
     super.initState();
+
   }
 
   int currentStep = 1;
@@ -134,6 +137,7 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Autom
                         children: [
                           // buildStepper(),
                           // const SizedBox(height: 24),
+                          billingAddress.isEmpty?_addNewAddressButton("Add Billing Address"):
                           AddressCard(
                             title: 'Billing Address',
                             icon: Icons.credit_card,
@@ -150,6 +154,7 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Autom
                             ,
                           ),
                           const SizedBox(height: 16),
+                          shippingAddress.isEmpty?_addNewAddressButton("Add Shipping Address"):
                           AddressCard(
                             title: 'Shipping Address',
                             icon: Icons.local_shipping,
@@ -176,7 +181,40 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Autom
         }
       }),
     );
+
   }
+
+  Widget _addNewAddressButton(String label) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddAddressInfoScreen(),));
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.brightBlue,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.add, color:AppColors.whiteColor,),
+          SizedBox(width: 8),
+          Text(
+            label.toString(),
+            style: TextStyle(
+                fontSize: 16,
+                color:  AppColors.whiteColor,
+                fontWeight: FontWeight.bold,
+                fontFamily: MyFonts.LexendDeca_Bold
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   Future<void> _handleEdit(
       BuildContext context, Map<String, dynamic> address,String type) async {
