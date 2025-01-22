@@ -144,7 +144,8 @@ class EditAddressViewModel extends ChangeNotifier {
       dynamic selectedCountry,
       dynamic selectedState,
       dynamic selectedCity,
-      dynamic addressId, dynamic navigateTo
+      dynamic addressId, dynamic navigateTo,
+      String type,
       ) async {
     // Validate all fields
     for (final field in formFields) {
@@ -188,7 +189,7 @@ class EditAddressViewModel extends ChangeNotifier {
           as TextEditingController)
               .text
               .trim(),
-          "type": "delivery", // Change to "delivery" if needed dynamically
+          "type": type, // Change to "delivery" if needed dynamically
           "country": selectedCountry, // Ensure you are passing the correct value for country
           "state": selectedState, // Ensure you are passing the correct value for state
           "vat": (formFields.firstWhere((field) => field['key'] == 'gstNumber')['controller']

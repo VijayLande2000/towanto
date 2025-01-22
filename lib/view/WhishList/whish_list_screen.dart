@@ -6,6 +6,7 @@ import 'package:towanto/viewModel/WhishListViewModels/delete_whishList_viewModel
 import 'package:towanto/viewModel/WhishListViewModels/whishList_list_view_model.dart';
 
 import '../../utils/common_widgets/PreferencesHelper.dart';
+import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 
@@ -223,6 +224,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                 Consumer<AddToCartViewModel>(
                                     builder: (context, viewModel, child) {
                                   bool isInCart = viewModel.isInCart(item.id);
+
                                   // if (viewModel.isLoading(item.id)) {
                                   //   return Center(
                                   //       child: SizedBox(
@@ -232,8 +234,14 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                   // }
                                   return ElevatedButton(
                                     onPressed: () {
-                                      viewModel.toggleCartStatus(
-                                          partnerId!, item.id, 1, context);
+                                      if(isInCart||item.isInCart){
+                                     Utils.flushBarErrorMessages("Already added in cart", context);
+                                      }
+                                      else{
+                                        viewModel.toggleCartStatus(
+                                            partnerId!, item.id, 1, context);
+                                      }
+
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor:AppColors.brightBlue,
@@ -265,8 +273,8 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                             ],
                                           )
                                         : Text(
-                                            isInCart
-                                                ? 'Added to  Cart'
+                                            isInCart||item.isInCart
+                                                ? 'Added to Cart'
                                                 : 'Add to Cart',
                                             style: TextStyle(
                                               color: Colors.white,

@@ -16,6 +16,7 @@ import 'package:towanto/viewModel/CartViewModels/delete_Cartitem_viewModel.dart'
 import 'package:towanto/viewModel/CartViewModels/updateCart_viewModel.dart';
 import 'package:towanto/viewModel/EnquireyViewModel/enquirey_view_model.dart';
 import 'package:towanto/viewModel/HomeViewModels/categories_list_viewModel.dart';
+import 'package:towanto/viewModel/HomeViewModels/get_search_product_list_view_model.dart';
 import 'package:towanto/viewModel/HomeViewModels/home_page_data_viewModel.dart';
 import 'package:towanto/viewModel/HomeViewModels/product_details_viewModel.dart';
 import 'package:towanto/viewModel/OrdersViewModels/order_details_view_model.dart';
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HomePageDataViewModel()),
         ChangeNotifierProvider(create: (_) => OrdersListViewModel()),
         ChangeNotifierProvider(create: (_) => OrderDetailsViewModel()),
+        ChangeNotifierProvider(create: (_) => SearchProductViewModel()),
 
       ],
       child: MaterialApp(
