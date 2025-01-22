@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:towanto/view/Home/home_screen.dart';
+import 'package:towanto/view/Orders/orders_screen.dart';
 
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
@@ -73,8 +74,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/track-order');
-                      },
+Navigator.push(context, MaterialPageRoute(builder: (context) => OrdersListScreen(),));                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.brightBlue,
                         padding: EdgeInsets.symmetric(vertical: 16),

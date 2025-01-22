@@ -10,48 +10,44 @@ import '../../viewModel/Address_ViewModels/add_address_view_model.dart';
 import '../../viewModel/profileViewModels/update_account_information_view_model.dart';
 import '../Auth/login_screen.dart';
 
-class EditAddressScreen extends StatefulWidget {
+class PaymentEditAddressScreen extends StatefulWidget {
   final Map<String, dynamic> addressData;
-  final String? from; // Optional String parameter
 
-  const EditAddressScreen({
+  const PaymentEditAddressScreen({
     Key? key,
     required this.addressData,
-    this.from,
   }) : super(key: key);
 
   @override
-  State<EditAddressScreen> createState() => _EditAddressScreenState();
+  State<PaymentEditAddressScreen> createState() => _PaymentEditAddressScreenState();
 }
 
-class _EditAddressScreenState extends State<EditAddressScreen> {
+class _PaymentEditAddressScreenState extends State<PaymentEditAddressScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => EditAddressViewModel(),
-      // Pass the addressData to EditAddressScreenContent
-      child: EditAddressScreenContent(
-          addressData: widget.addressData, from: widget.from),
+      // Pass the addressData to PaymentEditAddressScreenContent
+      child: PaymentEditAddressScreenContent(
+          addressData: widget.addressData),
     );
   }
 }
 
-class EditAddressScreenContent extends StatefulWidget {
+class PaymentEditAddressScreenContent extends StatefulWidget {
   final Map<String, dynamic>? addressData;
-  String? from;
 
-  EditAddressScreenContent({
+  PaymentEditAddressScreenContent({
     super.key,
     this.addressData,
-    this.from,
   });
 
   @override
-  State<EditAddressScreenContent> createState() =>
-      _EditAddressScreenContentState();
+  State<PaymentEditAddressScreenContent> createState() =>
+      _PaymentEditAddressScreenContentState();
 }
 
-class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
+class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScreenContent> {
   String? selectedCountry;
   String? selectedState;
   String? selectedCity;
@@ -59,7 +55,6 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
   @override
   void initState() {
     super.initState();
-    print("dbfhbvhv" + widget.from.toString());
     print("dbfhbvhv" + widget.addressData!['addressId'].toString());
 
     // Use Future.microtask to avoid calling Provider during build
@@ -225,7 +220,7 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                             selectedState,
                             selectedCity,
                             widget.addressData!['addressId'].toString(),
-                            widget.from,
+                            "back",
                             selectedOption??""
                         );
                       }),

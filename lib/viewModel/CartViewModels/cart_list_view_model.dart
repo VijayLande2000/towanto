@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:towanto/model/CartModels/cart_items_list_model.dart';
 import 'package:towanto/utils/repositories/CartRepositories/cart_list_repository.dart';
 
+import '../../utils/common_widgets/PreferencesHelper.dart';
+
 class CartListViewModel extends ChangeNotifier {
   final _myRepo = CartListRepository();
   late BuildContext context;
@@ -21,6 +23,7 @@ class CartListViewModel extends ChangeNotifier {
   double totalDiscount = 0.0;
   double totalSubtotal = 0.0;
   List<dynamic> productIds =[];
+  int? orderId;
 
   void setLoading(bool value) {
     _loading = value;
@@ -39,6 +42,15 @@ class CartListViewModel extends ChangeNotifier {
       final value = await _myRepo.getCartListApi(categoryId, context, sessionId);
 
       _responseData = value; // Update the list
+      // Extract the first order_id and store it
+      if (value.isNotEmpty) {
+        final firstOrder = value.first;
+        orderId = firstOrder.products[0].orderId.first as int?;
+        await PreferencesHelper.saveString("order_id", orderId.toString());
+
+        developer.log('Extracted order ID: $orderId', name: 'CartListViewModel');
+      }
+
 // Iterate through the fetched cart items
       value.forEach((item) {
         item.products.forEach((product) {

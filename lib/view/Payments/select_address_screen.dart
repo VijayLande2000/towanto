@@ -50,7 +50,6 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                     'addressId': address.id?.toString() ?? '',
                   });
                 }
-            print("vgfdgcivsg"+address.type);
 
           }
         });
