@@ -133,14 +133,14 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
         selectedPaymentMethod = title;
         if (title == 'Online Payment') {
           print("hewvckhgde"+title.toString());
-          _openCheckout();
+          // _openCheckout();
          /* Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => OnlinePaymentScreen()),
           );*/
         }
         else{
-          Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirmationScreen(),));
+          // Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirmationScreen(),));
         }
       }),
       child: Container(

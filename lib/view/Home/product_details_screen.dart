@@ -5,6 +5,7 @@ import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/add_to_cart_viewModel.dart';
+import '../../viewModel/CartViewModels/cart_list_view_model.dart';
 import '../../viewModel/CartViewModels/updateCart_viewModel.dart';
 import '../../viewModel/HomeViewModels/product_details_viewModel.dart';
 import '../../viewModel/WhishListViewModels/add_to_whishList_viewModel.dart';
@@ -21,10 +22,12 @@ class ProductDetailsPage extends StatefulWidget {
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   late final partnerId ;
+  late final sessionId ;
 
   @override
   void initState() {
     super.initState();
+
     // Call the API to fetch product details
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       partnerId = await PreferencesHelper.getString("partnerId");
@@ -34,9 +37,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       addToWhishListViewModel.setWhishListStatus(false);
     });
   }
-  int quantity = 1;
+  int quantity = 1; // Initialize the quantity to 1
   bool isInWishlist = false;
 
+  Future<void> _fetchCartItems() async {
+    partnerId = await PreferencesHelper.getString("partnerId");
+    sessionId = await PreferencesHelper.getString("session_id");
+    final cartListViewModel = Provider.of<CartListViewModel>(context, listen: false);
+    cartListViewModel.cartListViewModelApi(partnerId!, sessionId!, context);
+  }
 
   Future<void> updateCart(String productId,String qty,BuildContext context) async {
     final updateCartViewModel = Provider.of<UpdateCartViewModel>(context, listen: false);
@@ -46,9 +55,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       qty.toString(),
       context,
     );
-    await Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(),));
-
+    // await Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(),));
   }
+
+  Future<void> _addToCart(int productId) async {
+    final addToCart = Provider.of<AddToCartViewModel>(context, listen: false);
+    await addToCart.toggleCartStatus(partnerId!, productId, 1, context!);
+  }
+
+
 
 
   @override
@@ -241,7 +256,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         // Buy Now Button
                         productDetails.productPrice != 0.0?ElevatedButton(
                           onPressed: () {
+                            // print("_addToCart(productDetails.id): ${_addToCart(productDetails.id)}");
+                            _addToCart(productDetails.id);
+                            print("before");
                             updateCart(productDetails.id.toString(),quantity.toString(),context);
+                            print("after");
                             // Implement buy now functionality
                           },
                           style: ElevatedButton.styleFrom(

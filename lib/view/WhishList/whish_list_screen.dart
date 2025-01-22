@@ -240,6 +240,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                       else{
                                         viewModel.toggleCartStatus(
                                             partnerId!, item.id, 1, context);
+                                        _removeItem(item.id.toString());
                                       }
 
                                     },

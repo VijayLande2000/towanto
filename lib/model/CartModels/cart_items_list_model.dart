@@ -23,6 +23,7 @@ class CartItemsListModel {
   }
 }
 
+
 class Product {
   int id;
   bool analyticDistribution;
