@@ -32,6 +32,7 @@ class AppUrl {
   static late String getOrderslist;
   static late String getOrderDetails;
   static late String getproductSearch;
+  static late String getcheckOutReviewDetails;
 
 
   // Method to set the URLs based on the environment key
@@ -73,6 +74,7 @@ class AppUrl {
     getOrderslist = baseurlauth + "api/getorderlist";
     getOrderDetails = baseurlauth + "api/getorderdetails";
     getproductSearch = baseurlauth + "api/product_search";
+    getcheckOutReviewDetails = baseurlauth + "api/checkout/review";
 
 
     //we need to give here end point of the api

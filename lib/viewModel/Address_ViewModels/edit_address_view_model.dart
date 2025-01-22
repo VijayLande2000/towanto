@@ -19,13 +19,13 @@ class EditAddressViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> editAddressPostApi(dynamic data, BuildContext context, String sessionId,String navigateTo) async {
+  Future<void> editAddressPostApi(dynamic data, BuildContext context, String sessionId,String navigateTo,dynamic formData) async {
     try {
       this.context = context;
       setLoading(true);
       developer.log('Starting login process with data: ${jsonEncode(data)}', name: 'EditAddressViewModel');
 
-      final value = await _myRepo.editAddressListApiResponse(data, context, sessionId,navigateTo);
+      final value = await _myRepo.editAddressListApiResponse(data, context, sessionId,navigateTo,formData);
       developer.log('Account API response received: ${value.toString()}', name: 'EditAddressViewModel');
     } catch (e, stackTrace) {
       developer.log(
@@ -200,7 +200,23 @@ class EditAddressViewModel extends ChangeNotifier {
       };
 
       try {
-        await editAddressPostApi(jsonEncode(body), context, sessionId!,navigateTo);
+        final formData = {
+          'address': '${(formFields.firstWhere((field) => field['key'] == 'address')['controller'] as TextEditingController).text}, '
+              '${selectedCity ?? ''}\n'
+              '${selectedState ?? ''}, ${selectedCountry ?? ''}\n'
+              '${(formFields.firstWhere((field) => field['key'] == 'zipCode')['controller'] as TextEditingController).text}',
+          'contact': (formFields.firstWhere((field) => field['key'] == 'phone')['controller'] as TextEditingController)
+              .text
+              .trim(),
+          'name': (formFields.firstWhere((field) => field['key'] == 'firmName')['controller'] as TextEditingController)
+              .text
+              .trim(),
+          'email': (formFields.firstWhere((field) => field['key'] == 'email')['controller'] as TextEditingController)
+              .text
+              .trim(),
+          'addressId': addressId ?? '', // Include addressId if available
+        };
+        await editAddressPostApi(jsonEncode(body), context, sessionId!,navigateTo,formData);
       } finally {
         setLoading(false);
       }

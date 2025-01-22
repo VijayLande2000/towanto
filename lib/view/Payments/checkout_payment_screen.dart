@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/cart_list_view_model.dart';
@@ -16,69 +17,17 @@ class CheckoutPaymentScreen extends StatefulWidget {
   State<CheckoutPaymentScreen> createState() => _CheckoutPaymentScreenState();
 }
 
-class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
+class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> with AutomaticKeepAliveClientMixin {
 
-  late Razorpay _razorpay;
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     // TODO: implement initState
-    _razorpay = Razorpay();
-    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,_handlePaymentSuccess);
-    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+
     super.initState();
   }
-
-  void _openCheckout() {
-    var options = {
-      'key': 'rzp_test_2lEuQlBezOWwMq', // Replace with your Test/Live API Key
-      'amount': 50000, // Amount in smallest currency unit (e.g., 50000 = 500 INR)
-      'name': 'Acme Corp.',
-      'description': 'Test Payment',
-      'prefill': {
-        'contact': '1234567890',
-        'email': 'test@example.com',
-      },
-      'theme': {'color': '#59A8EB'},
-    };
-
-    try {
-      _razorpay.open(options);
-    } catch (e) {
-      debugPrint('Error: $e');
-    }
-  }
-
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    // Do something when payment succeeds
-    debugPrint('Payment Successful: ${response.paymentId}');
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("Payment Successful: ${response.paymentId}"),
-    ));
-  }
-
-  void _handlePaymentError(PaymentFailureResponse response) {
-    // Do something when payment fails
-    debugPrint('Payment Failed: ${response.code} | ${response.message}');
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("Payment Failed: ${response.message}"),
-    ));
-  }
-
-  void _handleExternalWallet(ExternalWalletResponse response) {
-    // Handle external wallet options
-    debugPrint('External Wallet: ${response.walletName}');
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("External Wallet: ${response.walletName}"),
-    ));
-  }
-
-  @override
-  void dispose() {
-    _razorpay.clear(); // Dispose Razorpay when not in use
-    super.dispose();
-  }
-
   String? selectedPaymentMethod;
 
   @override
@@ -129,18 +78,19 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
     bool isSelected = selectedPaymentMethod == title;
 
     return InkWell(
-      onTap: () => setState(() {
+      onTap: () => setState(()  {
         selectedPaymentMethod = title;
         if (title == 'Online Payment') {
           print("hewvckhgde"+title.toString());
-          // _openCheckout();
+           saveSelectedPaymentMethod(title);
          /* Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => OnlinePaymentScreen()),
           );*/
         }
         else{
-          // Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirmationScreen(),));
+          saveSelectedPaymentMethod(title);
+
         }
       }),
       child: Container(
@@ -210,5 +160,9 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> saveSelectedPaymentMethod(String title) async {
+    await PreferencesHelper.saveString("selectedPaymentMethod",title);
   }
 }

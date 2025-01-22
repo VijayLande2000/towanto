@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/view/ManageAddress/add_address_screen.dart';
 import 'package:towanto/view/ManageAddress/edit_address_screen.dart';
+import 'package:towanto/view/Payments/payment_edit_address_screen.dart';
 import 'package:towanto/view/Payments/select_address_screen.dart';
 import 'package:towanto/viewModel/CartViewModels/cart_list_view_model.dart';
 
+import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/Address_ViewModels/get_Address_list_view_model.dart';
@@ -18,7 +20,11 @@ class CheckoutAddressScreen extends StatefulWidget {
   State<CheckoutAddressScreen> createState() => _CheckoutAddressScreenState();
 }
 
-class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
+class _CheckoutAddressScreenState extends State<CheckoutAddressScreen>with AutomaticKeepAliveClientMixin {
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     billingAddress.clear();
@@ -27,32 +33,55 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
       final provider = Provider.of<GetAddressViewModel>(context, listen: false);
       await provider.getAddressList(context);
       if (provider.addresses.isNotEmpty) {
-        setState(() {
-          billingAddress = {
-            'title': 'Billing Address',
-            'city': provider.addresses[0].city ?? '',
-            'street': provider.addresses[0].street ?? '',
-            'state': provider.addresses[0].state ?? '',
-            'country': provider.addresses[0].country ?? '',
-            'zipcode': provider.addresses[0].zip ?? '',
-            'phone': provider.addresses[0].phone?.toString() ?? '',
-            'addressId': provider.addresses[0].id?.toString() ?? '',
-            'name': provider.addresses[0].name?.toString() ?? '',
-            'email': provider.addresses[0].email?.toString() ?? '',
-          };
-          shippingAddress = {
-            'title': 'Shipping Address',
-            'city': provider.addresses[0].city ?? '',
-            'street': provider.addresses[0].street ?? '',
-            'state': provider.addresses[0].state ?? '',
-            'country': provider.addresses[0].country ?? '',
-            'zipcode': provider.addresses[0].zip ?? '',
-            'phone': provider.addresses[0].phone?.toString() ?? '',
-            'addressId': provider.addresses[0].id?.toString() ?? '',
-            'name': provider.addresses[0].name?.toString() ?? '',
-            'email': provider.addresses[0].email?.toString() ?? '',
-          };
-        });
+        // Iterate through the addresses
+        for (var element in provider.addresses) {
+          // Check for invoice address and add only the first one
+          if (element.type == "invoice" && billingAddress.isEmpty) {
+            billingAddress = {
+              'title': 'Billing Address',
+              'city': element.city ?? '',
+              'street': element.street ?? '',
+              'state': element.state ?? '',
+              'country': element.country ?? '',
+              'zipcode': element.zip ?? '',
+              'phone': element.phone?.toString() ?? '',
+              'addressId': element.id?.toString() ?? '',
+              'name': element.name?.toString() ?? '',
+              'email': element.email?.toString() ?? '',
+            };
+          }
+          // Check for delivery address and add only the first one
+          else if (element.type == "delivery" && shippingAddress.isEmpty) {
+            shippingAddress = {
+              'title': 'Shipping Address',
+              'city': element.city ?? '',
+              'street': element.street ?? '',
+              'state': element.state ?? '',
+              'country': element.country ?? '',
+              'zipcode': element.zip ?? '',
+              'phone': element.phone?.toString() ?? '',
+              'addressId': element.id?.toString() ?? '',
+              'name': element.name?.toString() ?? '',
+              'email': element.email?.toString() ?? '',
+            };
+          }
+
+          // Break out of the loop after setting both addresses
+          if (billingAddress.isNotEmpty && shippingAddress.isNotEmpty) {
+            break;
+          }
+        }
+
+        // Update the state after processing the addresses
+        setState(() {});
+
+        // Save the address IDs to preferences
+        if (billingAddress.isNotEmpty) {
+          await PreferencesHelper.saveString("billing_id", billingAddress['addressId'] ?? '');
+        }
+        if (shippingAddress.isNotEmpty) {
+          await PreferencesHelper.saveString("shipping_id", shippingAddress['addressId'] ?? '');
+        }
       }
     });
     // TODO: implement initState
@@ -113,7 +142,7 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
                                 "${billingAddress['street']}, ${billingAddress['city']}, ${billingAddress['state']}, ${billingAddress['country']}, ${billingAddress['zipcode']}",
                             contact: billingAddress['phone'].toString(),
                             email: billingAddress['email'].toString(),
-                            onEdit: () => _handleEdit(context, billingAddress),
+                            onEdit: () => _handleEdit(context, billingAddress,"Billing Address"),
                             onChangeAddress: () => ({
                               _handleChangeAddress(context, billingAddress, 'Billing Address',)
                             }) /* _handleChangeAddress(
@@ -129,7 +158,7 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
                                 "${shippingAddress['street']}, ${shippingAddress['city']}, ${shippingAddress['state']}, ${shippingAddress['country']}, ${shippingAddress['zipcode']}",
                             contact: shippingAddress['phone'].toString(),
                             email: shippingAddress['email'].toString(),
-                            onEdit: () => _handleEdit(context, shippingAddress),
+                            onEdit: () => _handleEdit(context, shippingAddress,"Shipping Address"),
                             // Fix the syntax here
                             onChangeAddress: () => _handleChangeAddress(
                                 context, shippingAddress, 'Shipping Address'),
@@ -150,15 +179,47 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
   }
 
   Future<void> _handleEdit(
-      BuildContext context, Map<String, dynamic> address) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              EditAddressScreen(addressData: address, from: "checkoutScreen")),
+      BuildContext context, Map<String, dynamic> address,String type) async {
+    final result = await Navigator.push(context,
+      MaterialPageRoute(builder: (context) => PaymentEditAddressScreen(addressData: address)),
     );
-    if (result != null) {
-      updateAddress(address['title'], result);
+    print(("ewcd" + result.toString()));
+
+    if (result != null && result is Map<String, dynamic>) {
+      // Create a properly formatted address map with all required fields
+      final addressLines = result['address']?.toString().split('\n') ?? [];
+
+      final formattedAddress = {
+        'title': type,
+        'street': addressLines.isNotEmpty ? addressLines[0].trim() : '',
+        'state': addressLines.length > 1 && addressLines[1].contains(',')
+            ? addressLines[1].split(',')[1].trim()
+            : '',
+        'country': addressLines.length > 2 && addressLines[2].contains(',')
+            ? addressLines[2].split(',')[0].trim()
+            : '',
+        'zipcode': addressLines.length > 2
+            ? RegExp(r'\b\d{6}\b').firstMatch(addressLines[2])?.group(0) ?? ''
+            : '',
+        'phone': result['contact'] ?? '',
+        'addressId': result['addressId'] ?? '',
+        'name': result['name'] ?? '',
+        'email': result['email'] ?? '',
+      };
+
+      print("dgyfwvg" + formattedAddress.toString());
+      // Update the state using the existing updateAddress method
+      updateAddress(type, formattedAddress);
+      // Save the address ID in SharedPreferences based on the type (billing/shipping)
+      if (type == "Billing Address") {
+        await PreferencesHelper.saveString("billing_id", formattedAddress['addressId']);
+        print("billing id updated"+ formattedAddress['addressId']);
+      } else if (type == "Shipping Address") {
+        await PreferencesHelper.saveString("shipping_id", formattedAddress['addressId']);
+        print("shipping id updated"+ formattedAddress['addressId']);
+
+      }
+
     }
   }
 
@@ -199,6 +260,16 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
       print("dgyfwvg" + formattedAddress.toString());
       // Update the state using the existing updateAddress method
       updateAddress(type, formattedAddress);
+      // Save the address ID in SharedPreferences based on the type (billing/shipping)
+      if (type == "Billing Address") {
+        await PreferencesHelper.saveString("billing_id", formattedAddress['addressId']);
+        print("billing id updated"+ formattedAddress['addressId']);
+      } else if (type == "Shipping Address") {
+        await PreferencesHelper.saveString("shipping_id", formattedAddress['addressId']);
+        print("shipping id updated"+ formattedAddress['addressId']);
+
+      }
+
     }
   }
 

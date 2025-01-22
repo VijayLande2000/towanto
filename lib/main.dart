@@ -12,6 +12,7 @@ import 'package:towanto/viewModel/AuthViewModels/login_viewModel.dart';
 import 'package:towanto/viewModel/AuthViewModels/sign_up_viewModel.dart';
 import 'package:towanto/viewModel/CartViewModels/add_to_cart_viewModel.dart';
 import 'package:towanto/viewModel/CartViewModels/cart_list_view_model.dart';
+import 'package:towanto/viewModel/CartViewModels/check_out_review_view_model.dart';
 import 'package:towanto/viewModel/CartViewModels/delete_Cartitem_viewModel.dart';
 import 'package:towanto/viewModel/CartViewModels/updateCart_viewModel.dart';
 import 'package:towanto/viewModel/EnquireyViewModel/enquirey_view_model.dart';
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => OrdersListViewModel()),
         ChangeNotifierProvider(create: (_) => OrderDetailsViewModel()),
         ChangeNotifierProvider(create: (_) => SearchProductViewModel()),
+        ChangeNotifierProvider(create: (_) => CheckOutReviewViewModel()),
 
       ],
       child: MaterialApp(

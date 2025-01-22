@@ -2,10 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:towanto/view/Cart/cart_screen.dart';
+import 'package:towanto/view/Payments/order_confirmation_screen.dart';
+import '../../utils/common_widgets/PreferencesHelper.dart';
+import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/cart_list_view_model.dart';
+import 'check_out_review_screen.dart';
 import 'checkout_address_screen.dart';
 import 'checkout_payment_screen.dart';
 
@@ -16,7 +21,100 @@ class CheckoutFlowScreen extends StatefulWidget {
   State<CheckoutFlowScreen> createState() => _CheckoutFlowScreenState();
 }
 
-class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> {
+class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticKeepAliveClientMixin {
+  late Razorpay _razorpay;
+  late dynamic selectedPayment;
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,_handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  dynamic amount;
+  dynamic name;
+  dynamic phone;
+  Future<void> getPaymentInformation() async {
+    amount=(await PreferencesHelper.getString("Amount"))!;
+    name=(await PreferencesHelper.getString("name"))!;
+    phone= (await PreferencesHelper.getString("phone"))!;
+    print("dwdwcec"+amount.toString());
+  }
+  Future<void> _openCheckout() async {
+    // Retrieve and print the saved values
+    var savedAmount = await PreferencesHelper.getString("Amount");
+    final savedName = await PreferencesHelper.getString("name");
+    final savedPhone = await PreferencesHelper.getString("phone");
+    print("wex"+savedPhone.toString());
+    print("wex"+savedAmount.toString());
+    print("wex"+savedAmount.toString());
+      savedAmount=savedAmount!*100;
+    print("after"+savedAmount.toString());
+
+    var options = {
+      'key': 'rzp_test_2lEuQlBezOWwMq', // Replace with your Test/Live API Key
+      'amount': savedAmount, // Amount in smallest currency unit (e.g., 50000 = 500 INR)
+      'name': savedName.toString(),
+      'description': 'Test Payment',
+      'prefill': {
+        'contact': savedPhone.toString(),
+        'email': 'test@example.com',
+      },
+      'theme': {'color': '#59A8EB'},
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      debugPrint('Error: $e');
+    }
+  }
+
+  Future<void> _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    // Do something when payment succeeds
+    debugPrint('Payment Successful: ${response.paymentId}');
+    await PreferencesHelper.saveString("selectedPaymentMethod","");
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirmationScreen(),));
+  }
+
+  Future<void> _handlePaymentError(PaymentFailureResponse response) async {
+    // Do something when payment fails
+    debugPrint('Payment Failed: ${response.code} | ${response.message}');
+    await PreferencesHelper.saveString("selectedPaymentMethod","");
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("Payment Failed: ${response.message}"),
+    ));
+  }
+
+  Future<void> _handleExternalWallet(ExternalWalletResponse response) async {
+    // Handle external wallet options
+    debugPrint('External Wallet: ${response.walletName}');
+    await PreferencesHelper.saveString("selectedPaymentMethod","");
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("External Wallet: ${response.walletName}"),
+    ));
+  }
+
+
+  @override
+  void dispose() {
+    _razorpay.clear();
+    _pageController.dispose();
+// Dispose Razorpay when not in use
+    super.dispose();
+  }
+
   int _currentStep = 1;
   final PageController _pageController = PageController(initialPage: 0);
 
@@ -26,6 +124,7 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> {
   String? selectedPaymentMethod;
 
   void _handleStepChange(int step) {
+    print("dwcg"+step.toString());
     if (step >= 1 && step <= 3) {
       setState(() {
         _currentStep = step;
@@ -55,19 +154,22 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> {
     });
   }
 
-  void _handlePlaceOrder() {
-    // Handle order placement logic
-    print('Placing order with:');
-    print('Billing Address: $billingAddress');
-    print('Shipping Address: $shippingAddress');
-    print('Payment Method: $selectedPaymentMethod');
+  Future<void> _handlePlaceOrder() async {
+
+    selectedPayment= await PreferencesHelper.getString("selectedPaymentMethod");
+    print("ewcdsdd"+selectedPaymentMethod.toString());
+    if(selectedPayment=="Online Payment"){
+      await getPaymentInformation();
+      _openCheckout();
+    }
+    else if(selectedPayment==""){
+      Utils.flushBarErrorMessages("please select payment method", context);
+    }
+    else{
+      Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirmationScreen(),));
+    }
   }
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +215,7 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> {
                 children: [
                   CheckoutAddressScreen(),
                   CheckoutPaymentScreen(),
-                  Container(child: Center(child: Text('Review Screen'))), // Placeholder
+                  CheckOutReviewScreen(),
                 ],
               ),
             ),
@@ -282,7 +384,6 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-
               _moveToNextStep();
             },
             style: ElevatedButton.styleFrom(
