@@ -52,6 +52,7 @@ class Address {
   String? zip;
   String? phone;
   String? email;
+  dynamic type;
 
   Address({
     this.id,
@@ -63,6 +64,7 @@ class Address {
     this.zip,
     this.phone,
     this.email,
+    this.type
   });
 
   factory Address.fromJson(Map<String, dynamic> json) {
@@ -76,6 +78,7 @@ class Address {
       zip: json['zip'],
       phone: json['phone'],
       email: json['email'],
+      type: json['type'],
     );
   }
 
@@ -90,6 +93,7 @@ class Address {
       'zip': zip,
       'phone': phone,
       'email': email,
+      'type': type,
     };
   }
 }

@@ -65,12 +65,11 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
     // Use Future.microtask to avoid calling Provider during build
     Future.microtask(() {
       if (widget.addressData != null) {
-        // widget.addressData?.forEach((key, value) {
-        //   print("key = "+key);
-        //   print("value = "+value);
-        // });
-        final provider =
-            Provider.of<EditAddressViewModel>(context, listen: false);
+        widget.addressData?.forEach((key, value) {
+          print("key = "+key);
+          print("value = "+value.toString());
+        });
+        final provider = Provider.of<EditAddressViewModel>(context, listen: false);
 
         // Pre-fill form fields
         provider.formFields.forEach((field) {
@@ -104,10 +103,15 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
           selectedCountry = widget.addressData!['country'];
           selectedState = widget.addressData!['state'];
           selectedCity = widget.addressData!['city'];
+          selectedOption = widget.addressData!['type'];
         });
+        print("erh"+selectedOption.toString());
       }
     });
   }
+  String? selectedOption;
+
+  final List<String> options = ['invoice', 'delivery',];
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +159,18 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                     ),
                   ),
 
+                  CustomDropdownField(
+                    label: 'Type',
+                    items: options,
+                    selectedValue: selectedOption,
+                    hint: 'Choose one',
+                    onChanged: (value) {
+                      setState(() {
+                        selectedOption = value;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 12.0,),
                   // Country State City Picker
                   Container(
                     decoration: BoxDecoration(
@@ -209,7 +225,9 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                             selectedState,
                             selectedCity,
                             widget.addressData!['addressId'].toString(),
-                            widget.from);
+                            widget.from,
+                            selectedOption!
+                        );
                       }),
                 ],
               ),
@@ -218,6 +236,94 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
           if (provider.loading) Utils.loadingIndicator(context),
         ],
       ),
+    );
+  }
+}
+class CustomDropdownField extends StatelessWidget {
+  final String label;
+  final String? selectedValue;
+  final List<String> items;
+  final Function(String?) onChanged;
+  final String? hint;
+
+  const CustomDropdownField({
+    Key? key,
+    required this.label,
+    required this.items,
+    this.selectedValue,
+    required this.onChanged,
+    this.hint,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Label
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            fontFamily: MyFonts.LexendDeca_Bold,
+            fontWeight: FontWeight.w500,
+            color: AppColors.black,
+          ),
+        ),
+        const SizedBox(height: 8),
+        // Dropdown Container
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+            border: Border.all(
+              color
+                  : AppColors.grey.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: selectedValue,
+              hint: Text(
+                hint ?? "Select",
+                style: TextStyle(
+                  color: AppColors.grey.withOpacity(0.7),
+                  fontSize: 14,
+                  fontFamily: MyFonts.LexendDeca_Bold,
+                ),
+              ),
+              isExpanded: true,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: AppColors.grey,
+              ),
+              onChanged: onChanged,
+              items: items.map((item) {
+                return DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(
+                    item,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontFamily: MyFonts.Lexenddeca_regular,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -4,11 +4,13 @@ import 'package:provider/provider.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/Address_ViewModels/get_Address_list_view_model.dart';
+import '../ManageAddress/add_address_screen.dart';
 
 class SelectAddressScreen extends StatefulWidget {
   final Map<String, dynamic> currentAddress;
+  String type;
 
-  const SelectAddressScreen({Key? key, required this.currentAddress})
+   SelectAddressScreen({Key? key, required this.currentAddress,required this.type})
       : super(key: key);
 
   @override
@@ -26,14 +28,30 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
       await provider.getAddressList(context);
       if (provider.addresses.isNotEmpty) {
         setState(() {
-          for (var address in provider.addresses) {
-            _savedAddresses.add({
-              'address': '${address.street}, ${address.city}\n${address.state}, ${address.country}\n${address.zip}',
-              'contact': address.phone?.toString() ?? '',
-              'name': address.name ?? '',
-              'email': address.email ?? '',
-              'addressId': address.id?.toString() ?? '',
-            });
+          print("ewgyucd"+widget.type.toString());
+
+            for (var address in provider.addresses) {
+              if (widget.type == "Billing Address" && address.type == "invoice") {
+                _savedAddresses.add({
+                  'address': '${address.street}, ${address.city}\n${address.state}, ${address.country}\n${address.zip}',
+                  'contact': address.phone?.toString() ?? '',
+                  'name': address.name ?? '',
+                  'email': address.email ?? '',
+                  'addressId': address.id?.toString() ?? '',
+                });
+              }
+              else if (widget.type == "Shipping Address" && address.type == "delivery")
+                {
+                  _savedAddresses.add({
+                    'address': '${address.street}, ${address.city}\n${address.state}, ${address.country}\n${address.zip}',
+                    'contact': address.phone?.toString() ?? '',
+                    'name': address.name ?? '',
+                    'email': address.email ?? '',
+                    'addressId': address.id?.toString() ?? '',
+                  });
+                }
+            print("vgfdgcivsg"+address.type);
+
           }
         });
       }
@@ -96,7 +114,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                               const Icon(Icons.person_outline, size: 20, color: Colors.grey),
                               const SizedBox(width: 8),
                               Text(
-                                value.addresses[index].name.toString(),
+                                address['name'],
                                 style: TextStyle(
                                     fontSize: 16,
                                     color:  AppColors.black,
@@ -117,13 +135,15 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
-                                  "${value.addresses[index].city.toString()+" "+value.addresses[index].street.toString()+" "+value.addresses[index].state.toString()+" "+value.addresses[index].country.toString()+" "+value.addresses[index].zip.toString()}",
+                                  "${address['address']}",
                                   style: TextStyle(
                                       fontSize: 14,
                                       color:  AppColors.black,
                                       fontWeight: FontWeight.w500,
                                       fontFamily: MyFonts.LexendDeca_Bold
                                   ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                 ),
                               ),
                             ],
@@ -135,7 +155,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                               const Icon(Icons.phone_outlined, size: 20, color: Colors.grey),
                               const SizedBox(width: 8),
                               Text(
-                                value.addresses[index].phone.toString(),
+                                address['contact'].toString(),
                                 style: TextStyle(
                                     fontSize: 14,
                                     color:  AppColors.black,
@@ -147,10 +167,10 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                           ),
                           Row(
                             children: [
-                              const Icon(Icons.phone_outlined, size: 20, color: Colors.grey),
+                              const Icon(Icons.email_outlined, size: 20, color: Colors.grey),
                               const SizedBox(width: 8),
                               Text(
-                                value.addresses[index].email.toString(),
+                                address['email'].toString(),
                                 style: TextStyle(
                                     fontSize: 14,
                                     color:  AppColors.black,
@@ -185,4 +205,35 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
       ),
     );
   }
+  Widget _addNewAddressButton() {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddAddressInfoScreen(),));
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.brightBlue,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(Icons.add, color:AppColors.whiteColor,),
+          SizedBox(width: 8),
+          Text(
+            'ADD NEW ADDRESS',
+            style: TextStyle(
+                fontSize: 16,
+                color:  AppColors.whiteColor,
+                fontWeight: FontWeight.bold,
+                fontFamily: MyFonts.LexendDeca_Bold
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 }

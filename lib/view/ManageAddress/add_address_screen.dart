@@ -33,6 +33,24 @@ class _AddAddressInfoScreenContentState extends State<AddAddressInfoScreenConten
   String? selectedCountry;
   String? selectedState;
   String? selectedCity;
+  String? selectedOption;
+  String? errorText; // Add this variable to track the error
+
+  final List<String> options = ['invoice', 'delivery'];
+
+  void validateDropDown() {
+    if (selectedOption == null) {
+      setState(() {
+        errorText = 'Please select an option'; // Show error
+      });
+    } else {
+      setState(() {
+        errorText = null; // Clear error
+
+      });
+      print("Selected option: $selectedOption");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +99,19 @@ class _AddAddressInfoScreenContentState extends State<AddAddressInfoScreenConten
                       ),
                     ),
                   ),
+                  CustomDropdownField(
+                    label: 'Type',
+                    items: options,
+                    selectedValue: selectedOption,
+                    hint: 'Choose one',
+                    errorText: errorText,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedOption = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 20),
 
                   // Country State City Picker
                   Container(
@@ -124,11 +155,17 @@ class _AddAddressInfoScreenContentState extends State<AddAddressInfoScreenConten
                     ),
                   ),
 
+
                   const SizedBox(height: 20),
 
                   Utils.createButton(
                     text: "Add Address",
-                    onClick: () => provider.submitAccountInfo(context, selectedCountry, selectedState, selectedCity),
+                    onClick: () => {
+                      validateDropDown(),
+                      if(selectedOption!=null){
+                        provider.submitAccountInfo(context, selectedCountry, selectedState, selectedCity,selectedOption!),
+                      }
+                    }
                   ),
 
                 ],
@@ -139,6 +176,113 @@ class _AddAddressInfoScreenContentState extends State<AddAddressInfoScreenConten
           if (provider.loading) Utils.loadingIndicator(context),
         ],
       ),
+    );
+  }
+}
+
+
+
+class CustomDropdownField extends StatelessWidget {
+  final String label;
+  final String? selectedValue;
+  final String? errorText;
+  final List<String> items;
+  final Function(String?) onChanged;
+  final String? hint;
+
+  const CustomDropdownField({
+    Key? key,
+    required this.label,
+    required this.items,
+    this.selectedValue,
+    this.errorText,
+    required this.onChanged,
+    this.hint,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Label
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            fontFamily: MyFonts.LexendDeca_Bold,
+            fontWeight: FontWeight.w500,
+            color: AppColors.black,
+          ),
+        ),
+        const SizedBox(height: 8),
+        // Dropdown Container
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+            border: Border.all(
+              color: errorText != null
+                  ? AppColors.errorRed
+                  : AppColors.grey.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: selectedValue,
+              hint: Text(
+                hint ?? "Select",
+                style: TextStyle(
+                  color: AppColors.grey.withOpacity(0.7),
+                  fontSize: 14,
+                  fontFamily: MyFonts.LexendDeca_Bold,
+                ),
+              ),
+              isExpanded: true,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: AppColors.grey,
+              ),
+              onChanged: onChanged,
+              items: items.map((item) {
+                return DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(
+                    item,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontFamily: MyFonts.Lexenddeca_regular,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+        // Error Text
+        if (errorText != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
+              errorText!,
+              style: const TextStyle(
+                color: AppColors.errorRed,
+                fontSize: 12,
+                fontFamily: MyFonts.Lexenddeca_regular,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

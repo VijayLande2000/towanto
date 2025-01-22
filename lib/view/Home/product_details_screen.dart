@@ -165,7 +165,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 _buildDetailRow('Packing Size:', productDetails.productWeight.toString()),
                                 _buildDetailRow('Price:', productDetails.productPrice.toString()),
                                 _buildDetailRow('Per Case/Bag:', productDetails.perCaseBag.toString()),
-                                _buildDetailRow('Minimum Order Quantity:', productDetails.minimumOrderQty),
+                                _buildDetailRow('Minimum Order Quantity:', productDetails.minimumOrderQty.toString()),
                                 _buildDetailRow('price/kg:', productDetails.productPrice.toString()),
                               ],
                             ),

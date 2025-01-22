@@ -4,6 +4,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/cart_list_view_model.dart';
+import 'order_confirmation_screen.dart';
 
 class CheckoutPaymentScreen extends StatefulWidget {
 
@@ -38,7 +39,7 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
         'contact': '1234567890',
         'email': 'test@example.com',
       },
-      'theme': {'color': '#F37254'},
+      'theme': {'color': '#59A8EB'},
     };
 
     try {
@@ -137,6 +138,9 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
             context,
             MaterialPageRoute(builder: (context) => OnlinePaymentScreen()),
           );*/
+        }
+        else{
+          Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirmationScreen(),));
         }
       }),
       child: Container(

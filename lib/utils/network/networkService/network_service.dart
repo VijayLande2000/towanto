@@ -71,6 +71,10 @@ class NetworkApiService extends BaseApiServices {
         Future.delayed(Duration(seconds: 0), () =>
             Utils.flushBarSuccessMessages("User does not exist", context));
       }
+     else if (response.statusCode == 500) {
+        Future.delayed(Duration(seconds: 0), () =>
+            Utils.flushBarSuccessMessages("Incorrect Credientials", context));
+      }
       responseJson = returnResponse(response);
     } on SocketException {
       Utils.flushBarErrorMessages("No Internet Connection", context);
@@ -734,6 +738,35 @@ class NetworkApiService extends BaseApiServices {
         //     Utils.flushBarSuccessMessages(
         //         "Address Updated successfully!", context));
         // Navigator.pushReplacementNamed(context, RoutesName.addressList);
+      }
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
+
+  @override
+  Future postProductSearchListApiResponse(String url, data, BuildContext context, String sessionId) async {
+    try {
+      print("fvb " + sessionId);
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+      };
+
+      Response response = await post(
+          Uri.parse(url), body: data, headers: headers).timeout(
+          const Duration(seconds: 60));
+      print("product search info data :" + data.toString());
+      print("product search info data :" + url.toString());
+
+      print("product search response =" + response.body);
+      print("product search statusCode =" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        // Future.delayed(Duration(seconds:0),() =>Utils.flushBarSuccessMessages("Account Updated successfully!",context));
+        // Navigator.pushReplacementNamed(context, RoutesName.home);
       }
       responseJson = returnResponse(response);
     } on SocketException {

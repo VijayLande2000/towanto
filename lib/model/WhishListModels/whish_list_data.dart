@@ -12,6 +12,7 @@ class WishlistItemModel {
   final List<dynamic> writeUid;
   final DateTime writeDate;
   final bool stockNotification;
+  final dynamic isInCart;
 
   WishlistItemModel({
     required this.id,
@@ -27,6 +28,7 @@ class WishlistItemModel {
     required this.writeUid,
     required this.writeDate,
     required this.stockNotification,
+    required this.isInCart
   });
 
   // Factory method to parse JSON into WishlistItemModel object
@@ -45,6 +47,7 @@ class WishlistItemModel {
       writeUid: json['write_uid'] as List<dynamic>,
       writeDate: DateTime.parse(json['write_date']),
       stockNotification: json['stock_notification'] as bool,
+      isInCart: json['is_in_cart'] as bool,
     );
   }
 
@@ -64,6 +67,7 @@ class WishlistItemModel {
       'write_uid': writeUid,
       'write_date': writeDate.toIso8601String(),
       'stock_notification': stockNotification,
+      'is_in_cart':isInCart,
     };
   }
 }

@@ -7,6 +7,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:towanto/utils/resources/fonts.dart';
 import 'package:towanto/view/Cart/cart_screen.dart';
 import 'package:towanto/view/Home/product_details_screen.dart';
+import 'package:towanto/view/Home/products_search_screen.dart';
 import 'package:towanto/view/ManageAddress/address_list_screen.dart';
 import 'package:towanto/view/Profile/update_account_information_screen.dart';
 import 'package:towanto/view/Enquiry/enquiry_screen.dart';
@@ -191,6 +192,7 @@ class _HomeGridState extends State<HomeGrid> {
         Provider.of<HomePageDataViewModel>(context, listen: false);
 
     return Scaffold(
+      backgroundColor: AppColors.backgroundcolormenu,
       appBar: AppBar(
         title: const Text(
           'Categories',
@@ -214,6 +216,23 @@ class _HomeGridState extends State<HomeGrid> {
           );
         }),
         actions: [
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchProductScreen(),
+                ),
+              );
+            },
+            child: Icon(
+              Icons.search_sharp,
+              color: AppColors.black,
+              size: 24,
+            ),
+          ),
+          SizedBox(width: 24,),
+
           // Wishlist Icon with Badge
           Consumer<HomePageDataViewModel>(
             builder: (BuildContext context, HomePageDataViewModel value, Widget? child) {
@@ -717,7 +736,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                  7,
                )
            ),
-           const Spacer(),
+           const SizedBox(height: 20),
            const Divider(color: Colors.white30),
            DrawerItem(
              icon: Icons.logout_outlined,

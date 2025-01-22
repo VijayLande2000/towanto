@@ -143,6 +143,7 @@ class AddAddressViewModel extends ChangeNotifier {
       dynamic selectedCountry,
       dynamic selectedState,
       dynamic selectedCity,
+      String type,
       ) async {
     // Validate all fields
     for (final field in formFields) {
@@ -194,9 +195,10 @@ class AddAddressViewModel extends ChangeNotifier {
           as TextEditingController)
               .text
               .trim(),
-          "type": "billing",
+          "type": type,
         }
       };
+      print("gyufg"+body.toString());
 
       try {
         await addAccountPostApi(jsonEncode(body), context, sessionId!);

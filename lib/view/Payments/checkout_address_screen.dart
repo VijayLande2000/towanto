@@ -115,8 +115,7 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
                             email: billingAddress['email'].toString(),
                             onEdit: () => _handleEdit(context, billingAddress),
                             onChangeAddress: () => ({
-                              _handleChangeAddress(
-                                  context, billingAddress, 'Billing Address')
+                              _handleChangeAddress(context, billingAddress, 'Billing Address',)
                             }) /* _handleChangeAddress(
                                 context, billingAddress, 'Billing Address')*/
                             ,
@@ -170,7 +169,7 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen> {
       context,
       MaterialPageRoute(
         builder: (context) =>
-            SelectAddressScreen(currentAddress: currentAddress),
+            SelectAddressScreen(currentAddress: currentAddress,type: type),
       ),
     );
     print(("ewcd" + result.toString()));
@@ -442,14 +441,20 @@ class AddressCard extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                             fontFamily: MyFonts.Lexenddeca_regular),
                       ),
-                      Text(
-                        ' $email',
-                        style: TextStyle(
+                      Expanded(
+                        child: Text(
+                          '$email',
+                          style: TextStyle(
                             fontSize: 14,
                             color: AppColors.grey,
                             fontWeight: FontWeight.w500,
-                            fontFamily: MyFonts.Lexenddeca_regular),
+                            fontFamily: MyFonts.Lexenddeca_regular,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
                       ),
+
                     ],
                   ),
                 ],

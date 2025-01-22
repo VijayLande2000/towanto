@@ -164,8 +164,10 @@ class _AddressManagerState extends State<AddressManager> {
                                                   'phone': value.addresses[index].phone,
                                                   'vat': "",
                                                   'zipcode': value.addresses[index].zip,
-                                                  'addressId':value.addresses[index].id
+                                                  'addressId':value.addresses[index].id,
+                                                  'type':value.addresses[index].type
                                                 },
+                                                from: "Manage Address",
                                               ),
                                             ),
                                           );
