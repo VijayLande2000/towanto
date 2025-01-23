@@ -11,19 +11,23 @@ import '../Auth/login_screen.dart';
 
 
 class AddAddressInfoScreen extends StatelessWidget {
-  const AddAddressInfoScreen({Key? key}) : super(key: key);
+  final String? from; // Optional String parameter
+
+   AddAddressInfoScreen({Key? key, this.from,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => AddAddressViewModel(),
-      child: const AddAddressInfoScreenContent(),
+      child:  AddAddressInfoScreenContent(from:from),
     );
   }
 }
 
 class AddAddressInfoScreenContent extends StatefulWidget {
-  const AddAddressInfoScreenContent({Key? key}) : super(key: key);
+  final String? from; // Optional String parameter
+
+  const AddAddressInfoScreenContent({Key? key, this.from,}) : super(key: key);
 
   @override
   State<AddAddressInfoScreenContent> createState() => _AddAddressInfoScreenContentState();
@@ -163,11 +167,10 @@ class _AddAddressInfoScreenContentState extends State<AddAddressInfoScreenConten
                     onClick: () => {
                       validateDropDown(),
                       if(selectedOption!=null){
-                        provider.submitAccountInfo(context, selectedCountry, selectedState, selectedCity,selectedOption!),
+                        provider.submitAccountInfo(context, selectedCountry, selectedState, selectedCity,selectedOption!,widget.from),
                       }
                     }
                   ),
-
                 ],
               ),
             ),

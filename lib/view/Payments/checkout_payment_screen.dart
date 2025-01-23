@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
-import '../../viewModel/CartViewModels/cart_list_view_model.dart';
-import 'order_confirmation_screen.dart';
+
 
 class CheckoutPaymentScreen extends StatefulWidget {
 
@@ -14,10 +11,10 @@ class CheckoutPaymentScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CheckoutPaymentScreen> createState() => _CheckoutPaymentScreenState();
+  State<CheckoutPaymentScreen> createState() => CheckoutPaymentScreenState();
 }
 
-class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> with AutomaticKeepAliveClientMixin {
+class CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> with AutomaticKeepAliveClientMixin {
 
   @override
   bool get wantKeepAlive => true;
@@ -28,7 +25,7 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> with Auto
 
     super.initState();
   }
-  String? selectedPaymentMethod;
+  static String? selectedPaymentMethod;
 
   @override
   Widget build(BuildContext context) {

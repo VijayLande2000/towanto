@@ -118,17 +118,28 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
   int _currentStep = 1;
   final PageController _pageController = PageController(initialPage: 0);
 
-  // Store data across screens
-  Map<String, dynamic> billingAddress = {};
-  Map<String, dynamic> shippingAddress = {};
   String? selectedPaymentMethod;
 
   void _handleStepChange(int step) {
-    print("dwcg"+step.toString());
+    print("Step Change: " + step.toString());
+
+    if (step == 2) {
+      if (CheckoutAddressScreenState.billingAddress.isEmpty || CheckoutAddressScreenState.shippingAddress.isEmpty) {
+       Utils.flushBarErrorMessages("Please provide both billing and shipping addresses before proceeding.", context);
+        return;
+      }
+    }
+    if (step == 3) {
+      if (CheckoutPaymentScreenState.selectedPaymentMethod == null || CheckoutPaymentScreenState.selectedPaymentMethod!.isEmpty) {
+        Utils.flushBarErrorMessages("Please select a payment method before proceeding.", context);
+        return;
+      }
+    }
+
+    // If validation passes, proceed with step change
     if (step >= 1 && step <= 3) {
       setState(() {
         _currentStep = step;
-        print("dfcdbvc"+_currentStep.toString());
       });
       _pageController.animateToPage(
         step - 1,
@@ -138,21 +149,7 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
     }
   }
 
-  void _handleAddressSelection(Map<String, dynamic> billing, Map<String, dynamic> shipping) {
-    setState(() {
-      billingAddress = billing;
-      shippingAddress = shipping;
-      _handleStepChange(2); // Move to payment step
-    });
 
-  }
-
-  void _handlePaymentSelection(String method) {
-    setState(() {
-      selectedPaymentMethod = method;
-      _handleStepChange(3); // Move to review step
-    });
-  }
 
   Future<void> _handlePlaceOrder() async {
 

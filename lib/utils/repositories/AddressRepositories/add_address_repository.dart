@@ -13,9 +13,9 @@ import '../../network/networkService/network_service.dart';
 class AddAddressRepository {
   final BaseApiServices _apiServices = NetworkApiService();
 
-  Future<AddAddressModel> addAddressListApiResponse(dynamic data, BuildContext context,String sessionId) async {
+  Future<AddAddressModel> addAddressListApiResponse(dynamic data, BuildContext context,String sessionId,dynamic from) async {
     try {
-      dynamic response = await _apiServices.addAddressListApiResponse(AppUrl.addAddressUrl, data, context,sessionId);
+      dynamic response = await _apiServices.addAddressListApiResponse(AppUrl.addAddressUrl, data, context,sessionId,from);
       return AddAddressModel.fromJson(response);
     } catch (e,stactrace) {
       print("dfyusg" +stactrace.toString());
