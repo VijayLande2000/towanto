@@ -18,13 +18,13 @@ class AddAddressViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addAccountPostApi(dynamic data, BuildContext context, String sessionId) async {
+  Future<void> addAccountPostApi(dynamic data, BuildContext context, String sessionId,dynamic from) async {
     try {
       this.context = context;
       setLoading(true);
       developer.log('Starting login process with data: ${jsonEncode(data)}', name: 'AddAddressViewModel');
 
-      final value = await _myRepo.addAddressListApiResponse(data, context, sessionId);
+      final value = await _myRepo.addAddressListApiResponse(data, context, sessionId,from);
       developer.log('Account API response received: ${value.toString()}', name: 'AddAddressViewModel');
     } catch (e, stackTrace) {
       developer.log(
@@ -144,6 +144,7 @@ class AddAddressViewModel extends ChangeNotifier {
       dynamic selectedState,
       dynamic selectedCity,
       String type,
+      dynamic from
       ) async {
     // Validate all fields
     for (final field in formFields) {
@@ -201,7 +202,7 @@ class AddAddressViewModel extends ChangeNotifier {
       print("gyufg"+body.toString());
 
       try {
-        await addAccountPostApi(jsonEncode(body), context, sessionId!);
+        await addAccountPostApi(jsonEncode(body), context, sessionId!,from);
       } finally {
         setLoading(false);
       }

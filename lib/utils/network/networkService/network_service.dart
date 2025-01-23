@@ -582,7 +582,7 @@ class NetworkApiService extends BaseApiServices {
 
   @override
   Future addAddressListApiResponse(String url, data, BuildContext context,
-      String sessionId) async {
+      String sessionId,dynamic from) async {
     try {
       print("fvb " + sessionId);
       var headers = {
@@ -600,10 +600,15 @@ class NetworkApiService extends BaseApiServices {
       print("add address info response =" + response.body);
       print("add address info statusCode =" + response.statusCode.toString());
       if (response.statusCode == 200) {
-        Future.delayed(Duration(seconds: 0), () =>
-            Utils.flushBarSuccessMessages(
-                "Address Added successfully!", context));
-        Navigator.pushReplacementNamed(context, RoutesName.addressList);
+        Future.delayed(Duration(seconds: 0), () => Utils.flushBarSuccessMessages("Address Added successfully!", context));
+
+       if(from=="CheckOutAddressScreen"){
+         Navigator.push(context, MaterialPageRoute(builder: (context) => CheckoutFlowScreen(),));
+
+       }
+       else{
+         Navigator.pushReplacementNamed(context, RoutesName.addressList);
+       }
       }
       responseJson = returnResponse(response);
     } on SocketException {

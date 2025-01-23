@@ -17,10 +17,10 @@ class CheckoutAddressScreen extends StatefulWidget {
   const CheckoutAddressScreen({Key? key}) : super(key: key);
 
   @override
-  State<CheckoutAddressScreen> createState() => _CheckoutAddressScreenState();
+  State<CheckoutAddressScreen> createState() => CheckoutAddressScreenState();
 }
 
-class _CheckoutAddressScreenState extends State<CheckoutAddressScreen>with AutomaticKeepAliveClientMixin {
+class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with AutomaticKeepAliveClientMixin {
 
   @override
   bool get wantKeepAlive => true;
@@ -93,7 +93,7 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Autom
 
   int currentStep = 1;
 
- static Map<String, dynamic> billingAddress = {};
+  static Map<String, dynamic> billingAddress = {};
 
   static Map<String, dynamic> shippingAddress = {};
 
@@ -187,7 +187,7 @@ class _CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Autom
   Widget _addNewAddressButton(String label) {
     return ElevatedButton(
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AddAddressInfoScreen(),));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddAddressInfoScreen(from: "CheckOutAddressScreen",),));
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.brightBlue,
