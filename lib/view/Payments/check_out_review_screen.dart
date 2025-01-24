@@ -468,7 +468,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
             ],
           ),
           SizedBox(height: 12),
-          Row(
+        email.isEmpty?SizedBox.shrink():  Row(
             children: [
               Icon(Icons.email_outlined, size: 20, color: Colors.grey[600]),
               SizedBox(width: 8),

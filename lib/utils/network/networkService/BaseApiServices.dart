@@ -17,6 +17,10 @@ abstract class BaseApiServices {
 
 
   Future<dynamic> postAddToWhishListApiResponse(String url, dynamic data, BuildContext context,String sessionId);
+  Future<dynamic> postforgotApiResponse(String url, dynamic data, BuildContext context,String sessionId);
+
+
+
   Future<dynamic> getWhishListApiResponse(String url, String categoryId, BuildContext context,String sessionId);
   Future<dynamic> deleteWhishListApiResponse(String url, String partnerId,String id, BuildContext context,String sessionId);
 

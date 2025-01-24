@@ -238,8 +238,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                      Utils.flushBarErrorMessages("Already added in cart", context);
                                       }
                                       else{
-                                        viewModel.toggleCartStatus(
-                                            partnerId!, item.id, 1, context);
+                                        viewModel.toggleCartStatus(partnerId!, item.id, 1, context);
                                         _removeItem(item.id.toString());
                                       }
 
