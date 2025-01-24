@@ -12,6 +12,8 @@ abstract class BaseApiServices {
 
 
 
+
+
   Future<dynamic> updateCartApiResponse(String url, dynamic data, BuildContext context,String SessionId);
   Future<dynamic> deleteCartApiResponse(String url, String partnerId,String id, BuildContext context,String sessionId);
 

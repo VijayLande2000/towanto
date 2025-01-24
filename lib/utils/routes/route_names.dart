@@ -6,8 +6,6 @@ class RoutesName {
   static const String home = 'home_screen';
   static const String addressList = 'address_list';
 
-
-
   static const String bottomNavbar = 'bottomNavbar';
 
   static const String home_menu = 'home_menu';

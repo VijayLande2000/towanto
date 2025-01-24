@@ -7,6 +7,7 @@ import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/add_to_cart_viewModel.dart';
 import '../../viewModel/CartViewModels/cart_list_view_model.dart';
 import '../../viewModel/CartViewModels/updateCart_viewModel.dart';
+import '../../viewModel/HomeViewModels/home_page_data_viewModel.dart';
 import '../../viewModel/HomeViewModels/product_details_viewModel.dart';
 import '../../viewModel/WhishListViewModels/add_to_whishList_viewModel.dart';
 
@@ -39,6 +40,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   }
   int quantity = 1; // Initialize the quantity to 1
   bool isInWishlist = false;
+
+  Future<void> fetchHomePageData() async {
+    // Obtain the instance of CategoriesListViewModel
+    final homePageViewModel =
+    Provider.of<HomePageDataViewModel>(context, listen: false);
+    await homePageViewModel.fetchHomePageData("6,4", context);
+  }
 
   Future<void> _fetchCartItems() async {
     partnerId = await PreferencesHelper.getString("partnerId");
@@ -259,6 +267,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           onPressed: () {
                             // print("_addToCart(productDetails.id): ${_addToCart(productDetails.id)}");
                             _addToCart(productDetails.id);
+                            fetchHomePageData();
                             // print("before");
                             // updateCart(productDetails.id.toString(),quantity.toString(),context);
                             // print("after");

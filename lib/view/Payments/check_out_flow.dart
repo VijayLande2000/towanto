@@ -124,8 +124,16 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
     print("Step Change: " + step.toString());
 
     if (step == 2) {
-      if (CheckoutAddressScreenState.billingAddress.isEmpty || CheckoutAddressScreenState.shippingAddress.isEmpty) {
+      if (CheckoutAddressScreenState.billingAddress.isEmpty && CheckoutAddressScreenState.shippingAddress.isEmpty) {
        Utils.flushBarErrorMessages("Please provide both billing and shipping addresses before proceeding.", context);
+        return;
+      }
+      else if (CheckoutAddressScreenState.billingAddress.isEmpty) {
+        Utils.flushBarErrorMessages("Please provide billing addresses before proceeding", context);
+        return;
+      }
+      else if (CheckoutAddressScreenState.shippingAddress.isEmpty) {
+        Utils.flushBarErrorMessages("Please provide shipping addresses before proceeding", context);
         return;
       }
     }

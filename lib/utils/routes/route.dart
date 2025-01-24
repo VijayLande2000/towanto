@@ -22,6 +22,7 @@ class Routes {
       case RoutesName.signup:
         return MaterialPageRoute(
             builder: (BuildContext context) => SignUpScreen());
+
       case RoutesName.onBoardScreen:
         return MaterialPageRoute(
             builder: (BuildContext context) => OnBoardScreen());

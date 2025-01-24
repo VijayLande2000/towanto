@@ -9,6 +9,7 @@ import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
+import '../../viewModel/HomeViewModels/home_page_data_viewModel.dart';
 
 // First, let's create a model class for our wishlist items
 class WishlistItem {
@@ -43,6 +44,13 @@ class _WishlistScreenState extends State<WishlistScreen> {
     final cartListViewModel =
         Provider.of<WhishListViewModel>(context, listen: false);
     cartListViewModel.whishListViewModelApi(partnerId!, sessionId!, context);
+  }
+
+  Future<void> fetchHomePageData() async {
+    // Obtain the instance of CategoriesListViewModel
+    final homePageViewModel =
+    Provider.of<HomePageDataViewModel>(context, listen: false);
+    await homePageViewModel.fetchHomePageData("6,4", context);
   }
 
   @override
@@ -233,14 +241,16 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                   //           child: CircularProgressIndicator()));
                                   // }
                                   return ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       if(isInCart||item.isInCart){
                                      Utils.flushBarErrorMessages("Already added in cart", context);
                                       }
                                       else{
-                                        viewModel.toggleCartStatus(
+                                        await viewModel.toggleCartStatus(
                                             partnerId!, item.id, 1, context);
-                                        _removeItem(item.id.toString());
+                                        await _removeItem(item.id.toString());
+
+                                        fetchHomePageData();
                                       }
 
                                     },
@@ -284,6 +294,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                           ),
                                   );
                                 }),
+
                               ],
                             ),
 
