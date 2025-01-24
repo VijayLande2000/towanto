@@ -5,6 +5,8 @@ import 'package:towanto/utils/resources/fonts.dart';
 import 'package:towanto/utils/resources/colors.dart';
 import 'package:towanto/utils/common_widgets/Utils.dart';
 
+import '../../utils/repositories/ProfileRepositories/logged_in_user_info_repository.dart';
+import '../../utils/repositories/ProfileRepositories/update_account_repository.dart';
 import '../../viewModel/profileViewModels/update_account_information_view_model.dart';
 import '../Auth/login_screen.dart';
 
@@ -15,7 +17,8 @@ class AccountInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => AccountInfoViewModel(),
+      create: (_) => AccountInfoViewModel(
+      ),
       child: const AccountInfoScreenContent(),
     );
   }
@@ -33,6 +36,17 @@ class _AccountInfoScreenContentState extends State<AccountInfoScreenContent> {
   String? selectedState;
   String? selectedCity;
 
+
+  @override
+  void initState() {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AccountInfoViewModel>(context, listen: false).fetchAndAssignAccountInfo(context);
+    });
+
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<AccountInfoViewModel>(context);
@@ -109,6 +123,7 @@ class _AccountInfoScreenContentState extends State<AccountInfoScreenContent> {
                           ),
                         ),
                         child: SelectState(
+
                           onCountryChanged: (country) {
                             setState(() => selectedCountry = country);
                           },

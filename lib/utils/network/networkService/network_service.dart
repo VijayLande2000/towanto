@@ -842,4 +842,35 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
+  @override
+  Future postGetLoggedInUserInformationApiResponse(String url, data, BuildContext context, String sessionId) async {
+    try {
+      print("fvb " + sessionId);
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+      };
+      print(" login Account info url :" + url);
+      print(" login Account info url :" + headers.toString());
+      Response response = await post(
+          Uri.parse(url), body: data, headers: headers).timeout(
+          const Duration(seconds: 60));
+      print("login Account info data :" + data.toString());
+
+      print("login  Account info response =" + response.body);
+      print("login Account info statusCode =" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        // Future.delayed(Duration(seconds: 0), () =>
+        //     Utils.flushBarSuccessMessages(
+        //         "Account Updated successfully!", context));
+        // Navigator.pushReplacementNamed(context, RoutesName.home);
+      }
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
+
 }

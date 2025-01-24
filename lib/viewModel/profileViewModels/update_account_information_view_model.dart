@@ -4,9 +4,12 @@ import 'package:towanto/utils/repositories/ProfileRepositories/update_account_re
 import 'dart:developer' as developer;
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
+import '../../utils/repositories/ProfileRepositories/logged_in_user_info_repository.dart';
 
 class AccountInfoViewModel extends ChangeNotifier {
   final _myRepo = UpdateAccountRepository();
+  final  fetchRepo=LoggedInUserInfoRepository(); // Repository for fetching account information
+
   late BuildContext context;
   bool _loading = false;
   bool get loading => _loading;
@@ -16,13 +19,77 @@ class AccountInfoViewModel extends ChangeNotifier {
     developer.log('Loading state changed to: $_loading', name: 'updateAccountViewModel');
     notifyListeners();
   }
+  Future<void> fetchAndAssignAccountInfo(BuildContext context) async {
+    try {
+      setLoading(true);
+      final sessionId = await PreferencesHelper.getString("session_id");
+
+      var body = {
+        "jsonrpc": "2.0",
+        "params": {}
+      };
+      final response = await fetchRepo.getLoggedInUserInformationApiResponse(
+          jsonEncode(body), context, sessionId!);
+
+      // Define a mapping between API response keys and form field keys
+      final Map<String, String> apiToFormFieldMapping = {
+        'name': 'firmName',
+        'partner_display_name': 'proprietorName',
+        'username': 'email',
+        'street': 'address',
+        'zipcode': 'zipCode',
+        'phone': 'phone',
+        'vat': 'gstNumber',
+      };
+
+      // Extract the 'result' field from the API response
+      final responseData = response.toJson()['result'];
+
+      // Print the API response for debugging
+      developer.log('API Response: ${response.toJson()}', name: 'AccountInfo');
+
+      // Assign fetched data to the corresponding form field controllers
+      formFields.forEach((field) {
+        final formKey = field['key']; // Key from the form field
+        developer.log('Processing form field: $formKey', name: 'AccountInfo');
+
+        // Find the corresponding API key based on the mapping
+        final apiKey = apiToFormFieldMapping.entries
+            .firstWhere((entry) => entry.value == formKey, orElse: () => MapEntry('', ''))
+            .key;
+
+        if (apiKey.isNotEmpty) {
+          developer.log('Matched API key for $formKey: $apiKey', name: 'AccountInfo');
+
+          // Get the value from the 'result' field of the API response
+          final value = responseData[apiKey];
+          if (value != null) {
+            developer.log('Assigning value "$value" to controller for $formKey', name: 'AccountInfo');
+            (field['controller'] as TextEditingController).text = value.toString();
+          } else {
+            developer.log('No value found for API key: $apiKey', name: 'AccountInfo');
+          }
+        } else {
+          developer.log('No matching API key found for form key: $formKey', name: 'AccountInfo');
+        }
+      });
+
+      notifyListeners();
+    } catch (e, stackTrace) {
+      Utils.flushBarErrorMessages('Failed to fetch account information.', context);
+      developer.log('Error: $e\nStackTrace: $stackTrace', name: 'AccountInfo');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
 
   Future<void> updateAccountPostApi(dynamic data, BuildContext context, String sessionId) async {
     try {
       this.context = context;
       setLoading(true);
       developer.log('Starting login process with data: ${jsonEncode(data)}', name: 'updateAccountViewModel');
-
       final value = await _myRepo.updateAccountInformationApiResponse(data, context, sessionId);
       developer.log('Account API response received: ${value.toString()}', name: 'updateAccountViewModel');
     } catch (e, stackTrace) {
@@ -151,16 +218,40 @@ class AccountInfoViewModel extends ChangeNotifier {
       setLoading(true);
       final sessionId = await PreferencesHelper.getString("session_id");
 
+      // Sanitize the country name by removing any extra spaces or emojis
+      String sanitizedCountry = selectedCountry?.toString().replaceAll(RegExp(r'\s+'), '').replaceAll(RegExp(r'[^\x00-\x7F]'), '') ?? '';
       var body = {
         "jsonrpc": "2.0",
         "params": {
-          for (final field in formFields)
-            field['key']: (field['controller'] as TextEditingController).text.trim(),
-          "street": selectedCountry,
-          "street2": selectedState,
+          "name": (formFields.firstWhere((field) => field['key'] == 'firmName')['controller'] as TextEditingController).text.trim(),
+          "email": (formFields.firstWhere((field) => field['key'] == 'email')['controller'] as TextEditingController).text.trim(),
+          "phone": (formFields.firstWhere((field) => field['key'] == 'phone')['controller'] as TextEditingController).text.trim(),
+          "vat": (formFields.firstWhere((field) => field['key'] == 'gstNumber')['controller'] as TextEditingController).text.trim(),
+          "street": (formFields.firstWhere((field) => field['key'] == 'address')['controller'] as TextEditingController).text.trim(),
+          "street2": selectedCountry,  // Use street2 if available
           "city": selectedCity,
+          "zipcode": (formFields.firstWhere((field) => field['key'] == 'zipCode')['controller'] as TextEditingController).text.trim(),
+          "company_name":"ahex"
         }
       };
+
+      // var body = {
+      //   "jsonrpc": "2.0",
+      //   "params": {
+      //     "name": (formFields.firstWhere((field) => field['key'] == 'firmName')['controller'] as TextEditingController).text.trim(),
+      //     "proprietor_name": (formFields.firstWhere((field) => field['key'] == 'proprietorName')['controller'] as TextEditingController).text.trim(),
+      //     "email": (formFields.firstWhere((field) => field['key'] == 'email')['controller'] as TextEditingController).text.trim(),
+      //     "phone": (formFields.firstWhere((field) => field['key'] == 'phone')['controller'] as TextEditingController).text.trim(),
+      //     "street": (formFields.firstWhere((field) => field['key'] == 'address')['controller'] as TextEditingController).text.trim(),
+      //     "city": selectedCity,
+      //     "zipcode": (formFields.firstWhere((field) => field['key'] == 'zipCode')['controller'] as TextEditingController).text.trim(),
+      //     // "type": "delivery", // You can customize this if needed
+      //     "country": sanitizedCountry,  // Use sanitized country
+      //     "state": selectedState,
+      //     "vat": (formFields.firstWhere((field) => field['key'] == 'gstNumber')['controller'] as TextEditingController).text.trim()
+      //   }
+      // };
+      // Call the updateAccountPostApi method with the prepared body
       await updateAccountPostApi(jsonEncode(body), context, sessionId!);
     }
   }

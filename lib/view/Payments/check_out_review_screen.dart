@@ -330,7 +330,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
             unit: shippingAddress.street2?.toString() ?? '',
             city: shippingAddress.city ?? '',
             state: shippingAddress.stateId ?? '',
-            zipCode: shippingAddress.zip ?? '',
+            zipCode: shippingAddress.zip.toString()?? '',
             isDefault: false,
           ),
         ],
@@ -362,7 +362,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
     required String title,
     required int index,
     required Widget child,
-  }) {
+  })   {
     return Card(
       color: AppColors.whiteColor,
       elevation: 2,
@@ -410,7 +410,8 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
         ],
       ),
     );
-  }
+
+   }
 
 
   Widget _buildPriceRow(String label, String amount, {bool isTotal = false}) {
