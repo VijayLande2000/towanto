@@ -7,6 +7,7 @@ import 'package:towanto/utils/routes/route_names.dart';
 import '../../../../../../viewModel/AuthViewModels/login_viewModel.dart';
 import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
+import 'forgot_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -116,6 +117,7 @@ class LoginForm extends StatelessWidget {
         // Forget Password
         GestureDetector(
           onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordScreen(),));
             // Handle forgot password
           },
           child: const Text(

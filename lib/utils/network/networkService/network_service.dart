@@ -812,5 +812,34 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
+  @override
+  Future postforgotApiResponse(String url, data, BuildContext context, String sessionId) async {
+    try {
+      print("fvb " + sessionId);
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+      };
+      print(" post forgot url :" + url);
+      print(" post forgot url :" + headers.toString());
+      Response response = await post(
+          Uri.parse(url), body: data, headers: headers).timeout(
+          const Duration(seconds: 60));
+      print("post forgot data :" + data.toString());
+
+      print("post forgot response =" + response.body);
+      print("post forgot statusCode =" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        Future.delayed(Duration(seconds: 0), () =>
+            Utils.flushBarSuccessMessages("Email Sent Successfully", context));
+        Navigator.pushReplacementNamed(context, RoutesName.login);
+      }
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
 
 }
