@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/model/ProfileDetails/update_account_information_model.dart';
 import 'package:towanto/utils/network/networkService/app_url.dart';
+import 'package:towanto/utils/repositories/ProfileRepositories/logged_in_user_info_repository.dart';
+import 'package:towanto/utils/repositories/ProfileRepositories/update_account_repository.dart';
 import 'package:towanto/utils/routes/route.dart';
 import 'package:towanto/utils/routes/route_names.dart';
 import 'package:towanto/viewModel/Address_ViewModels/add_address_view_model.dart';
@@ -60,7 +62,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => WhishListViewModel()),
         ChangeNotifierProvider(create: (_) => DeleteWhishlistItemViewModel()),
         ChangeNotifierProvider(create: (_) => EnquiryViewModel()),
-        ChangeNotifierProvider(create: (_) => AccountInfoViewModel()),
+        ChangeNotifierProvider(create: (_) => AccountInfoViewModel(
+        )),
         ChangeNotifierProvider(create: (_) => GetAddressViewModel()),
         ChangeNotifierProvider(create: (_) => RemoveAddressViewModel()),
         ChangeNotifierProvider(create: (_) => AddAddressViewModel()),

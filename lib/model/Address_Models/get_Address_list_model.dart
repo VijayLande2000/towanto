@@ -1,11 +1,11 @@
 class GetAddressListModel {
-  String? jsonrpc;
+  dynamic? jsonrpc;
   dynamic id;
   Result? result;
 
   GetAddressListModel({this.jsonrpc, this.id, this.result});
 
-  factory GetAddressListModel.fromJson(Map<String, dynamic> json) {
+  factory GetAddressListModel.fromJson(Map<dynamic, dynamic> json) {
     return GetAddressListModel(
       jsonrpc: json['jsonrpc'],
       id: json['id'],
@@ -13,7 +13,7 @@ class GetAddressListModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<dynamic, dynamic> toJson() {
     return {
       'jsonrpc': jsonrpc,
       'id': id,
@@ -27,7 +27,7 @@ class Result {
 
   Result({this.addresses});
 
-  factory Result.fromJson(Map<String, dynamic> json) {
+  factory Result.fromJson(Map<dynamic, dynamic> json) {
     return Result(
       addresses: json['addresses'] != null
           ? (json['addresses'] as List).map((e) => Address.fromJson(e)).toList()
@@ -35,7 +35,7 @@ class Result {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<dynamic, dynamic> toJson() {
     return {
       'addresses': addresses?.map((e) => e.toJson()).toList(),
     };
@@ -44,14 +44,14 @@ class Result {
 
 class Address {
   int? id;
-  String? name;
-  String? street;
-  String? city;
-  String? state;
-  String? country;
-  String? zip;
-  String? phone;
-  String? email;
+  dynamic? name;
+  dynamic? street;
+  dynamic? city;
+  dynamic? state;
+  dynamic? country;
+  dynamic? zip;
+  dynamic? phone;
+  dynamic? email;
   dynamic type;
 
   Address({
@@ -67,7 +67,7 @@ class Address {
     this.type
   });
 
-  factory Address.fromJson(Map<String, dynamic> json) {
+  factory Address.fromJson(Map<dynamic, dynamic> json) {
     return Address(
       id: json['id'],
       name: json['name'],
@@ -82,7 +82,7 @@ class Address {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<dynamic, dynamic> toJson() {
     return {
       'id': id,
       'name': name,

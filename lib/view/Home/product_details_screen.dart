@@ -55,7 +55,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       qty.toString(),
       context,
     );
-    // await Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(),));
+    await Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(),));
   }
 
   Future<void> _addToCart(int productId) async {
@@ -255,8 +255,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             : SizedBox(), // Optionally, return an empty widget or another fallback widget when the condition is false
 
                         // Buy Now Button
-                        productDetails.productPrice != 0.0?ElevatedButton(
+                        productDetails.productPrice != 0.0 ? ElevatedButton(
                           onPressed: () {
+                            productDetails.isIncart?updateCart(productDetails.cartId.toString(),quantity.toString(),context):
                             // print("_addToCart(productDetails.id): ${_addToCart(productDetails.id)}");
                             _addToCart(productDetails.id);
                             // print("before");

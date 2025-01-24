@@ -214,6 +214,8 @@ class ProductDetailsModel {
   final dynamic websiteProductName;
   final dynamic xStudioPricePerUnit;
   final dynamic isInWishlist; // Add this line
+  final dynamic isIncart; // Add this line
+  final dynamic cartId; // Add this line
 
 
   ProductDetailsModel({
@@ -428,6 +430,8 @@ class ProductDetailsModel {
     required this.websiteProductName,
     required this.xStudioPricePerUnit,
     required this.isInWishlist, // Include in the constructor
+    required this.isIncart,
+    required this.cartId,// Include in the constructor
 
     required  this.image128, required this.image256, required this.image512,required this.image1024,
   });
@@ -690,7 +694,8 @@ class ProductDetailsModel {
       quantitySlab: json['quantity_slab'],
       perCaseBag: json['per_case_bag'],
       websiteProductName: json['website_product_name'],
-
+      isIncart: json['in_cart'],
+      cartId: json['cart_id'],
     );
   }
 
@@ -890,6 +895,8 @@ class ProductDetailsModel {
       'website_product_name': websiteProductName,
       'x_studio_price_per_unit': xStudioPricePerUnit,
       'is_in_wishlist': isInWishlist,
+      'in_cart': isIncart,
+      'cart_id': cartId,
 
     };
   }
