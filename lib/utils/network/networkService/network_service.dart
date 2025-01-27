@@ -191,7 +191,7 @@ class NetworkApiService extends BaseApiServices {
         'Cookie': 'session_id=$sessionId'
 
       };
-
+print("bhjug"+headers.toString());
       String finalUrl = '$url?id=$categoryId';
       print("finalUrl response =" + finalUrl);
 
@@ -201,7 +201,7 @@ class NetworkApiService extends BaseApiServices {
       print("ProductDetails response =" + response.body);
       print("ProductDetails statusCode =" + response.statusCode.toString());
       var decodedJson = jsonDecode(response.body);
-      print("Is in Wishlist: ${decodedJson[0]['is_in_wishlist']}");
+      print("Is in in_cart: ${decodedJson[0]['in_cart']}");
 
       // final response = await http.get(Uri.parse(url));
       responseJson = returnResponse(response);

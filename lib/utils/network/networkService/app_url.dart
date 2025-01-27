@@ -54,7 +54,7 @@ class AppUrl {
     loginUrl = baseurlauth + "/api/login";
     signUpUrl = baseurlauth + "api/create-user";
     signUpUrl = baseurlauth + "api/create-user";
-    getCatogiresListUrl = baseurlauth + "api/products?limit=10&offset=0";
+    getCatogiresListUrl = baseurlauth + "api/allproducts?limit=10&offset=0";
     getProductDetailsUrl = baseurlauth + "api/product";
     addToCartUrl = baseurlauth + "api/add_to_cart";
     cartItemsListUrl = baseurlauth + "api/add_to_cart";
