@@ -113,7 +113,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
             builder: (context, viewModel,cartListViewModel, child) {
               if (viewModel.loading || cartListViewModel.loading) {
                 return CircularProgressIndicator();
-              } else if (viewModel.responseList.isEmpty) {
+              } else if (viewModel.responseList!.products.isEmpty) {
                 return Text('No data available');
               } else {
                 return Padding(
@@ -125,9 +125,9 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                       crossAxisSpacing: 12.0,
                       childAspectRatio: 0.65, // Adjusted ratio for better fit
                     ),
-                    itemCount: viewModel.responseList.length,
+                    itemCount: viewModel.responseList!.products.length,
                     itemBuilder: (context, index) {
-                      final product = viewModel.responseList[index];
+                      final product = viewModel.responseList!.products[index];
                       bool alreadyAddedToCart = cartListViewModel.productIds.contains(product.id.toString());
 
                       print("product id = ${product.id.toString()}"); // Ensure id is a string
@@ -241,7 +241,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
-                                      '₹${(product.baseUnitPrice * 1.5).round()}',
+                                      '₹${(product.baseUnitPrice! * 1.5).round()}',
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: Colors.grey.shade600,
@@ -255,8 +255,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                 const SizedBox(height: 8),
                                 Consumer<AddToCartViewModel>(
                                   builder: (context, cartViewModel, child) {
-                                    bool isInCart = cartViewModel.isInCart(product.id);
-                                    bool isLoading = cartViewModel.isLoading(product.id);
+                                    bool isInCart = cartViewModel.isInCart(product.id!);
+                                    bool isLoading = cartViewModel.isLoading(product.id!);
                                     return SizedBox(
                                       width: double.infinity,
                                       height: 32,
@@ -265,7 +265,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                           if(!(isInCart||alreadyAddedToCart)){
                                             cartViewModel.toggleCartStatus(
                                               partnerId,
-                                              product.id,
+                                              product.id!,
                                               1,
                                               context,
                                             );

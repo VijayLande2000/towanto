@@ -31,7 +31,6 @@ class GetAddressViewModel extends ChangeNotifier {
       if (value.result?.addresses != null) {
         addresses.addAll(value.result!.addresses!); // Safely add addresses
       }
-
       developer.log('Account API response received: ${value.toString()}', name: 'getAddressViewModel');
       developer.log('Account API response received: ${addresses.length}', name: 'getAddressViewModel');
     } catch (e, stackTrace) {

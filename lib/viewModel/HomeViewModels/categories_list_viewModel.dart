@@ -12,11 +12,11 @@ class CategoriesListViewModel extends ChangeNotifier {
   final _myRepo = CategoriesListRepository();
   late BuildContext context;
   bool _loading = false;
-  List<CategoriesListDetailsModel> responseData = []; // Change to List
+   CategoriesListDetailsModel? responseData; // Change to List
 
 
   bool get loading => _loading;
-  List<CategoriesListDetailsModel> get responseList => responseData; // Change return type to List
+  CategoriesListDetailsModel? get responseList => responseData; // Change return type to List
 
 
   setLoading(bool value) {
@@ -35,8 +35,7 @@ class CategoriesListViewModel extends ChangeNotifier {
               categoryId)}', name: 'CategoriesListViewModel');
 
       final value = await _myRepo.getCategoryListApi(categoryId, context);
-      responseData.clear();
-          responseData.addAll(value);
+          responseData=value;
 
 
       developer.log(
