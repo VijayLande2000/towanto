@@ -126,7 +126,12 @@ class _CartScreenState extends State<CartScreen> {
             return Center(
                 child: Text(
                     "No items in your cart.",
-                    style: TextStyle(fontSize: 18, color: Colors.black54)
+                    style: TextStyle(
+                      color: AppColors.black,
+                      fontFamily: MyFonts.LexendDeca_Bold,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    )
                 )
             );
           }

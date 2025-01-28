@@ -29,7 +29,7 @@ class LoginScreenContent extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
-        backgroundColor: AppColors.lightBlue,
+        backgroundColor: AppColors.brightBlue,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.white),
@@ -125,7 +125,9 @@ class LoginForm extends StatelessWidget {
             style: TextStyle(
               color: AppColors.red,
               fontFamily: MyFonts.LexendDeca_Bold,
+              fontWeight: FontWeight.w500,
               fontSize: 14,
+
             ),
           ),
         ),
@@ -146,6 +148,7 @@ class LoginForm extends StatelessWidget {
                 style: TextStyle(
                   color: AppColors.black,
                   fontFamily: MyFonts.LexendDeca_Bold,
+                  fontWeight: FontWeight.w500,
                   fontSize: 14,
                 ),
               ),
@@ -160,7 +163,7 @@ class LoginForm extends StatelessWidget {
                     color: AppColors.red,
                     fontSize: 14,
                     fontFamily: MyFonts.LexendDeca_Bold,
-                    fontWeight: FontWeight.w400
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),

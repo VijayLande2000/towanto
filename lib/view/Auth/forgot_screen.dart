@@ -28,7 +28,7 @@ class ForgotPasswordScreenContent extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
-        backgroundColor: AppColors.lightBlue,
+        backgroundColor: AppColors.brightBlue,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.white),
@@ -67,10 +67,12 @@ class ForgotPasswordScreenContent extends StatelessWidget {
               onChanged: provider.validateEmail,
               errorText: provider.emailError,
               prefixIcon: Icons.email_outlined,
+
             ),
             const SizedBox(height: 32),
             Utils.  createButton(text: "Send Email Reset Password", onClick: (){
               provider.sendPasswordResetEmail(context);
+
             })
         ],
         ),

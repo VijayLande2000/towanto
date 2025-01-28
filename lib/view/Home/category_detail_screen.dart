@@ -94,7 +94,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
         title: Text(widget.category.name),
-        backgroundColor: widget.category.backgroundColor,
+        backgroundColor: AppColors.brightBlue, // Light blue
         actions: [
           IconButton(
             icon: Icon(Icons.shopping_cart), // Cart Icon

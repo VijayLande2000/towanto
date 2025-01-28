@@ -197,6 +197,7 @@ class _HomeGridState extends State<HomeGrid> {
         title: const Text(
           'Categories',
           style: TextStyle(
+            fontSize: 20,
             fontFamily: MyFonts.LexendDeca_Bold,
             color: AppColors.black,
             fontWeight: FontWeight.w500,
@@ -804,6 +805,7 @@ class DrawerItem extends StatelessWidget {
                 ? Colors.grey.shade800
                 : Colors.white, // Darker color for selected text
             fontSize: 16,
+            fontFamily: MyFonts.LexendDeca_Bold,
             fontWeight: isSelected
                 ? FontWeight.bold
                 : FontWeight.normal, // Bold selected text

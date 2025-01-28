@@ -116,6 +116,13 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     super.initState();
   }
 
+  // Future<void> _createorder() async {
+  //   partnerId = await PreferencesHelper.getString("partnerId");
+  //   sessionId = await PreferencesHelper.getString("session_id");
+  //   final cartListViewModel = Provider.of<CartListViewModel>(context, listen: false);
+  //   cartListViewModel.cartListViewModelApi(partnerId!, sessionId!, context);
+  // }
+
   void getOrdersDetailsApiCall() {
     final provider = Provider.of<OrderDetailsViewModel>(context, listen: false);
     provider.getOrderInfo(context, widget.orderId.toString());
