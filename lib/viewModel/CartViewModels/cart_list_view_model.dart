@@ -47,7 +47,6 @@ class CartListViewModel extends ChangeNotifier {
         final firstOrder = value.first;
         orderId = firstOrder.products[0].orderId.first as int?;
         await PreferencesHelper.saveString("order_id", orderId.toString());
-
         developer.log('Extracted order ID: $orderId', name: 'CartListViewModel');
       }
 

@@ -21,7 +21,6 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   String? partnerId = "";
   String? sessionId = "";
-
   // Maps to store loading states for different operations
   Map<String, bool> _deleteLoadingMap = {};
   Map<String, bool> _incrementLoadingMap = {};
