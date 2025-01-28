@@ -7,6 +7,7 @@ import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
+import '../../viewModel/OrdersViewModels/create_order_view_model.dart';
 
 class CheckOutReviewScreen extends StatefulWidget {
 
@@ -44,6 +45,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
 
   @override
   Widget build(BuildContext context) {
+    final createOrderViewModel = Provider.of<CreateOrderViewModel>(context, listen: false);
     return Scaffold(
       backgroundColor: AppColors.backgroundcolormenu,
       body: Consumer<CheckOutReviewViewModel>(
@@ -51,55 +53,72 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
           if (viewModel.loading) {
             return Center(child: Utils.loadingIndicator(context));
           }
-
           if (viewModel.orderDetails == null) {
             return Center(child: Text('No order details available'));
           }
-
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (viewModel.checkOutReview?.result?.reviewSummary?.message != null)
-                  Container(
-                    margin: EdgeInsets.fromLTRB(16, 16, 16, 8),
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.brightBlue.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: AppColors.brightBlue.withOpacity(0.3),
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.info_outline,
-                          color: AppColors.brightBlue,
-                          size: 20,
-                        ),
-                        SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            viewModel.checkOutReview?.result?.reviewSummary?.message ?? "",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: MyFonts.Lexenddeca_regular,
-                              height: 1.3,
-                            ),
+          return Stack(
+            children:[
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (viewModel.checkOutReview?.result?.reviewSummary?.message != null)
+                      Container(
+                        margin: EdgeInsets.fromLTRB(16, 16, 16, 8),
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppColors.brightBlue.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: AppColors.brightBlue.withOpacity(0.3),
+                            width: 1,
                           ),
                         ),
-                      ],
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.info_outline,
+                              color: AppColors.brightBlue,
+                              size: 20,
+                            ),
+                            SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                viewModel.checkOutReview?.result?.reviewSummary?.message ?? "",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: MyFonts.Lexenddeca_regular,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    _buildHorizontalOrderList(viewModel),
+                    _buildExpandableSections(viewModel),
+                  ],
+
+                ),
+
+              ),
+              // Loader overlay
+              // Loader overlay
+              Consumer<CreateOrderViewModel>(
+                builder: (context, viewModel, child) {
+                  if (!viewModel.loading) return SizedBox.shrink(); // Hide if not loading
+                  return Container(
+                    child: Center(
+                      child: Utils.loadingIndicator(context),
                     ),
-                  ),
-                _buildHorizontalOrderList(viewModel),
-                _buildExpandableSections(viewModel),
-              ],
-            ),
+                  );
+                },
+              ),
+            ]
           );
+
         },
       ),
     );
@@ -410,7 +429,6 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
         ],
       ),
     );
-
    }
 
 
