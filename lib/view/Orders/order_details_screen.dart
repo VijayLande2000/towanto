@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:towanto/viewModel/OrdersViewModels/cancel_order_view_model.dart';
 import 'package:towanto/viewModel/OrdersViewModels/order_details_view_model.dart';
 
 import '../../utils/common_widgets/Utils.dart';
@@ -35,6 +36,77 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     });
   }
 
+
+
+  Widget deleteButton({
+    required String text,
+    required VoidCallback onClick,
+    required bool isLoading,
+  }) {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      width: double.infinity,
+      height: 55,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        gradient: const LinearGradient(
+          colors: [Colors.red, Colors.red],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFB24592).withOpacity(0.3),
+            spreadRadius: 1,
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ElevatedButton(
+        onPressed: isLoading ? null : onClick,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        child: isLoading
+            ? const SizedBox(
+          height: 22,
+          width: 22,
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            strokeWidth: 2.5,
+          ),
+        )
+            : Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              text,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Icon(
+              Icons.delete_outline_rounded,
+              color: Colors.white,
+              size: 22,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -54,6 +126,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   void getOrdersDetailsApiCall() {
     final provider = Provider.of<OrderDetailsViewModel>(context, listen: false);
     provider.getOrderInfo(context, widget.orderId.toString());
+  }
+
+  void cancelOrderApiCall() {
+    final provider = Provider.of<CancelOrderViewModel>(context, listen: false);
+    provider.cancelOrder(context, widget.orderId.toString());
   }
 
   @override
@@ -87,6 +164,15 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 _buildOrderHeader(viewModel),
                 _buildHorizontalOrderList(viewModel),
                 _buildExpandableSections(viewModel),
+                Consumer<CancelOrderViewModel>(
+                  builder: (context, value, child) {
+                  return deleteButton(text: "Cancel Order",onClick: (){
+                      cancelOrderApiCall();
+                    },
+                    isLoading: value.loading,
+                   );
+                  },
+                ),
               ],
             ),
           );
@@ -143,6 +229,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   fontWeight: FontWeight.normal,
                   fontFamily: MyFonts.Lexenddeca_regular),
             ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

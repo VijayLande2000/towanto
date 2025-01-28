@@ -22,8 +22,11 @@ import 'package:towanto/viewModel/HomeViewModels/categories_list_viewModel.dart'
 import 'package:towanto/viewModel/HomeViewModels/get_search_product_list_view_model.dart';
 import 'package:towanto/viewModel/HomeViewModels/home_page_data_viewModel.dart';
 import 'package:towanto/viewModel/HomeViewModels/product_details_viewModel.dart';
+import 'package:towanto/viewModel/OrdersViewModels/cancel_order_view_model.dart';
+import 'package:towanto/viewModel/OrdersViewModels/create_order_view_model.dart';
 import 'package:towanto/viewModel/OrdersViewModels/order_details_view_model.dart';
 import 'package:towanto/viewModel/OrdersViewModels/orders_list_view_model.dart';
+import 'package:towanto/viewModel/OrdersViewModels/payment_confirmation_view_model.dart';
 import 'package:towanto/viewModel/WhishListViewModels/add_to_whishList_viewModel.dart';
 import 'package:towanto/viewModel/WhishListViewModels/delete_whishList_viewModel.dart';
 import 'package:towanto/viewModel/WhishListViewModels/whishList_list_view_model.dart';
@@ -73,6 +76,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => OrderDetailsViewModel()),
         ChangeNotifierProvider(create: (_) => SearchProductViewModel()),
         ChangeNotifierProvider(create: (_) => CheckOutReviewViewModel()),
+        ChangeNotifierProvider(create: (_) => CancelOrderViewModel()),
+        ChangeNotifierProvider(create: (_) => CreateOrderViewModel()),
+        ChangeNotifierProvider(create: (_) => PaymentConfirmationViewModel()),
 
       ],
       child: MaterialApp(

@@ -3,13 +3,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:towanto/model/OrdersModels/create_order_model.dart';
 import 'package:towanto/view/Cart/cart_screen.dart';
 import 'package:towanto/view/Payments/order_confirmation_screen.dart';
+import 'package:towanto/viewModel/OrdersViewModels/create_order_view_model.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/cart_list_view_model.dart';
+import '../../viewModel/CartViewModels/check_out_review_view_model.dart';
+import '../../viewModel/OrdersViewModels/payment_confirmation_view_model.dart';
 import 'check_out_review_screen.dart';
 import 'checkout_address_screen.dart';
 import 'checkout_payment_screen.dart';
@@ -24,7 +28,7 @@ class CheckoutFlowScreen extends StatefulWidget {
 class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticKeepAliveClientMixin {
   late Razorpay _razorpay;
   late dynamic selectedPayment;
-  
+
   @override
   bool get wantKeepAlive => true;
 
@@ -48,21 +52,84 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
     phone= (await PreferencesHelper.getString("phone"))!;
     print("dwdwcec"+amount.toString());
   }
-  Future<void> _openCheckout() async {
+
+  Future<String?> createOrderApiCall() async {
+    try {
+      print("Inside create order API call");
+
+      final provider = Provider.of<CreateOrderViewModel>(context, listen: false);
+      final viewModel = Provider.of<CheckOutReviewViewModel>(context, listen: false);
+
+      // Get necessary data
+      final paymentAmount = viewModel.totalAmount;
+      final productName = "Bhindi Ankur-40 500gm - Ankur (1kg)";
+      final name = viewModel.orderDetails?.partnerId?.name ?? "";
+      final contact = viewModel.orderDetails?.partnerId?.phone ?? "";
+      final email = "ahex@gmail.com";
+
+      final billingAddress = ParamAddress(
+        line1: viewModel.billingAddress!.street.toString(),
+        line2: viewModel.billingAddress!.street2.toString(),
+        zipcode: viewModel.billingAddress!.zip.toString(),
+        city: viewModel.billingAddress!.city.toString(),
+        state: viewModel.billingAddress!.stateId.toString(),
+        country: viewModel.billingAddress!.countryId.toString(),
+      );
+
+      final shippingAddress = ParamAddress(
+        line1: viewModel.shippingAddress!.street.toString(),
+        line2: viewModel.shippingAddress!.street2.toString(),
+        zipcode: viewModel.shippingAddress!.zip.toString(),
+        city: viewModel.shippingAddress!.city.toString(),
+        state: viewModel.shippingAddress!.stateId.toString(),
+        country: viewModel.shippingAddress!.countryId.toString(),
+      );
+
+      final currency = "INR";
+
+      print("Payment Amount: $paymentAmount");
+
+      // Call the provider's createOrder method
+      await provider.createOrder(
+        context,
+        Params(
+          paymentAmount: paymentAmount,
+          productName: productName,
+          name: name,
+          contact: contact,
+          email: email,
+          billingAddress: billingAddress,
+          shippingAddress: shippingAddress,
+          currency: currency,
+        ),
+      );
+
+      // Retrieve the order ID from the provider
+      final orderId = provider.orderDetails.id.toString(); // Ensure this is the correct property
+      print("Order ID: $orderId");
+
+      return orderId; // Return the order ID
+    } catch (e) {
+      print("Error during createOrderApiCall: $e");
+      return null; // Return null on failure
+    }
+  }
+
+  Future<void> _openCheckout(String orderId) async {
     // Retrieve and print the saved values
     var savedAmount = await PreferencesHelper.getString("Amount");
     final savedName = await PreferencesHelper.getString("name");
     final savedPhone = await PreferencesHelper.getString("phone");
     print("wex"+savedPhone.toString());
     print("wex"+savedAmount.toString());
-    print("wex"+savedAmount.toString());
-    print("before"+savedAmount.toString());
-      savedAmount=savedAmount!*100;
-    print("after$savedAmount");
+    print("wex"+savedName.toString());
+    savedAmount=savedAmount!*100;
+    print("after"+savedAmount.toString());
 
     var options = {
-      'key': 'rzp_test_2lEuQlBezOWwMq', // Replace with your Test/Live API Key
-      'amount': savedAmount, // Amount in smallest currency unit (e.g., 50000 = 500 INR)
+      'key': 'rzp_test_fIctHuxShCWu6C', // Replace with your Test/Live API Key
+      'amount': "", // Amount in smallest currency unit (e.g., 50000 = 500 INR)
+      'order_id': orderId.toString(),
       'name': savedName.toString(),
       'description': 'Test Payment',
       'prefill': {
@@ -71,7 +138,6 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
       },
       'theme': {'color': '#59A8EB'},
     };
-
     try {
       _razorpay.open(options);
     } catch (e) {
@@ -82,15 +148,17 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
   Future<void> _handlePaymentSuccess(PaymentSuccessResponse response) async {
     // Do something when payment succeeds
     debugPrint('Payment Successful: ${response.paymentId}');
-    await PreferencesHelper.saveString("selectedPaymentMethod","");
-
-    Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirmationScreen(),));
+    debugPrint('Payment Successful: ${response.signature}');
+    debugPrint('Payment Successful: ${response.orderId}');
+    // await PreferencesHelper.saveString("selectedPaymentMethod","");
+    final paymentConfirmationViewModel = Provider.of<PaymentConfirmationViewModel>(context, listen: false);
+    paymentConfirmationViewModel.paymentConfirmation(context);
   }
 
   Future<void> _handlePaymentError(PaymentFailureResponse response) async {
     // Do something when payment fails
     debugPrint('Payment Failed: ${response.code} | ${response.message}');
-    await PreferencesHelper.saveString("selectedPaymentMethod","");
+    // await PreferencesHelper.saveString("selectedPaymentMethod","");
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("Payment Failed: ${response.message}"),
@@ -100,7 +168,7 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
   Future<void> _handleExternalWallet(ExternalWalletResponse response) async {
     // Handle external wallet options
     debugPrint('External Wallet: ${response.walletName}');
-    await PreferencesHelper.saveString("selectedPaymentMethod","");
+    // await PreferencesHelper.saveString("selectedPaymentMethod","");
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text("External Wallet: ${response.walletName}"),
@@ -126,7 +194,7 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
 
     if (step == 2) {
       if (CheckoutAddressScreenState.billingAddress.isEmpty && CheckoutAddressScreenState.shippingAddress.isEmpty) {
-       Utils.flushBarErrorMessages("Please provide both billing and shipping addresses before proceeding.", context);
+        Utils.flushBarErrorMessages("Please provide both billing and shipping addresses before proceeding.", context);
         return;
       }
       else if (CheckoutAddressScreenState.billingAddress.isEmpty) {
@@ -161,18 +229,38 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
 
 
   Future<void> _handlePlaceOrder() async {
-
+    // await createOrderApiCall();
     selectedPayment= await PreferencesHelper.getString("selectedPaymentMethod");
     print("ewcdsdd"+selectedPaymentMethod.toString());
     if(selectedPayment=="Online Payment"){
       await getPaymentInformation();
-      _openCheckout();
+      // Call createOrderApiCall and handle success
+      final orderId = await createOrderApiCall();
+
+      if (orderId != null) {
+        var savedAmount = await PreferencesHelper.getString("Amount");
+        final savedName = await PreferencesHelper.getString("name");
+        final savedPhone = await PreferencesHelper.getString("phone");
+        print("wex"+savedPhone.toString());
+        print("wex"+savedAmount.toString());
+        print("wex"+savedName.toString());
+        print("after"+savedAmount.toString());
+        // Proceed to open the checkout only if the order ID is retrieved
+        _openCheckout(orderId);
+      } else {
+        Utils.flushBarErrorMessages("Order creation failed. Please try again.", context);
+      }
     }
     else if(selectedPayment==""){
       Utils.flushBarErrorMessages("please select payment method", context);
     }
-    else{
-      Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirmationScreen(),));
+    else {
+      final orderId = await createOrderApiCall();
+      if (orderId != null) {
+        // final paymentConfirmationViewModel = Provider.of<PaymentConfirmationViewModel>(context, listen: false);
+        // paymentConfirmationViewModel.paymentConfirmation(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirmationScreen(),));
+      }
     }
   }
 
@@ -272,6 +360,7 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
 
   void _moveToNextStep() {
     if (_currentStep < 3) {
+      print("inside if");
       // If not at the last step, move to the next step
       _handleStepChange(_currentStep + 1);
     } else {

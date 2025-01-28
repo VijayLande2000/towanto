@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:towanto/view/Home/home_screen.dart';
 import 'package:towanto/viewModel/CartViewModels/delete_Cartitem_viewModel.dart';
 
 import '../../model/CartModels/cart_items_list_model.dart';
@@ -112,7 +113,7 @@ class _CartScreenState extends State<CartScreen> {
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: AppColors.black, size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomeGrid(),))
         ),
       ),
       body: Consumer<CartListViewModel>(

@@ -7,9 +7,11 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:towanto/utils/routes/route_names.dart';
+import 'package:towanto/view/Orders/orders_screen.dart';
 import 'package:towanto/view/Payments/check_out_flow.dart';
 import 'package:towanto/view/Payments/checkout_address_screen.dart';
 
+import '../../../view/Payments/order_confirmation_screen.dart';
 import '../../../viewModel/Address_ViewModels/get_Address_list_view_model.dart';
 import '../../common_widgets/PreferencesHelper.dart';
 import '../../common_widgets/Utils.dart';
@@ -865,6 +867,92 @@ print("bhjug"+headers.toString());
         //     Utils.flushBarSuccessMessages(
         //         "Account Updated successfully!", context));
         // Navigator.pushReplacementNamed(context, RoutesName.home);
+      }
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
+
+  @override
+  Future postCancelOrderApiResponse(String url, data, BuildContext context, String sessionId) async {
+    try {
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+      };
+      Response response = await post(Uri.parse(url), body: data, headers: headers).timeout( const Duration(seconds: 60));
+      print("orders cancel data :" + data.toString());
+      print("orders cancel url :" + url.toString());
+
+      print("orders cancel response =" + response.body);
+      print("order cancel sstatusCode =" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        Future.delayed(Duration(seconds: 0), () =>
+            Utils.flushBarSuccessMessages(
+                "Order Cancelled successfully!", context));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => OrdersListScreen(),));
+      }
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
+
+  @override
+  Future postCreateOrderApiResponse(String url, data, BuildContext context, String sessionId) async {
+    try {
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+      };
+      Response response = await post(Uri.parse(url), body: data, headers: headers).timeout( const Duration(seconds: 60));
+      print("orders create data :" + data.toString());
+      print("orders create url :" + url.toString());
+
+      print("orders create response =" + response.body);
+      print("order create sstatusCode =" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        // Future.delayed(Duration(seconds: 0), () =>
+        //     Utils.flushBarSuccessMessages(
+        //         "Order Cancelled successfully!", context));
+        // Navigator.push(context, MaterialPageRoute(builder: (context) => OrdersListScreen(),));
+      }
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
+
+  @override
+  Future paymentConfirmationApiResponse(String url, partnerId, BuildContext context, String sessionId) async {
+    try {
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+      };
+      String finalUrl = '$url?partner_id=$partnerId';
+      print("finalUrl response =" + finalUrl);
+
+      Response response = await http.get(
+        Uri.parse(finalUrl), headers: headers,
+      ).timeout(const Duration(seconds: 60));
+      print("payment Confirmation response =" + response.body);
+      print("payment Confirmation statusCode =" + response.statusCode
+          .toString()); // final response = await http.get(Uri.parse(url));
+
+
+      if (response.statusCode == 200) {
+        Future.delayed(Duration(seconds: 0), () =>
+            Utils.flushBarSuccessMessages(
+                "Order Confirmed", context));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirmationScreen(),));
       }
       responseJson = returnResponse(response);
     } on SocketException {

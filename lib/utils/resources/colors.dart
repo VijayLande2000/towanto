@@ -95,6 +95,7 @@ class AppColors {
   static const Color buttonColor = Colors.green;
   static const Color themeColor = Color.fromRGBO(46, 42, 129, 1);
   static const Color red = Color(0xFFFF4343);
+  static const Color lightred = Color(0xFFE36866);
   static const Color skyblue = Color(0xFF01A9F3);
   static const Color basic_info_container_BorderColor = Color(0xFFDDDDDD);
   static const Color gallerybtnColor = Color(0xFFB3B3B3);

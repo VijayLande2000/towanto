@@ -22,7 +22,7 @@ class CheckOutReviewViewModel extends ChangeNotifier {
   PartnerId? get partnerInfo => orderDetails?.partnerId;
   PartnerInvoiceId? get billingAddress => orderDetails?.partnerInvoiceId;
   PartnerInvoiceId? get shippingAddress => orderDetails?.partnerShippingId;
-
+  dynamic totalAmount=0.0;
 
   Future<void> savePaymentInformation(String amount,String name,String phone) async {
     await PreferencesHelper.saveString("Amount",amount);
@@ -73,10 +73,12 @@ class CheckOutReviewViewModel extends ChangeNotifier {
         developer.log('Name: ${response.result!.reviewSummary!.orderDetails!.partnerId!.name}');
         developer.log('Phone: ${response.result!.reviewSummary!.orderDetails!.partnerId!.phone}');
 
-        final totalAmount = response.result!.reviewSummary!.orderDetails!.totalAmount;
+         totalAmount = response.result!.reviewSummary!.orderDetails!.totalAmount;
+        print("total amount"+totalAmount.toString());
+        print("total amount"+response.result!.reviewSummary!.orderDetails!.totalAmount.toString());
 
 // Multiply the value by 100 and store it as a string
-        final adjustedAmount = (totalAmount ?? 0) * 100;
+        final adjustedAmount = (totalAmount ?? 0) * 100*100;
 
         await PreferencesHelper.saveString("Amount", adjustedAmount.toString());
         await PreferencesHelper.saveString("name", '${response.result!.reviewSummary!.orderDetails!.partnerId!.name}');

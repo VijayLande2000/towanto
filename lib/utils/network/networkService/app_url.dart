@@ -35,6 +35,9 @@ class AppUrl {
   static late String getcheckOutReviewDetails;
   static late String forgotPasswordUrl;
   static late String getLoggedInUserInfo;
+  static late String cancelOrderApi;
+  static late String createOrder;
+  static late String paymentConfirmation;
 
 
   // Method to set the URLs based on the environment key
@@ -79,6 +82,9 @@ class AppUrl {
     getcheckOutReviewDetails = baseurlauth + "api/checkout/review";
     forgotPasswordUrl = baseurlauth + "api/forgot_password";
     getLoggedInUserInfo = baseurlauth + "custom_api/get_user_info";
+    cancelOrderApi = baseurlauth + "api/cancel_order";
+    createOrder = baseurlauth + "api/createOrder";
+    paymentConfirmation = baseurlauth +"api/payment_confirm";
 
 
     //we need to give here end point of the api
