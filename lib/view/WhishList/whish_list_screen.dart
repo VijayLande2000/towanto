@@ -276,10 +276,13 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                             isInCart||item.isInCart
                                                 ? 'Added to Cart'
                                                 : 'Add to Cart',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                            ),
+                                      style: const TextStyle(
+                                        color : Colors.white,
+                                        fontSize: 14,
+                                        fontFamily: MyFonts.LexendDeca_Bold,
+                                        fontWeight: FontWeight.w500,
+
+                                      ),
                                           ),
                                   );
                                 }),

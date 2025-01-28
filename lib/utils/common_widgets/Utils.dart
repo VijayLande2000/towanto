@@ -3,6 +3,7 @@ import 'package:another_flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
 
 import '../resources/colors.dart';
+import '../resources/fonts.dart';
 
 class Utils {
 
@@ -128,6 +129,7 @@ class Utils {
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
+                fontFamily: MyFonts.LexendDeca_Bold,
                 fontWeight: FontWeight.w600,
               ),
             ),

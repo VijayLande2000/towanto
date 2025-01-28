@@ -56,8 +56,9 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
     print("wex"+savedPhone.toString());
     print("wex"+savedAmount.toString());
     print("wex"+savedAmount.toString());
+    print("before"+savedAmount.toString());
       savedAmount=savedAmount!*100;
-    print("after"+savedAmount.toString());
+    print("after$savedAmount");
 
     var options = {
       'key': 'rzp_test_2lEuQlBezOWwMq', // Replace with your Test/Live API Key
