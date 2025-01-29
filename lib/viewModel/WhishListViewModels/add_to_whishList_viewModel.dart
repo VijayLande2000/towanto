@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/repositories/WhishListRepository/add_to_whishList_repository.dart';
+import '../HomeViewModels/home_page_data_viewModel.dart';
 
 class AddToWhishListViewModel extends ChangeNotifier {
   final _myRepo = AddToWhishListRepository();
@@ -63,6 +65,14 @@ class AddToWhishListViewModel extends ChangeNotifier {
       // setWhishListStatus(false);
     } else {
       await addToWhishListApi(jsonEncode(body), context, sessionId!);
+      await fetchHomePageData(context);
     }
+  }
+
+  Future<void> fetchHomePageData(BuildContext context) async {
+    // Obtain the instance of CategoriesListViewModel
+    final homePageViewModel =
+    Provider.of<HomePageDataViewModel>(context, listen: false);
+    await homePageViewModel.fetchHomePageData("6,4", context);
   }
 }

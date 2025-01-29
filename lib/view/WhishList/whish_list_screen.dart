@@ -261,10 +261,10 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                   return ElevatedButton(
                                     onPressed: () {
                                       if(isInCart||item.isInCart){
-                                     Utils.flushBarErrorMessages("Already added in cart", context);
+                                         Utils.flushBarErrorMessages("Already added in cart", context);
                                       }
                                       else{
-                                        viewModel.toggleCartStatus(partnerId!, item.id, 1, context);
+                                        viewModel.toggleCartStatus(partnerId!, item.productId[0], 1, context);
                                         _removeItem(item.id.toString());
                                       }
 

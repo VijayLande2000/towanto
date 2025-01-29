@@ -42,12 +42,12 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
               'title': 'Billing Address',
               'city': element.city ?? '',
               'street': element.street ?? '',
-              'state': element.state ?? '',
-              'country': element.country ?? '',
-              'zipcode': element.zip ?? '',
+              'state': element.stateName ?? '',
+              'country': element.countryName ?? '',
+              'zipcode': element.zipcode ?? '',
               'phone': element.phone?.toString() ?? '',
               'addressId': element.id?.toString() ?? '',
-              'name': element.name?.toString() ?? '',
+              'name': element.firmName?.toString() ?? '',
               'email': element.email?.toString() ?? '',
             };
           }
@@ -57,12 +57,12 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
               'title': 'Shipping Address',
               'city': element.city ?? '',
               'street': element.street ?? '',
-              'state': element.state ?? '',
-              'country': element.country ?? '',
-              'zipcode': element.zip ?? '',
+              'state': element.stateName ?? '',
+              'country': element.countryName ?? '',
+              'zipcode': element.zipcode ?? '',
               'phone': element.phone?.toString() ?? '',
               'addressId': element.id?.toString() ?? '',
-              'name': element.name?.toString() ?? '',
+              'name': element.firmName?.toString() ?? '',
               'email': element.email?.toString() ?? '',
             };
           }

@@ -78,9 +78,13 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
               field['controller'].text = widget.addressData!['name'] ?? '';
               break;
             case 'proprietorName':
-              field['controller'].text =
-                  widget.addressData!['company_name'] ?? '';
+              field['controller'].text = widget.addressData!['company_name'] != null
+                  ? (widget.addressData!['company_name'] is String
+                  ? widget.addressData!['company_name']
+                  : '')
+                  : '';
               break;
+
             case 'email':
               field['controller'].text = widget.addressData!['email'] ?? '';
               break;
@@ -88,7 +92,15 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
               field['controller'].text = widget.addressData!['street'] ?? '';
               break;
             case 'zipCode':
-              field['controller'].text = widget.addressData!['zipcode'] ?? '';
+              field['controller'].text = (widget.addressData!['zipcode'] is String)
+                  ? widget.addressData!['zipcode']
+                  : (widget.addressData!['zipcode'] is int)
+                  ? widget.addressData!['zipcode'].toString()
+                  : '';
+              break;
+
+              break;
+
               break;
             case 'phone':
               field['controller'].text = widget.addressData!['phone'] ?? '';

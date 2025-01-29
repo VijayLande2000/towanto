@@ -1,11 +1,11 @@
 class GetAddressListModel {
-  dynamic? jsonrpc;
+  String? jsonrpc;
   dynamic id;
   Result? result;
 
   GetAddressListModel({this.jsonrpc, this.id, this.result});
 
-  factory GetAddressListModel.fromJson(Map<dynamic, dynamic> json) {
+  factory GetAddressListModel.fromJson(Map<String, dynamic> json) {
     return GetAddressListModel(
       jsonrpc: json['jsonrpc'],
       id: json['id'],
@@ -13,7 +13,7 @@ class GetAddressListModel {
     );
   }
 
-  Map<dynamic, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'jsonrpc': jsonrpc,
       'id': id,
@@ -27,7 +27,7 @@ class Result {
 
   Result({this.addresses});
 
-  factory Result.fromJson(Map<dynamic, dynamic> json) {
+  factory Result.fromJson(Map<String, dynamic> json) {
     return Result(
       addresses: json['addresses'] != null
           ? (json['addresses'] as List).map((e) => Address.fromJson(e)).toList()
@@ -35,7 +35,7 @@ class Result {
     );
   }
 
-  Map<dynamic, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'addresses': addresses?.map((e) => e.toJson()).toList(),
     };
@@ -44,56 +44,64 @@ class Result {
 
 class Address {
   int? id;
-  dynamic? name;
-  dynamic? street;
-  dynamic? city;
-  dynamic? state;
-  dynamic? country;
-  dynamic? zip;
-  dynamic? phone;
-  dynamic? email;
-  dynamic type;
+  String? firmName;
+  dynamic proprietorName;
+  String? email;
+  String? phone;
+  String? street;
+  String? city;
+  dynamic zipcode;
+  String? type;
+  String? countryName;
+  String? stateName;
+  String? vat;
 
   Address({
     this.id,
-    this.name,
+    this.firmName,
+    this.proprietorName,
+    this.email,
+    this.phone,
     this.street,
     this.city,
-    this.state,
-    this.country,
-    this.zip,
-    this.phone,
-    this.email,
-    this.type
+    this.zipcode,
+    this.type,
+    this.countryName,
+    this.stateName,
+    this.vat,
   });
 
-  factory Address.fromJson(Map<dynamic, dynamic> json) {
+  factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
       id: json['id'],
-      name: json['name'],
+      firmName: json['firm_name'],
+      proprietorName: json['proprietor_name'],
+      email: json['email'],
+      phone: json['phone'],
       street: json['street'],
       city: json['city'],
-      state: json['state'],
-      country: json['country'],
-      zip: json['zip'],
-      phone: json['phone'],
-      email: json['email'],
+      zipcode: json['zipcode'],
       type: json['type'],
+      countryName: json['country_name'],
+      stateName: json['state_name'],
+      vat: json['vat'],
     );
   }
 
-  Map<dynamic, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'name': name,
+      'firm_name': firmName,
+      'proprietor_name': proprietorName,
+      'email': email,
+      'phone': phone,
       'street': street,
       'city': city,
-      'state': state,
-      'country': country,
-      'zip': zip,
-      'phone': phone,
-      'email': email,
+      'zipcode': zipcode,
       'type': type,
+      'country_name': countryName,
+      'state_name': stateName,
+      'vat': vat,
     };
   }
 }

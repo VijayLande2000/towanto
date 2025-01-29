@@ -34,9 +34,9 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
             for (var address in provider.addresses) {
               if (widget.type == "Billing Address" && address.type == "invoice") {
                 _savedAddresses.add({
-                  'address': '${address.street}, ${address.city}\n${address.state}, ${address.country}\n${address.zip}',
+                  'address': '${address.street}, ${address.city}\n${address.stateName}, ${address.countryName}\n${address.zipcode}',
                   'contact': address.phone?.toString() ?? '',
-                  'name': address.name ?? '',
+                  'name': address.firmName ?? '',
                   'email': address.email ?? '',
                   'addressId': address.id?.toString() ?? '',
                 });
@@ -44,9 +44,9 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
               else if (widget.type == "Shipping Address" && address.type == "delivery")
                 {
                   _savedAddresses.add({
-                    'address': '${address.street}, ${address.city}\n${address.state}, ${address.country}\n${address.zip}',
+                    'address': '${address.street}, ${address.city}\n${address.stateName}, ${address.countryName}\n${address.zipcode}',
                     'contact': address.phone?.toString() ?? '',
-                    'name': address.name ?? '',
+                    'name': address.firmName ?? '',
                     'email': address.email ?? '',
                     'addressId': address.id?.toString() ?? '',
                   });

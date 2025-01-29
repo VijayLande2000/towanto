@@ -8,6 +8,7 @@ import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/add_to_cart_viewModel.dart';
 import '../../viewModel/CartViewModels/cart_list_view_model.dart';
 import '../../viewModel/CartViewModels/updateCart_viewModel.dart';
+import '../../viewModel/HomeViewModels/home_page_data_viewModel.dart';
 import '../../viewModel/HomeViewModels/product_details_viewModel.dart';
 import '../../viewModel/WhishListViewModels/add_to_whishList_viewModel.dart';
 
@@ -49,6 +50,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     cartListViewModel.cartListViewModelApi(partnerId!, sessionId!, context);
   }
 
+  Future<void> fetchHomePageData() async {
+    // Obtain the instance of CategoriesListViewModel
+    final homePageViewModel =
+    Provider.of<HomePageDataViewModel>(context, listen: false);
+    await homePageViewModel.fetchHomePageData("6,4", context);
+  }
+
   Future<void> updateCart(
       String productId, String qty, BuildContext context) async {
     print("inside update cart");
@@ -60,6 +68,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       qty.toString(),
       context,
     );
+    await fetchHomePageData();
     await Navigator.push(
         context,
         MaterialPageRoute(
@@ -70,6 +79,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   Future<void> _addToCart(int productId,dynamic quantity) async {
     final addToCart = Provider.of<AddToCartViewModel>(context, listen: false);
     await addToCart.toggleCartStatus(partnerId!, productId,quantity, context);
+    await fetchHomePageData();
     await Navigator.push(
         context,
         MaterialPageRoute(

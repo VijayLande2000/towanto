@@ -8,6 +8,7 @@ import 'package:towanto/utils/repositories/CartRepositories/delete_cart_reposito
 import 'package:towanto/utils/repositories/HomeRepositories/categories_list_repository.dart';
 import '../../model/HomeModels/categories_list_details_model.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
+import '../HomeViewModels/home_page_data_viewModel.dart';
 import 'add_to_cart_viewModel.dart';
 
 
@@ -36,6 +37,7 @@ class DeleteCartItemViewModel extends ChangeNotifier {
 
         final addToCartViewModel = Provider.of<AddToCartViewModel>(context, listen: false);
         addToCartViewModel.setCartStatus(int.tryParse(prodcutId) ?? 0, false);
+        await fetchHomePageData(context);
       }
     } catch (e, stackTrace) {
       developer.log(
@@ -48,5 +50,12 @@ class DeleteCartItemViewModel extends ChangeNotifier {
     } finally {
       setLoading(false);
     }
+  }
+
+  Future<void> fetchHomePageData(BuildContext context) async {
+    // Obtain the instance of CategoriesListViewModel
+    final homePageViewModel =
+    Provider.of<HomePageDataViewModel>(context, listen: false);
+    await homePageViewModel.fetchHomePageData("6,4", context);
   }
 }

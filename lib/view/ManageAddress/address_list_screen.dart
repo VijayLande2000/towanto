@@ -89,7 +89,7 @@ class _AddressManagerState extends State<AddressManager> {
                                     const Icon(Icons.person_outline, size: 20, color: Colors.grey),
                                     const SizedBox(width: 8),
                                     Text(
-                                      value.addresses[index].name.toString(),
+                                      value.addresses[index].firmName.toString(),
                                       style: TextStyle(
                                           fontSize: 16,
                                           color:  AppColors.black,
@@ -110,7 +110,7 @@ class _AddressManagerState extends State<AddressManager> {
                                     const SizedBox(width: 8),
                                     Expanded(
                                       child: Text(
-                                        "${value.addresses[index].city.toString()+" "+value.addresses[index].street.toString()+" "+value.addresses[index].state.toString()+" "+value.addresses[index].country.toString()+" "+value.addresses[index].zip.toString()}",
+                                        "${value.addresses[index].city.toString()+" "+value.addresses[index].street.toString()+" "+value.addresses[index].stateName.toString()+" "+value.addresses[index].countryName.toString()+" "+value.addresses[index].zipcode.toString()}",
                                         style: TextStyle(
                                             fontSize: 14,
                                             color:  AppColors.black,
@@ -154,16 +154,16 @@ class _AddressManagerState extends State<AddressManager> {
                                             MaterialPageRoute(
                                               builder: (context) => EditAddressScreen(
                                                 addressData: {
-                                                  'name': value.addresses[index].name,
-                                                  'company_name': "",
+                                                  'name': value.addresses[index].firmName,
+                                                  'company_name': value.addresses[index].proprietorName,
                                                   'email': value.addresses[index].email,
                                                   'street': value.addresses[index].street,
-                                                  'country': value.addresses[index].country,
-                                                  'state': value.addresses[index].state,
+                                                  'country': value.addresses[index].countryName,
+                                                  'state': value.addresses[index].stateName,
                                                   'city': value.addresses[index].city,
                                                   'phone': value.addresses[index].phone,
-                                                  'vat': "",
-                                                  'zipcode': value.addresses[index].zip,
+                                                  'vat':  value.addresses[index].vat,
+                                                  'zipcode': value.addresses[index].zipcode,
                                                   'addressId':value.addresses[index].id,
                                                   'type':value.addresses[index].type
                                                 },
