@@ -21,7 +21,6 @@ class CategoriesListDetailsModel {
   }
 
 }
-
 class CategoryChilds {
   CategoryChilds({
     required this.id,
@@ -37,19 +36,22 @@ class CategoryChilds {
   final String? displayName;
   final String? parentPath;
   final List<dynamic> childId;
-  final List<dynamic> subcategories;
+  final List<CategoryChilds> subcategories; // Change type to CategoryChilds
 
-  factory CategoryChilds.fromJson(Map<String, dynamic> json){
+  factory CategoryChilds.fromJson(Map<String, dynamic> json) {
     return CategoryChilds(
       id: json["id"],
       name: json["name"],
       displayName: json["display_name"],
       parentPath: json["parent_path"],
-      childId: json["child_id"] == null ? [] : List<dynamic>.from(json["child_id"]!.map((x) => x)),
-      subcategories: json["subcategories"] == null ? [] : List<dynamic>.from(json["subcategories"]!.map((x) => x)),
+      childId: json["child_id"] == null
+          ? []
+          : List<dynamic>.from(json["child_id"].map((x) => x)),
+      subcategories: json["subcategories"] == null
+          ? []
+          : List<CategoryChilds>.from(json["subcategories"].map((x) => CategoryChilds.fromJson(x))), // Proper parsing
     );
   }
-
 }
 
 class Product {

@@ -31,6 +31,7 @@ class AddToCartViewModel extends ChangeNotifier {
       final response = await _myRepo.addToCartApi(data, context,SessionId);
 
       if (response?.result?.success != null) {
+        print("id inside ADD viewmodel"+productId.toString());
         setCartStatus(productId, true);
       }
     } catch (e, stackTrace) {
