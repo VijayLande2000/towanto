@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/viewModel/CartViewModels/add_to_cart_viewModel.dart';
 import 'package:towanto/viewModel/WhishListViewModels/delete_whishList_viewModel.dart';
@@ -103,8 +104,30 @@ class _WishlistScreenState extends State<WishlistScreen> {
           }
           if (viewModel.whishListItemsList.isEmpty) {
             return Center(
-                child: Text("No items in your whishList.",
-                    style: TextStyle(fontSize: 18, color: Colors.black54)));
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.6,
+                height: MediaQuery.of(context).size.height * 0.6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    LottieBuilder.asset(
+                      "assets/lottie/empty_wishlist_new.json",
+                    ),
+                    Text(
+                        "No items in your wishlist",
+                        style: TextStyle(
+                          color: AppColors.black,
+                          fontFamily: MyFonts.LexendDeca_Bold,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        )
+                    ),
+                  ],
+
+                ),
+              ),
+            );
           }
           // Get all products from the cart items
           final whishListItems = viewModel.whishListItemsList.toList();

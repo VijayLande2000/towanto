@@ -65,7 +65,7 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
       final productName = "Bhindi Ankur-40 500gm - Ankur (1kg)";
       final name = viewModel.orderDetails?.partnerId?.name ?? "";
       final contact = viewModel.orderDetails?.partnerId?.phone ?? "";
-      final email = "ahex@gmail.com";
+      final email = viewModel.partnerInfo?.email;
 
       final billingAddress = ParamAddress(
         line1: viewModel.billingAddress!.street.toString(),

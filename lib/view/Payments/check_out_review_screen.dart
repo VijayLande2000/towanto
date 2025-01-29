@@ -293,7 +293,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
           SizedBox(height: 16),
           _buildContactInfo(
             name: partnerId.name ?? '',
-            email: partnerId.countryId ?? '',
+            email: partnerId.email ?? '',
             phone: partnerId.phone ?? '',
           ),
           SizedBox(height: 24),
@@ -330,7 +330,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
           SizedBox(height: 16),
           _buildContactInfo(
             name: shippingAddress.name ?? '',
-            email: shippingAddress.countryId ?? '',
+            email: shippingAddress.email ?? '',
             phone: shippingAddress.phone ?? '',
           ),
           SizedBox(height: 24),

@@ -166,6 +166,7 @@ class PartnerId {
   dynamic? name;
   dynamic? street;
   dynamic? street2;
+  dynamic? email;
   dynamic? city;
   dynamic? stateId;
   dynamic? countryId;
@@ -177,6 +178,7 @@ class PartnerId {
         this.name,
         this.street,
         this.street2,
+        this.email,
         this.city,
         this.stateId,
         this.countryId,
@@ -188,6 +190,7 @@ class PartnerId {
     name = json['name'];
     street = json['street'];
     street2 = json['street2'];
+    email = json['email'];
     city = json['city'];
     stateId = json['state_id'];
     countryId = json['country_id'];
@@ -201,6 +204,7 @@ class PartnerId {
     data['name'] = this.name;
     data['street'] = this.street;
     data['street2'] = this.street2;
+    data['email'] = this.email;
     data['city'] = this.city;
     data['state_id'] = this.stateId;
     data['country_id'] = this.countryId;
@@ -215,6 +219,7 @@ class PartnerInvoiceId {
   dynamic? name;
   dynamic? street;
   dynamic? street2;
+  dynamic? email;
   dynamic? city;
   dynamic? stateId;
   dynamic? countryId;
@@ -226,6 +231,7 @@ class PartnerInvoiceId {
         this.name,
         this.street,
         this.street2,
+        this.email,
         this.city,
         this.stateId,
         this.countryId,
@@ -237,6 +243,8 @@ class PartnerInvoiceId {
     name = json['name'];
     street = json['street'];
     street2 = json['street2'];
+    email = json['email'];
+
     city = json['city'];
     stateId = json['state_id'];
     countryId = json['country_id'];
@@ -250,6 +258,8 @@ class PartnerInvoiceId {
     data['name'] = this.name;
     data['street'] = this.street;
     data['street2'] = this.street2;
+    data['email'] = this.email;
+
     data['city'] = this.city;
     data['state_id'] = this.stateId;
     data['country_id'] = this.countryId;

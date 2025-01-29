@@ -129,6 +129,8 @@ class _CartScreenState extends State<CartScreen> {
             return Center(
 
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                      LottieBuilder.asset(
                       "assets/lottie/empty_box_cart.json",

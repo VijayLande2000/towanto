@@ -12,6 +12,7 @@ import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/add_to_cart_viewModel.dart';
 import '../../viewModel/HomeViewModels/categories_list_viewModel.dart';
+import '../../viewModel/HomeViewModels/home_page_data_viewModel.dart';
 import '../Cart/cart_screen.dart';
 import 'home_screen.dart';
 
@@ -48,6 +49,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       _fetchCartItems();
     });
   }
+
+
 
   Future<void> _fetchCartItems() async {
     sessionId = await PreferencesHelper.getString("session_id");
@@ -343,6 +346,17 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: AppColors.black,
+            ),
+            onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => HomeGrid()));
+            },
+          );
+        }),
         backgroundColor: AppColors.brightBlue, // Light blue
         actions: [
           IconButton(
@@ -380,7 +394,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                     if (viewModel.subCategoryLoading || cartListViewModel.subCategoryLoading) {
                       return Container(
                           margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.3),
-                          child: Utils.loadingIndicator(context,color: Colors.red));
+                          child: Utils.loadingIndicator(context));
                     } else if (viewModel.responseList!.products.isEmpty) {
                       return Text('No data available');
                     } else {
@@ -555,7 +569,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                               child: ElevatedButton(
                                                 onPressed: isLoading
                                                     ? null
-                                                    : () {
+                                                    : () async {
                                                         if (!(isInCart || alreadyAddedToCart)) {
                                                           cartViewModel
                                                               .toggleCartStatus(
@@ -565,6 +579,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                                             context,
                                                           );
                                                         }
+
                                                       },
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor: isInCart ||
