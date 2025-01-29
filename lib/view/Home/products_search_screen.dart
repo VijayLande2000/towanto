@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/view/Home/product_details_screen.dart';
 import 'package:towanto/viewModel/HomeViewModels/get_search_product_list_view_model.dart';
+import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
 import '../../model/HomeModels/search_product_model.dart';
 import '../../utils/resources/fonts.dart';
@@ -297,17 +298,15 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
 
               // Content Area
               Expanded(
-                child: viewModel.loading
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          color: AppColors.brightBlue,
-                        ),
-                      )
-                    : !isSearching
-                        ? _buildEmptyState()
-                        : viewModel.products.isEmpty
-                            ? _buildNoResultsFound()
-                            : _buildProductGrid(viewModel.products),
+              child: viewModel.loading
+              ? Center(
+          child: Utils.loadingIndicator(context), // Corrected this line
+          )
+              : !isSearching
+          ? _buildEmptyState()
+              : viewModel.products.isEmpty
+                 ? _buildNoResultsFound()
+                 : _buildProductGrid(viewModel.products),
               ),
             ],
           );

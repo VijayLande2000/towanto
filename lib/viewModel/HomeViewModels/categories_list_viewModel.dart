@@ -9,6 +9,9 @@ import '../../utils/common_widgets/PreferencesHelper.dart';
 
 
 class CategoriesListViewModel extends ChangeNotifier {
+
+  //create late model here
+
   final _myRepo = CategoriesListRepository();
   late BuildContext context;
   bool _loading = false;
@@ -30,12 +33,15 @@ class CategoriesListViewModel extends ChangeNotifier {
     try {
       this.context = context;
       setLoading(true);
-      developer.log(
-          'Starting CategoriesListViewModel process with data: ${jsonEncode(
-              categoryId)}', name: 'CategoriesListViewModel');
+      // developer.log(
+      //     'Starting CategoriesListViewModel process with data: ${jsonEncode(
+      //         categoryId)}', name: 'CategoriesListViewModel');
 
       final value = await _myRepo.getCategoryListApi(categoryId, context);
           responseData=value;
+//model = repose
+      //notifiy providres
+      //set loaidn faslse
 
 
       developer.log(

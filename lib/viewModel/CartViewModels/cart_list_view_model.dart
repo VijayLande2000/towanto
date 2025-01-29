@@ -34,6 +34,7 @@ class CartListViewModel extends ChangeNotifier {
 
   Future<void> cartListViewModelApi(String categoryId, String sessionId, BuildContext context) async {
     try {
+      cartItemsList.clear();
       this.context = context;
       setLoading(true);
       developer.log(
@@ -42,12 +43,22 @@ class CartListViewModel extends ChangeNotifier {
       final value = await _myRepo.getCartListApi(categoryId, context, sessionId);
 
       _responseData = value; // Update the list
+      // Print the length of the value list
+      print("Value length: ${value.length}");
+
+// Print each value in the list
+      for (var item in value) {
+        print("Item: $item");
+      }
+
       // Extract the first order_id and store it
       if (value.isNotEmpty) {
         final firstOrder = value.first;
-        orderId = firstOrder.products[0].orderId.first as int?;
-        await PreferencesHelper.saveString("order_id", orderId.toString());
-        developer.log('Extracted order ID: $orderId', name: 'CartListViewModel');
+        if(firstOrder.products.isNotEmpty){
+          orderId = firstOrder.products[0].orderId.first as int?;
+          await PreferencesHelper.saveString("order_id", orderId.toString());
+          developer.log('Extracted order ID: $orderId', name: 'CartListViewModel');
+        }
       }
 
 // Iterate through the fetched cart items
@@ -64,7 +75,7 @@ class CartListViewModel extends ChangeNotifier {
       developer.log(
           'CartListViewModel API response received: ${_responseData.toString()}',
           name: 'CartListViewModel');
-
+      print(cartItemsList.length.toString()+"dguhsuk");
     } catch (e, stackTrace) {
       developer.log(
           'Error during CartListViewModel process',

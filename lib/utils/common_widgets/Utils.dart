@@ -1,12 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:another_flushbar/flushbar_route.dart';
-import 'package:flutter/material.dart';
-
 import '../resources/colors.dart';
 import '../resources/fonts.dart';
 
 class Utils {
-
 
   static Widget createButton({
     required String text,
@@ -69,8 +68,7 @@ class Utils {
     );
   }
 
-
-  static void flushBarErrorMessages(String? message, BuildContext context,{bool?isgreen}) {
+  static void flushBarErrorMessages(String? message, BuildContext context, {bool? isgreen}) {
     showFlushbar(
       context: context,
       flushbar: Flushbar(
@@ -81,7 +79,7 @@ class Utils {
         borderRadius: BorderRadius.circular(5),
         flushbarPosition: FlushbarPosition.TOP,
         duration: const Duration(seconds: 3),
-        backgroundColor: isgreen!=null?Color(0xff50BFA8):Colors.red,
+        backgroundColor: isgreen != null ? Color(0xff50BFA8) : Colors.red,
         reverseAnimationCurve: Curves.easeInOut,
         positionOffset: 20,
         icon: const Icon(
@@ -93,7 +91,7 @@ class Utils {
     );
   }
 
-  static void flushBarSuccessMessages(String? message, BuildContext context,{bool?isgreen}) {
+  static void flushBarSuccessMessages(String? message, BuildContext context, {bool? isgreen}) {
     showFlushbar(
       context: context,
       flushbar: Flushbar(
@@ -104,7 +102,7 @@ class Utils {
         borderRadius: BorderRadius.circular(5),
         flushbarPosition: FlushbarPosition.BOTTOM,
         duration: const Duration(seconds: 3),
-        backgroundColor: isgreen!=null?AppColors.lightBlue:AppColors.lightBlue,
+        backgroundColor: isgreen != null ? AppColors.lightBlue : AppColors.lightBlue,
         reverseAnimationCurve: Curves.easeInOut,
         positionOffset: 20,
         icon: const Icon(
@@ -116,22 +114,28 @@ class Utils {
     );
   }
 
-  static Widget loadingIndicator(BuildContext context,{Color color =AppColors.brightBlue, double size = 50.0}) {
+  static Widget loadingIndicator(BuildContext context, {double size = 50.0, double spacing = 2.0}) {
     return Center(
       child: SizedBox(
         height: size,
         width: size,
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(color),
+        child: SpinKitWave(
+          size: size,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: spacing),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.brightBlue,
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
   }
 
 
-// Add utility methods here
-
+// Add other utility methods here
 }
-
-
-

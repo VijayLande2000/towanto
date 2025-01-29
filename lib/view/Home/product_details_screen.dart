@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/view/Cart/cart_screen.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
+import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/add_to_cart_viewModel.dart';
@@ -97,7 +98,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       body: Consumer<ProductdetailsViewModel>(
         builder: (context, viewModel, child) {
           if (viewModel.loading) {
-            return Center(child: CircularProgressIndicator());
+            return Utils.loadingIndicator(context);
           }
 
           // Get the product details list from the view model

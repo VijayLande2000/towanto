@@ -73,12 +73,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           ),
         ),
         child: isLoading
-            ? const SizedBox(
+            ? SizedBox(
           height: 22,
           width: 22,
           child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            strokeWidth: 2.5,
+            strokeWidth: 2,
+            color: Colors.red,
           ),
         )
             : Row(
@@ -155,7 +155,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       body: Consumer<OrderDetailsViewModel>(
         builder: (context, viewModel, child) {
           if (viewModel.loading) {
-            return Center(child: Utils.loadingIndicator(context));
+            return Utils.loadingIndicator(context);
           }
           return SingleChildScrollView(
             child: Column(

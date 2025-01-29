@@ -9,6 +9,7 @@ import 'package:towanto/view/Payments/select_address_screen.dart';
 import 'package:towanto/viewModel/CartViewModels/cart_list_view_model.dart';
 
 import '../../utils/common_widgets/PreferencesHelper.dart';
+import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/Address_ViewModels/get_Address_list_view_model.dart';
@@ -121,9 +122,8 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
           (BuildContext context, GetAddressViewModel value, Widget? child) {
         if (value.loading) {
           return Center(
-              child: CircularProgressIndicator(
-            color: AppColors.brightBlue,
-          ));
+            child: Utils.loadingIndicator(context),
+          );
         } else {
           return SafeArea(
             child: Column(

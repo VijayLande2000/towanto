@@ -99,7 +99,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
       body: Consumer<WhishListViewModel>(
         builder: (context, viewModel, child) {
           if (viewModel.loading) {
-            return Center(child: CircularProgressIndicator());
+            return Utils.loadingIndicator(context);
           }
           if (viewModel.whishListItemsList.isEmpty) {
             return Center(
@@ -209,8 +209,11 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                       child: SizedBox(
                                           height: 24,
                                           width: 24,
-                                          child: CircularProgressIndicator(
-                                              color: AppColors.brightBlue)),
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.red,
+                                        ),
+                                      ),
                                     )
                                     : IconButton(
                                         onPressed: () {
@@ -266,10 +269,11 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                               SizedBox(
                                                   height: 8,
                                                   width: 8,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color: AppColors.whiteColor,
-                                                  )),
+                                                child: CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  color: Colors.red,
+                                                ),
+                                              ),
                                             ],
                                           )
                                         : Text(

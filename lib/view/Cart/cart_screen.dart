@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/view/Home/home_screen.dart';
 import 'package:towanto/viewModel/CartViewModels/delete_Cartitem_viewModel.dart';
@@ -118,26 +119,37 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: Consumer<CartListViewModel>(
         builder: (context, viewModel, child) {
+          final cartItems = viewModel.cartItemsList
+              .expand((cartItem) => cartItem.products)
+              .toList();
           if (viewModel.loading) {
-            return Center(child: CircularProgressIndicator());
+            return Utils.loadingIndicator(context);
           }
-          if (viewModel.cartItemsList.isEmpty) {
+          if (cartItems.isEmpty) {
             return Center(
-                child: Text(
-                    "No items in your cart.",
-                    style: TextStyle(
-                      color: AppColors.black,
-                      fontFamily: MyFonts.LexendDeca_Bold,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                    )
+
+                child: Column(
+                  children: [
+                     LottieBuilder.asset(
+                      "assets/lottie/empty_box_cart.json",
+                       width: 200,
+                       height: 200,
+                    ),
+                    Text(
+                        "No items in your cart.",
+                        style: TextStyle(
+                          color: AppColors.black,
+                          fontFamily: MyFonts.LexendDeca_Bold,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        )
+                    ),
+                  ],
                 )
             );
           }
 
-          final cartItems = viewModel.cartItemsList
-              .expand((cartItem) => cartItem.products)
-              .toList();
+
 
           return Column(
             children: [

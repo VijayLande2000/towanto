@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/Address_ViewModels/get_Address_list_view_model.dart';
@@ -83,7 +84,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
         builder: (context, value, child) {
           if (value.loading) {
             return Center(
-              child: CircularProgressIndicator(color: AppColors.brightBlue),
+              child: Utils.loadingIndicator(context),
             );
           } else {
             return ListView.builder(
