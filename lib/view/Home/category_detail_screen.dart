@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/utils/common_widgets/Utils.dart';
 import 'package:towanto/view/Home/product_details_screen.dart';
@@ -377,7 +378,34 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
             if (viewModel.loading || cartListViewModel.loading) {
               return Utils.loadingIndicator(context);
             } else if (viewModel.responseList?.products?.isEmpty ?? true) {
-              return Text('No data available');
+              return Center(
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LottieBuilder.asset(
+                        "assets/lottie/empty_products.json",
+                      ),
+                      Text(
+                          "No Products Available1",
+                          style: TextStyle(
+                            color: AppColors.black,
+                            fontFamily: MyFonts.LexendDeca_Bold,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          )
+                      ),
+                    ],
+
+                  ),
+                ),
+              );
+
+
+
             } else {
               // // Wait until data is available before showing categories
               // if (viewModel.responseList != null && viewModel.categoryTree.isNotEmpty) {

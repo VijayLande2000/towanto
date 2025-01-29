@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/view/Home/home_screen.dart';
 import 'package:towanto/viewModel/OrdersViewModels/orders_list_view_model.dart';
@@ -101,8 +102,30 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
         }
         if (viewModel.ordersItemsList.isEmpty) {
           return Center(
-              child: Text("No orders present",
-                  style: TextStyle(fontSize: 18, color: Colors.black54)));
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.6,
+              height: MediaQuery.of(context).size.height * 0.6,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  LottieBuilder.asset(
+                    "assets/lottie/empty_order_items.json",
+                  ),
+                  Text(
+                      "No orders",
+                      style: TextStyle(
+                        color: AppColors.black,
+                        fontFamily: MyFonts.LexendDeca_Bold,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      )
+                  ),
+                ],
+
+              ),
+            ),
+          );
         }
         return ListView.builder(
           padding: const EdgeInsets.all(16),
