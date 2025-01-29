@@ -20,7 +20,6 @@ class CategoriesListDetailsModel {
     );
   }
 }
-
 class CategoryChilds {
   CategoryChilds({
     required this.id,

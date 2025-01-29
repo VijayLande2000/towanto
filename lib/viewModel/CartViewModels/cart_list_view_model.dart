@@ -10,9 +10,15 @@ class CartListViewModel extends ChangeNotifier {
   final _myRepo = CartListRepository();
   late BuildContext context;
   bool _loading = false;
+
+  bool _subCategoryloading = false;
+
   List<CartItemsListModel> _responseData = []; // Private list for cart items
 
   bool get loading => _loading;
+
+  bool get subCategoryLoading => _subCategoryloading;
+
   List<CartItemsListModel> get cartItemsList => _responseData; // Return cart items list
 
   double get totalAmount {
@@ -31,6 +37,14 @@ class CartListViewModel extends ChangeNotifier {
         'Loading state changed to: $_loading', name: 'CartListViewModel');
     notifyListeners();
   }
+  void setSubCategoryLoading(bool value) {
+    _subCategoryloading = value;
+    developer.log(
+        'Loading state changed to: $_loading', name: 'CartListViewModel');
+    notifyListeners();
+  }
+
+
 
   Future<void> cartListViewModelApi(String categoryId, String sessionId, BuildContext context) async {
     try {
@@ -163,6 +177,49 @@ class CartListViewModel extends ChangeNotifier {
       setLoading(false);
     }
   }
+
+  Future<void> cartListSubProductIdsViewModelApi(String categoryId, String sessionId, BuildContext context) async {
+    try {
+      this.context = context;
+      setSubCategoryLoading(true);
+      developer.log(
+          'Starting CartListViewModel process with data: ${jsonEncode(categoryId)}', name: 'CartListViewModel');
+
+      final value = await _myRepo.getCartListApi(categoryId, context, sessionId);
+
+      _responseData = value; // Update the list
+// Iterate through the fetched cart items
+      productIds.clear();
+      value.forEach((item) {
+        item.products.forEach((product) {
+          if (product.productId.isNotEmpty) {
+            String productId = extractProductId(product.productId.toString());
+            productIds.add(productId); // Add the first element (ID) from the productId list
+          }
+        });
+      });
+      productIds.forEach((element) {
+        print("product id="+element.toString());
+      });
+
+      notifyListeners(); // Notify listeners after updating the data
+
+      developer.log(
+          'CartListViewModel API response received: ${_responseData.toString()}',
+          name: 'CartListViewModel');
+
+    } catch (e, stackTrace) {
+      developer.log(
+          'Error during CartListViewModel process',
+          name: 'CartListViewModel',
+          error: e.toString(),
+          stackTrace: stackTrace);
+    } finally {
+      setSubCategoryLoading(false);
+    }
+  }
+
+
   String extractProductId(String productDetail) {
     // This regex extracts the first numeric value from the string
     final RegExp regExp = RegExp(r'\d+');

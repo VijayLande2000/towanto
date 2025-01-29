@@ -8,6 +8,7 @@ import 'package:towanto/utils/repositories/CartRepositories/delete_cart_reposito
 import 'package:towanto/utils/repositories/HomeRepositories/categories_list_repository.dart';
 import '../../model/HomeModels/categories_list_details_model.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
+import 'add_to_cart_viewModel.dart';
 
 
 class DeleteCartItemViewModel extends ChangeNotifier {
@@ -22,15 +23,20 @@ class DeleteCartItemViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteCartItemViewModelApi(String partnerId,String id, BuildContext context,String sessionId) async {
+  Future<void> deleteCartItemViewModelApi(String partnerId,String id, BuildContext context,String sessionId,String prodcutId) async {
     try {
       this.context = context;
       setLoading(true);
-      developer.log(
-          'Starting DeleteCartItemViewModel process with data: ${jsonEncode(
-              partnerId)}', name: 'DeleteCartItemViewModel');
+      developer.log('Starting DeleteCartItemViewModel process with data: ${jsonEncode(partnerId)}', name: 'DeleteCartItemViewModel');
 
       final value = await _myRepo.deleteCartItemApi(partnerId,id, context,sessionId);
+      if(value!=null){
+        print("id inside delete viewmodel"+id.toString());
+        print("id inside delete viewmodel"+prodcutId.toString());
+
+        final addToCartViewModel = Provider.of<AddToCartViewModel>(context, listen: false);
+        addToCartViewModel.setCartStatus(int.tryParse(prodcutId) ?? 0, false);
+      }
     } catch (e, stackTrace) {
       developer.log(
           'Error during DeleteCartItemViewModel process',

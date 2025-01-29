@@ -41,13 +41,13 @@ class _CartScreenState extends State<CartScreen> {
     cartListViewModel.cartListViewModelApi(partnerId!, sessionId!, context);
   }
 
-  Future<void> deleteCartItem(String id) async {
+  Future<void> deleteCartItem(String id,String prodcutId) async {
     setState(() {
       _deleteLoadingMap[id] = true;
     });
     final deletecartitemViewModel = Provider.of<DeleteCartItemViewModel>(context, listen: false);
     final cartListViewModel = Provider.of<CartListViewModel>(context, listen: false);
-    await deletecartitemViewModel.deleteCartItemViewModelApi(partnerId!, id, context, sessionId!);
+    await deletecartitemViewModel.deleteCartItemViewModelApi(partnerId!, id, context, sessionId!,prodcutId);
     await cartListViewModel.updateCartListApi(partnerId!, sessionId!, context);
     setState(() {
       _deleteLoadingMap[id] = false;
@@ -159,6 +159,8 @@ class _CartScreenState extends State<CartScreen> {
                   itemBuilder: (context, index) {
                     final item = cartItems[index];
                     final itemId = item.id.toString();
+                    final productId = item.productId[0];
+
 
                     return Container(
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -281,7 +283,7 @@ class _CartScreenState extends State<CartScreen> {
                                   : IconButton(
                                 icon: const Icon(Icons.delete_outline),
                                 color: AppColors.red,
-                                onPressed: () => deleteCartItem(itemId),
+                                onPressed: () => deleteCartItem(itemId,productId.toString()),
                               ),
                             ],
                           ),
