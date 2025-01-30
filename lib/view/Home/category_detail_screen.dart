@@ -43,6 +43,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
   initState() {
     super.initState();
     print("CategoryDetailScreen init state");
+    print("CategoryDetailScreen init state"+widget.category.id.toString());
+
     // Call the API when the widget is initialized
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       fetchCategories();

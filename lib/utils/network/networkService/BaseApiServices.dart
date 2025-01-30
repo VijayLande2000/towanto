@@ -41,6 +41,10 @@ abstract class BaseApiServices {
   Future<dynamic> postOrderDetailsApiResponse(String url, dynamic data, BuildContext context,String sessionId);
   Future<dynamic> postCancelOrderApiResponse(String url, dynamic data, BuildContext context,String sessionId);
   Future<dynamic> postCreateOrderApiResponse(String url, dynamic data, BuildContext context,String sessionId);
+
+  Future<dynamic> postDeactivateAccountApiResponse(String url, dynamic data, BuildContext context,String sessionId);
+
+
   Future<dynamic> paymentConfirmationApiResponse(String url, dynamic partnerId, BuildContext context,String sessionId);
 
 // Future<dynamic> getGetApiResponse(String url);

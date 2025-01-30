@@ -155,7 +155,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> with SingleTickerProvider
                           Navigator.pushReplacementNamed(context, RoutesName.login);
                         } else {
                           // Username exists, navigate to signup or the next screen
-                          Navigator.pushReplacementNamed(context, RoutesName.signup);
+                          Navigator.pushReplacementNamed(context, RoutesName.home);
                         }
 
                         // Navigator.pushReplacementNamed(context, RoutesName.login);

@@ -11,6 +11,7 @@ import 'package:towanto/viewModel/Address_ViewModels/add_address_view_model.dart
 import 'package:towanto/viewModel/Address_ViewModels/edit_address_view_model.dart';
 import 'package:towanto/viewModel/Address_ViewModels/get_Address_list_view_model.dart';
 import 'package:towanto/viewModel/Address_ViewModels/remove_Address_view_model.dart';
+import 'package:towanto/viewModel/AuthViewModels/de_activate_account_view_model.dart';
 import 'package:towanto/viewModel/AuthViewModels/login_viewModel.dart';
 import 'package:towanto/viewModel/AuthViewModels/sign_up_viewModel.dart';
 import 'package:towanto/viewModel/CartViewModels/add_to_cart_viewModel.dart';
@@ -80,7 +81,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CancelOrderViewModel()),
         ChangeNotifierProvider(create: (_) => CreateOrderViewModel()),
         ChangeNotifierProvider(create: (_) => PaymentConfirmationViewModel()),
-
+        ChangeNotifierProvider(create: (_) => DeactivateAccountViewModel()),
       ],
       child: MaterialApp(
         title: 'Towanto',

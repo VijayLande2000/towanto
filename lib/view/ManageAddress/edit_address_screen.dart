@@ -115,7 +115,9 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
           selectedCountry = widget.addressData!['country'];
           selectedState = widget.addressData!['state'];
           selectedCity = widget.addressData!['city'];
-          selectedOption = widget.addressData!['type'];
+          if (widget.addressData != null && options.contains(widget.addressData!['type'])) {
+            selectedOption = widget.addressData!['type'];
+          }
         });
         print("erh"+selectedOption.toString());
       }

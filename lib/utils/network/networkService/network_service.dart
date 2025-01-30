@@ -961,4 +961,35 @@ print("bhjug"+headers.toString());
     return responseJson;
   }
 
+  @override
+  Future postDeactivateAccountApiResponse(String url, data, BuildContext context, String sessionId) async {
+    try {
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+      };
+      Response response = await post(Uri.parse(url), body: data, headers: headers).timeout( const Duration(seconds: 60));
+      print("DeactivateAccount data :" + data.toString());
+      print("DeactivateAccount url :" + url.toString());
+
+      print("DeactivateAccount response =" + response.body);
+      print("DeactivateAccount sstatusCode =" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        Future.delayed(Duration(seconds: 0), () =>
+            Utils.flushBarSuccessMessages("Account DeActivated successfully!", context));
+        PreferencesHelper.clearSharedPreferences();
+        Navigator.pushNamed(context, RoutesName.login);
+      }
+     else if (response.statusCode == 400) {
+        Future.delayed(Duration(seconds: 0), () =>
+            Utils.flushBarErrorMessages("Invalid Credentials please Try Again", context));
+      }
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
+
 }
