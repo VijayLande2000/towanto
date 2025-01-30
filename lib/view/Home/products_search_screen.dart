@@ -240,17 +240,18 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
           'Search Products',
           style: TextStyle(
             fontFamily: MyFonts.LexendDeca_Bold,
-            color: AppColors.black,
+            // color: AppColors.black,
+            fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
         ),
         elevation: 0,
-        backgroundColor: AppColors.brightBlue,
+        // backgroundColor: AppColors.brightBlue,
         leading: Builder(builder: (context) {
           return IconButton(
             icon: const Icon(
               Icons.arrow_back,
-              color: AppColors.black,
+              // color: AppColors.black,
             ),
             onPressed: () {
               Navigator.pop(context);

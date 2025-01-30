@@ -343,7 +343,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
           style: TextStyle(
             fontSize: 20,
             fontFamily: MyFonts.LexendDeca_Bold,
-            color: AppColors.black,
+            // color: AppColors.black,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -351,14 +351,14 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
           return IconButton(
             icon: const Icon(
               Icons.arrow_back,
-              color: AppColors.black,
+              // color: AppColors.black,
             ),
             onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => HomeGrid()));
             },
           );
         }),
-        backgroundColor: AppColors.brightBlue, // Light blue
+        // backgroundColor: AppColors.brightBlue, // Light blue
         actions: [
           IconButton(
             icon: Icon(Icons.shopping_cart), // Cart Icon
@@ -390,7 +390,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                         "assets/lottie/empty_products.json",
                       ),
                       Text(
-                          "No Products Available1",
+                          "No Products Available",
                           style: TextStyle(
                             color: AppColors.black,
                             fontFamily: MyFonts.LexendDeca_Bold,
@@ -399,7 +399,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                           )
                       ),
                     ],
-
                   ),
                 ),
               );
@@ -561,7 +560,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                           textBaseline: TextBaseline.alphabetic,
                                           children: [
                                             Text(
-                                              '₹${product.baseUnitPrice}',
+                                              '₹${product.lstPrice}',
                                               style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,

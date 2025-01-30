@@ -117,7 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
-        backgroundColor: AppColors.brightBlue,
+        // backgroundColor: AppColors.brightBlue,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.white),
@@ -126,7 +126,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         title: const Text(
           'Sign Up',
           style: TextStyle(
-            color: AppColors.white,
+            // color: AppColors.white,
             fontSize: 20,
             fontFamily: MyFonts.LexendDeca_Bold,
             fontWeight: FontWeight.bold,

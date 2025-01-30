@@ -91,9 +91,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.brightBlue,
+        // backgroundColor: AppColors.brightBlue,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColors.black, size: 18),
+          icon: Icon(Icons.arrow_back, size: 18),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
