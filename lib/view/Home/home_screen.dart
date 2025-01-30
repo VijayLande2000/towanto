@@ -887,6 +887,8 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
+                          color: AppColors.appBarTitleTextColor,
+                          fontFamily: MyFonts.LexendDeca_SemiBold,
                         ),
                       ),
                     ),
@@ -927,19 +929,22 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
                         Text(
                           '₹${product.products[index].price}',
                           style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.appBarTitleTextColor,
+                            fontFamily: MyFonts.LexendDeca_SemiBold,
                           ),
                         ),
                         const SizedBox(width: 4),
-                        Text(
+                    /*    Text(
                           '₹${(product.products[index].price * 1.5).round()}',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey.shade600,
-                            decoration: TextDecoration.lineThrough,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.appBarTitleTextColor,
+                            fontFamily: MyFonts.LexendDeca_SemiBold,
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                   ],
@@ -1021,9 +1026,10 @@ Widget _buildHorizontalBrandListView(HomePageDataViewModel viewModel) {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontFamily: MyFonts.Lexenddeca_regular,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
+                          color: AppColors.appBarTitleTextColor,
+                          fontFamily: MyFonts.LexendDeca_SemiBold,
                         ),
                       ),
                     ),
@@ -1065,21 +1071,22 @@ Widget _buildHorizontalBrandListView(HomePageDataViewModel viewModel) {
                         Text(
                           '₹${product.products[index].price}',
                           style: const TextStyle(
-                            fontSize: 18,
-                            fontFamily: MyFonts.Lexenddeca_regular,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.appBarTitleTextColor,
+                            fontFamily: MyFonts.LexendDeca_SemiBold,
                           ),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: 4),/*
                         Text(
                           '₹${(product.products[index].price * 1.5).round()}',
-                          style: TextStyle(
-                            fontFamily: MyFonts.Lexenddeca_regular,
-                            fontSize: 12,
-                            color: Colors.grey.shade600,
-                            decoration: TextDecoration.lineThrough,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.appBarTitleTextColor,
+                            fontFamily: MyFonts.LexendDeca_SemiBold,
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                   ],
