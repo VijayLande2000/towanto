@@ -242,7 +242,6 @@ class CustomTextField extends StatelessWidget {
             controller: controller,
             obscureText: isPassword && !(isPasswordVisible ?? false),
             onChanged: onChanged,
-
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: TextStyle(

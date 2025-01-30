@@ -14,6 +14,7 @@ import 'package:towanto/view/Enquiry/enquiry_screen.dart';
 import 'package:towanto/viewModel/HomeViewModels/home_page_data_viewModel.dart';
 
 import '../../model/HomeModels/category_model.dart';
+import '../../model/HomeModels/home_page_model.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
 import '../../utils/routes/route_names.dart';
@@ -78,13 +79,15 @@ class _HomeGridState extends State<HomeGrid> {
       imagePadding: 28.0,
       id: 3,
     ),
-    /* CategoryItem(
-      name: 'Brands',
-      imageUrl: 'assets/images/brands.jpg',
-      backgroundColor: const Color(0xFFD1C4E9), // Light purple
-      imagePadding: 20.0,
-      id: 4,
-    ),*/
+
+    //  CategoryItem(
+    //   name: 'Brands',
+    //   imageUrl: 'assets/images/brands.jpg',
+    //   backgroundColor: const Color(0xFFD1C4E9), // Light purple
+    //   imagePadding: 20.0,
+    //   id: 4,
+    // ),
+
     /* CategoryItem(
       name: 'Seasonal',
       imageUrl: 'assets/images/seasonal.jpg',
@@ -432,7 +435,7 @@ class _HomeGridState extends State<HomeGrid> {
                 Center(
                   child: Padding(
                     padding:
-                        const EdgeInsets.only(left: 16, bottom: 8, top: 16),
+                        const EdgeInsets.only(left: 16, bottom: 16, top: 16),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor:
@@ -591,6 +594,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     await PreferencesHelper.removeKey(
         "login"); // Remove the string from storage
     savedUsername = ""; // Clear the local variable
+    PreferencesHelper.clearSharedPreferences();
     Navigator.pushReplacementNamed(context, RoutesName.login);
     setState(() {}); // Update the UI
     print("Username deleted successfully");
@@ -606,7 +610,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
   CategoryItem _getCategoryByName(String name) {
     return widget.categories.firstWhere(
       (category) => category.name == name,
-      orElse: () => widget.categories[0],
+      orElse: () =>    CategoryItem(
+        name: 'Brands',
+        imageUrl: 'assets/images/brands.jpg',
+        backgroundColor: const Color(0xFFD1C4E9), // Light purple
+        imagePadding: 20.0,
+        id: 4,
+      ),
     );
   }
 
@@ -818,236 +828,96 @@ class DrawerItem extends StatelessWidget {
 }
 
 Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
+  // Calculate the total number of products across all categories
+  int totalProductCount = 0;
+  viewModel.categoryList1.forEach((category) {
+    totalProductCount += category.products.length;
+  });
+
   return ListView.builder(
     scrollDirection: Axis.horizontal,
-    itemCount: viewModel.categoryList1.length,
+    itemCount: totalProductCount,
     itemBuilder: (context, index) {
-      final product = viewModel.categoryList1[index];
-      final screenHeight = MediaQuery.of(context).size.height;
+      // Calculate which category and which product to access based on the total count
+      int productIndex = 0;
+      Category category;
+      for (category in viewModel.categoryList1) {
+        if (index < productIndex + category.products.length) {
+          // This category contains the item at the 'index' position
+          final product = category.products[index - productIndex];
+          final screenHeight = MediaQuery.of(context).size.height;
 
-      return Container(
-        height: screenHeight * 0.45, // Constrain the overall height
-        child: Card(
-          color: Colors.white,
-          elevation: 2,
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide(color: Colors.grey.shade200),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductDetailsPage(
-                      categoryId: product.products[index].id.toString()),
-                ),
-              );
-            },
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min, // Important for column sizing
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Product Image
-                    SizedBox(
-                      height: screenHeight * 0.15,
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Center(
-                          child: Image.network(
-                            'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.products[index].id}&field=image_1920',
-                            fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) => Icon(
-                              Icons.error,
-                              size: 48,
-                              color: Colors.grey.shade400,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 8),
-                    // Product Name
-                    SizedBox(
-                      height: screenHeight * 0.05,
-                      child: Text(
-                        product.products[index].name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.appBarTitleTextColor,
-                          fontFamily: MyFonts.LexendDeca_SemiBold,
-                        ),
-                      ),
-                    ),
-
-                    // Rating
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Row(
-                          children: List.generate(
-                            5,
-                            (index) => Icon(
-                              Icons.star,
-                              size: 14,
-                              color: index < 4
-                                  ? Colors.orange
-                                  : Colors.grey.shade300,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          '46',
-                          style: TextStyle(
-                            color: Colors.grey.shade600,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    // Price
-                    const SizedBox(height: 8),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        Text(
-                          '₹${product.products[index].price}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.appBarTitleTextColor,
-                            fontFamily: MyFonts.LexendDeca_SemiBold,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                    /*    Text(
-                          '₹${(product.products[index].price * 1.5).round()}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.appBarTitleTextColor,
-                            fontFamily: MyFonts.LexendDeca_SemiBold,
-                          ),
-                        ),*/
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+          return Card(
+            color: AppColors.white,
+            elevation: 2,
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+              side: BorderSide(color: Colors.grey.shade200),
             ),
-          ),
-        ),
-      );
-    },
-  );
-}
-
-Widget _buildHorizontalBrandListView(HomePageDataViewModel viewModel) {
-  return ListView.builder(
-    scrollDirection: Axis.horizontal,
-    itemCount: viewModel.categoryList2.length,
-    itemBuilder: (context, index) {
-      final product = viewModel.categoryList2[index];
-      final screenHeight = MediaQuery.of(context).size.height;
-
-      return Container(
-        height: screenHeight * 0.45, // Constrain the overall height
-        child: Card(
-          color: Colors.white,
-          elevation: 2,
-          margin: const EdgeInsets.symmetric(horizontal: 8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: BorderSide(color: Colors.grey.shade200),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductDetailsPage(
-                      categoryId: product.products[index].id.toString()),
-                ),
-              );
-            },
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailsPage(
+                      categoryId: product.id.toString(),
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min, // Important for column sizing
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Product Image
-                    SizedBox(
-                      height: screenHeight * 0.15,
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Center(
-                          child: Image.network(
-                            'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.products[index].id}&field=image_1920',
-                            fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) => Icon(
-                              Icons.error,
-                              size: 48,
-                              color: Colors.grey.shade400,
-                            ),
+                    Container(
+                      height: screenHeight * 0.17,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Center(
+                        child: Image.network(
+                          'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.id}&field=image_1920',
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) => Icon(
+                            Icons.error,
+                            size: 48,
+                            color: Colors.grey.shade400,
                           ),
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 8),
                     // Product Name
-                    SizedBox(
-                      height: screenHeight * 0.05,
-                      child: Text(
-                        product.products[index].name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.appBarTitleTextColor,
-                          fontFamily: MyFonts.LexendDeca_SemiBold,
-                        ),
+                    Text(
+                      product.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.appBarTitleTextColor,
+                        fontFamily: MyFonts.LexendDeca_SemiBold,
                       ),
                     ),
-
-                    // Rating
                     const SizedBox(height: 4),
+                    // Rating
                     Row(
                       children: [
-                        Row(
-                          children: List.generate(
-                            5,
-                            (index) => Icon(
-                              Icons.star,
-                              size: 14,
-                              color: index < 4
-                                  ? Colors.orange
-                                  : Colors.grey.shade300,
-                            ),
+                        ...List.generate(
+                          5,
+                              (index) => Icon(
+                            Icons.star,
+                            size: 14,
+                            color: index < 4
+                                ? Colors.orange
+                                : Colors.grey.shade300,
                           ),
                         ),
                         const SizedBox(width: 4),
@@ -1061,41 +931,153 @@ Widget _buildHorizontalBrandListView(HomePageDataViewModel viewModel) {
                         ),
                       ],
                     ),
-
-                    // Price
                     const SizedBox(height: 8),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        Text(
-                          '₹${product.products[index].price}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.appBarTitleTextColor,
-                            fontFamily: MyFonts.LexendDeca_SemiBold,
-                          ),
-                        ),
-                        const SizedBox(width: 4),/*
-                        Text(
-                          '₹${(product.products[index].price * 1.5).round()}',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.appBarTitleTextColor,
-                            fontFamily: MyFonts.LexendDeca_SemiBold,
-                          ),
-                        ),*/
-                      ],
+                    // Price
+                    Text(
+                      '₹${product.price}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.appBarTitleTextColor,
+                        fontFamily: MyFonts.LexendDeca_SemiBold,
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-          ),
-        ),
-      );
+          );
+        }
+        productIndex += category.products.length;
+      }
+      return const SizedBox.shrink();
+    },
+  );
+}
+Widget _buildHorizontalBrandListView(HomePageDataViewModel viewModel) {
+  // Calculate the total number of products across all categories
+  int totalProductCount = 0;
+  viewModel.categoryList2.forEach((category) {
+    totalProductCount += category.products.length;
+  });
+
+  return ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: totalProductCount,
+    itemBuilder: (context, index) {
+      // Calculate which category and which product to access based on the total count
+      int productIndex = 0;
+      Category category;
+      for (category in viewModel.categoryList2) {
+        if (index < productIndex + category.products.length) {
+          // This category contains the item at the 'index' position
+          final product = category.products[index - productIndex];
+          final screenHeight = MediaQuery.of(context).size.height;
+
+          return Card(
+            color: AppColors.white,
+            elevation: 2,
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+              side: BorderSide(color: Colors.grey.shade200),
+            ),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailsPage(
+                      categoryId: product.id.toString(),
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                padding: const EdgeInsets.only(left: 12,right: 12,top: 12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Product Image
+                    Container(
+                      height: screenHeight * 0.17,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Center(
+                        child: Image.network(
+                          'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.id}&field=image_1920',
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) => Icon(
+                            Icons.error,
+                            size: 48,
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    // Product Name
+                    Text(
+                      product.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.appBarTitleTextColor,
+                        fontFamily: MyFonts.LexendDeca_SemiBold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    // Rating
+                    Row(
+                      children: [
+                        ...List.generate(
+                          5,
+                              (index) => Icon(
+                            Icons.star,
+                            size: 14,
+                            color: index < 4
+                                ? Colors.orange
+                                : Colors.grey.shade300,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '46',
+                          style: TextStyle(
+                            fontFamily: MyFonts.Lexenddeca_regular,
+                            color: Colors.grey.shade600,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    // Price
+                    Text(
+                      '₹${product.price}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.appBarTitleTextColor,
+                        fontFamily: MyFonts.LexendDeca_SemiBold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+        productIndex += category.products.length;
+      }
+      return const SizedBox.shrink();
     },
   );
 }

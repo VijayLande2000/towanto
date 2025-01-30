@@ -38,6 +38,7 @@ class AppUrl {
   static late String cancelOrderApi;
   static late String createOrder;
   static late String paymentConfirmation;
+  static late String deactivateAccount;
 
 
   // Method to set the URLs based on the environment key
@@ -85,8 +86,7 @@ class AppUrl {
     cancelOrderApi = baseurlauth + "api/cancel_order";
     createOrder = baseurlauth + "api/createOrder";
     paymentConfirmation = baseurlauth +"api/payment_confirm";
-
-
+    deactivateAccount = baseurlauth +"my/deactivate_user_account";
     //we need to give here end point of the api
   }
 

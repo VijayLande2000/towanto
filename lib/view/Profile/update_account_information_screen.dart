@@ -9,6 +9,7 @@ import '../../utils/repositories/ProfileRepositories/logged_in_user_info_reposit
 import '../../utils/repositories/ProfileRepositories/update_account_repository.dart';
 import '../../viewModel/profileViewModels/update_account_information_view_model.dart';
 import '../Auth/login_screen.dart';
+import 'de_activate_account_pop_up.dart';
 
 
 class AccountInfoScreen extends StatelessWidget {
@@ -145,12 +146,10 @@ class _AccountInfoScreenContentState extends State<AccountInfoScreenContent> {
                     onClick: () => provider.submitAccountInfo(context, selectedCountry, selectedState, selectedCity),
                   ),
                   const SizedBox(height: 20,),
-                  Utils.createButton(
-                    text: "Delete Account",
-                    onClick: () => (){
+                  GradientButton(text: 'DeActivate account', onClick: () {
+                    showLoginPopup(context);
 
-                    }
-                  ),
+                  },),
                 ],
               ),
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/view/Cart/cart_screen.dart';
+import 'package:towanto/view/Enquiry/enquiry_screen.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
@@ -31,7 +32,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     // Call the API to fetch product details
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       partnerId = await PreferencesHelper.getString("partnerId");
-      final viewModel = Provider.of<ProductdetailsViewModel>(context, listen: false);
+      final viewModel =
+          Provider.of<ProductdetailsViewModel>(context, listen: false);
       viewModel.getProductDetailsViewModelApi(widget.categoryId, context);
       final addToWhishListViewModel =
           Provider.of<AddToWhishListViewModel>(context, listen: false);
@@ -41,7 +43,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   int quantity = 1; // Initialize the quantity to 1
   bool isInWishlist = false;
-
+  bool isLoading = false;
   Future<void> _fetchCartItems() async {
     partnerId = await PreferencesHelper.getString("partnerId");
     sessionId = await PreferencesHelper.getString("session_id");
@@ -53,7 +55,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   Future<void> fetchHomePageData() async {
     // Obtain the instance of CategoriesListViewModel
     final homePageViewModel =
-    Provider.of<HomePageDataViewModel>(context, listen: false);
+        Provider.of<HomePageDataViewModel>(context, listen: false);
     await homePageViewModel.fetchHomePageData("6,4", context);
   }
 
@@ -76,9 +78,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         ));
   }
 
-  Future<void> _addToCart(int productId,dynamic quantity) async {
+  Future<void> _addToCart(int productId, dynamic quantity) async {
     final addToCart = Provider.of<AddToCartViewModel>(context, listen: false);
-    await addToCart.toggleCartStatus(partnerId!, productId,quantity, context);
+    await addToCart.toggleCartStatus(partnerId!, productId, quantity, context);
     await fetchHomePageData();
     await Navigator.push(
         context,
@@ -281,6 +283,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         productDetails.productPrice == 0.0
                             ? ElevatedButton(
                                 onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EnquiryScreen(),
+                                      ));
                                   // Implement buy now functionality
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -301,33 +308,83 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
                         // Buy Now Button
                         productDetails.productPrice != 0.0
-                            ? ElevatedButton(
-                                onPressed: () async {
-                                  print("cdsbvhjb"+productDetails.isIncart.toString());
-                                  productDetails.isIncart
-                                      ? updateCart(
+                            ? Container(
+                                width: double.infinity,
+                                height: 55,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      AppColors.brightBlue,
+                                      AppColors.lightBlue,
+                                      // Color(0xFF00875A),
+                                      // Color(0xFF36B37E),
+                                    ],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFFB24592)
+                                          .withOpacity(0.3),
+                                      spreadRadius: 1,
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: ElevatedButton(
+                                  onPressed: isLoading
+                                      ? null // Disable button if loading
+                                      : () async {
+                                    setState(() {
+                                      isLoading = true; // Start loading
+                                    });
+
+                                    print("cdsbvhjb" +
+                                        productDetails.isIncart.toString());
+
+                                    if (productDetails.isIncart) {
+                                      await updateCart(
                                           productDetails.cartId.toString(),
                                           quantity.toString(),
-                                          context)
-                                      :
-                                      // print("_addToCart(productDetails.id): ${_addToCart(productDetails.id)}");
-                                    await  _addToCart(productDetails.id,quantity);
-                                  // print("before");
-                                  // updateCart(productDetails.id.toString(),quantity.toString(),context);
-                                  // print("after");
-                                  // Implement buy now functionality
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  minimumSize: Size(double.infinity, 50),
-                                ),
-                                child: Text(
-                                  'Buy Now',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      color: AppColors.whiteColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: MyFonts.LexendDeca_Bold),
+                                          context);
+                                    } else {
+                                      await _addToCart(
+                                          productDetails.id, quantity);
+                                    }
+                                    setState(() {
+                                      isLoading =
+                                      false; // Stop loading once API call is done
+                                    });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.transparent,
+                                    shadowColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                  child: isLoading?CircularProgressIndicator(color: AppColors.whiteColor,):Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Buy Now",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontFamily: MyFonts.LexendDeca_Bold,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      // const SizedBox(width: 8),
+                                      // const Icon(
+                                      //   Icons.arrow_forward,
+                                      //   color: Colors.white,
+                                      //   size: 22,
+                                      // ),
+                                    ],
+                                  ),
                                 ),
                               )
                             : SizedBox.shrink(),

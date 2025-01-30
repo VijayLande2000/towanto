@@ -19,6 +19,11 @@ class PreferencesHelper {
     await prefs.remove(key);
   }
 
+  static Future<void> clearSharedPreferences() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
+
  //  static Future<void> saveBool(String key, bool value) async {
  //    final SharedPreferences prefs = await SharedPreferences.getInstance();
  //
