@@ -148,7 +148,6 @@ class _AccountInfoScreenContentState extends State<AccountInfoScreenContent> {
                   const SizedBox(height: 20,),
                   GradientButton(text: 'DeActivate account', onClick: () {
                     showLoginPopup(context);
-
                   },),
                 ],
               ),
