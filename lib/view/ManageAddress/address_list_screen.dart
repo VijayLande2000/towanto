@@ -89,7 +89,7 @@ class _AddressManagerState extends State<AddressManager> {
                                     const Icon(Icons.person_outline, size: 20, color: Colors.grey),
                                     const SizedBox(width: 8),
                                     Text(
-                                      value.addresses[index].firmName.toString(),
+                                      value.addresses[index].proprietorName.toString(),
                                       style: TextStyle(
                                           fontSize: 16,
                                           color:  AppColors.black,

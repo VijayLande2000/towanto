@@ -875,7 +875,7 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
                   children: [
                     // Product Image
                     Container(
-                      height: screenHeight * 0.17,
+                      height: screenHeight * 0.15,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,

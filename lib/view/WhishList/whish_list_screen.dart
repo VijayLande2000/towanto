@@ -170,23 +170,29 @@ class _WishlistScreenState extends State<WishlistScreen> {
                             color: Colors.red.shade700,
                             size: 28,
                           ),
+
                         ),
                         onDismissed: (_) => () {},
                         child: Row(
                           children: [
                             // Product Image
-                            Container(
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(12),
-                                    bottomLeft: Radius.circular(12),
-                                  )),
-                              child: Image.network(
-                                "https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${item.id}&field=image_1920",
-                                fit: BoxFit.cover,
+                            InkWell(
+                              onTap:(){
+                        // print("the image path: ${item.productId[0]}");
+                      },
+                              child: Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.shade100,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(12),
+                                      bottomLeft: Radius.circular(12),
+                                    )),
+                                child: Image.network(
+                                  "https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${item.productId[0]}&field=image_1920",
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                             // Product Details

@@ -75,12 +75,13 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
         provider.formFields.forEach((field) {
           switch (field['key']) {
             case 'firmName':
-              field['controller'].text = widget.addressData!['name'] ?? '';
+              field['controller'].text = widget.addressData!['company_name'].toString() ?? '';
+              print({widget.addressData!['company_name'].toString()});
               break;
             case 'proprietorName':
-              field['controller'].text = widget.addressData!['company_name'] != null
-                  ? (widget.addressData!['company_name'] is String
-                  ? widget.addressData!['company_name']
+              field['controller'].text = widget.addressData!['name'] != null
+                  ? (widget.addressData!['name'] is String
+                  ? widget.addressData!['name']
                   : '')
                   : '';
               break;
@@ -125,7 +126,7 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
   }
   String? selectedOption;
 
-  final List<String> options = ['invoice', 'delivery',];
+  final List<String> options = ['billing', 'delivery',];
 
   @override
   Widget build(BuildContext context) {

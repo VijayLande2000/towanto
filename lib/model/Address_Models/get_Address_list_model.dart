@@ -1,107 +1,83 @@
 class GetAddressListModel {
-  String? jsonrpc;
-  dynamic id;
-  Result? result;
+  GetAddressListModel({
+    required this.jsonrpc,
+    required this.id,
+    required this.result,
+  });
 
-  GetAddressListModel({this.jsonrpc, this.id, this.result});
+  final String? jsonrpc;
+  final dynamic id;
+  final Result? result;
 
-  factory GetAddressListModel.fromJson(Map<String, dynamic> json) {
+  factory GetAddressListModel.fromJson(Map<String, dynamic> json){
     return GetAddressListModel(
-      jsonrpc: json['jsonrpc'],
-      id: json['id'],
-      result: json['result'] != null ? Result.fromJson(json['result']) : null,
+      jsonrpc: json["jsonrpc"],
+      id: json["id"],
+      result: json["result"] == null ? null : Result.fromJson(json["result"]),
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'jsonrpc': jsonrpc,
-      'id': id,
-      'result': result?.toJson(),
-    };
-  }
 }
 
 class Result {
-  List<Address>? addresses;
+  Result({
+    required this.addresses,
+  });
 
-  Result({this.addresses});
+  final List<Address> addresses;
 
-  factory Result.fromJson(Map<String, dynamic> json) {
+  factory Result.fromJson(Map<String, dynamic> json){
     return Result(
-      addresses: json['addresses'] != null
-          ? (json['addresses'] as List).map((e) => Address.fromJson(e)).toList()
-          : null,
+      addresses: json["addresses"] == null ? [] : List<Address>.from(json["addresses"]!.map((x) => Address.fromJson(x))),
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'addresses': addresses?.map((e) => e.toJson()).toList(),
-    };
-  }
 }
 
 class Address {
-  int? id;
-  String? firmName;
-  dynamic proprietorName;
-  String? email;
-  String? phone;
-  String? street;
-  String? city;
-  dynamic zipcode;
-  String? type;
-  String? countryName;
-  String? stateName;
-  String? vat;
-
   Address({
-    this.id,
-    this.firmName,
-    this.proprietorName,
-    this.email,
-    this.phone,
-    this.street,
-    this.city,
-    this.zipcode,
-    this.type,
-    this.countryName,
-    this.stateName,
-    this.vat,
+    required this.id,
+    required this.firmName,
+    required this.proprietorName,
+    required this.email,
+    required this.phone,
+    required this.street,
+    required this.city,
+    required this.zipcode,
+    required this.type,
+    required this.countryName,
+    required this.stateName,
+    required this.vat,
   });
 
-  factory Address.fromJson(Map<String, dynamic> json) {
+  final int? id;
+  final dynamic? firmName;
+  final String? proprietorName;
+  final String? email;
+  final String? phone;
+  final String? street;
+  final String? city;
+  final dynamic? zipcode;
+  final String? type;
+  final String? countryName;
+  final String? stateName;
+  final String? vat;
+
+  factory Address.fromJson(Map<String, dynamic> json){
     return Address(
-      id: json['id'],
-      firmName: json['firm_name'],
-      proprietorName: json['proprietor_name'],
-      email: json['email'],
-      phone: json['phone'],
-      street: json['street'],
-      city: json['city'],
-      zipcode: json['zipcode'],
-      type: json['type'],
-      countryName: json['country_name'],
-      stateName: json['state_name'],
-      vat: json['vat'],
+      id: json["id"],
+      firmName: json["firm_name"],
+      proprietorName: json["proprietor_name"],
+      email: json["email"],
+      phone: json["phone"],
+      street: json["street"],
+      city: json["city"],
+      zipcode: json["zipcode"],
+      type: json["type"].toString(),
+      countryName: json["country_name"],
+      stateName: json["state_name"],
+      vat: json["vat"],
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'firm_name': firmName,
-      'proprietor_name': proprietorName,
-      'email': email,
-      'phone': phone,
-      'street': street,
-      'city': city,
-      'zipcode': zipcode,
-      'type': type,
-      'country_name': countryName,
-      'state_name': stateName,
-      'vat': vat,
-    };
-  }
 }

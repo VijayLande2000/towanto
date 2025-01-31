@@ -114,7 +114,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                               const Icon(Icons.person_outline, size: 20, color: Colors.grey),
                               const SizedBox(width: 8),
                               Text(
-                                address['name'],
+                                address['name'].toString(),
                                 style: TextStyle(
                                     fontSize: 16,
                                     color:  AppColors.black,

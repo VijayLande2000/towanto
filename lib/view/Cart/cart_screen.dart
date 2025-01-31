@@ -188,7 +188,7 @@ class _CartScreenState extends State<CartScreen> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Image.network(
-                                  "https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=$itemId&field=image_1920"
+                                  "https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=$productId&field=image_1920"
                               )
                           ),
                           const SizedBox(width: 16),
