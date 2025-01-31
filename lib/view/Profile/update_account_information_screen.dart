@@ -55,18 +55,18 @@ class _AccountInfoScreenContentState extends State<AccountInfoScreenContent> {
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
-        backgroundColor: AppColors.brightBlue,
+        // backgroundColor: AppColors.brightBlue,
         title: Text(
           "Account Information",
           style: TextStyle(
             fontSize: 20,
-            color: AppColors.black,
+            // color: AppColors.black,
             fontWeight: FontWeight.bold,
             fontFamily: MyFonts.LexendDeca_Bold,
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColors.black, size: 20),
+          icon: Icon(Icons.arrow_back, /*color: AppColors.black*/ size: 20),
           onPressed: () => Navigator.pop(context),
         ),
       ),

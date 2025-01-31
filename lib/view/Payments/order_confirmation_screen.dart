@@ -17,12 +17,12 @@ class OrderConfirmationScreen extends StatelessWidget {
           'Order Confirmation',
           style: TextStyle(
             fontFamily: MyFonts.LexendDeca_Bold,
-            color: AppColors.black,
+            // color: AppColors.black,
             fontWeight: FontWeight.w500,
           ),
         ),
         elevation: 0,
-        backgroundColor: AppColors.brightBlue,
+        // backgroundColor: AppColors.brightBlue,
           automaticallyImplyLeading: false,
       ),
       body: Container(

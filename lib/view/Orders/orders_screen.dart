@@ -80,18 +80,18 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
     return Scaffold(
       backgroundColor: AppColors.backgroundcolormenu,
       appBar: AppBar(
-        backgroundColor: AppColors.brightBlue,
+        // backgroundColor: AppColors.brightBlue,
         title: Text("Orders List",
           style: TextStyle(
             fontSize: 20,
-            color:  AppColors.black,
+            // color:  AppColors.black,
             fontWeight: FontWeight.bold,
             fontFamily: MyFonts.LexendDeca_Bold
         ),
         ),
 
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,color: AppColors.black,size: 20),
+          icon: Icon(Icons.arrow_back,size: 20),
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomeGrid(),))
         ),
       ),

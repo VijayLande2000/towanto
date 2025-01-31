@@ -202,17 +202,17 @@ class _HomeGridState extends State<HomeGrid> {
           style: TextStyle(
             fontSize: 20,
             fontFamily: MyFonts.LexendDeca_Bold,
-            color: AppColors.black,
+            // color: AppColors.black,
             fontWeight: FontWeight.w500,
           ),
         ),
         elevation: 0,
-        backgroundColor: AppColors.brightBlue,
+        // backgroundColor: AppColors.brightBlue,
         leading: Builder(builder: (context) {
           return IconButton(
             icon: const Icon(
               Icons.menu,
-              color: AppColors.black,
+              // color: AppColors.black,
             ),
             onPressed: () {
               Scaffold.of(context).openDrawer();
@@ -231,7 +231,7 @@ class _HomeGridState extends State<HomeGrid> {
             },
             child: Icon(
               Icons.search_sharp,
-              color: AppColors.black,
+              // color: AppColors.black,
               size: 24,
             ),
           ),
@@ -262,7 +262,7 @@ class _HomeGridState extends State<HomeGrid> {
                   },
                   child: Icon(
                     Icons.add_shopping_cart,
-                    color: AppColors.black,
+                    // color: AppColors.black,
                   ),
                 ),
               );
@@ -294,7 +294,7 @@ class _HomeGridState extends State<HomeGrid> {
                   },
                   child: Icon(
                     Icons.favorite_border,
-                    color: AppColors.black,
+                    // color: AppColors.black,
                   ),
                 ),
               );

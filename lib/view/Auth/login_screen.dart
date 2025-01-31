@@ -29,7 +29,7 @@ class LoginScreenContent extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
-        backgroundColor: AppColors.brightBlue,
+        // backgroundColor: AppColors.brightBlue,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.white),
@@ -38,7 +38,7 @@ class LoginScreenContent extends StatelessWidget {
         title: const Text(
           'Sign In',
           style: TextStyle(
-            color: AppColors.white,
+            // color: AppColors.white,
             fontSize: 20,
             fontFamily: MyFonts.LexendDeca_Bold,
             fontWeight: FontWeight.w500
