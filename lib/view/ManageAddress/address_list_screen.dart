@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:towanto/view/Home/home_screen.dart';
 import 'package:towanto/view/ManageAddress/edit_address_screen.dart';
 import 'package:towanto/viewModel/Address_ViewModels/remove_Address_view_model.dart';
 
@@ -48,7 +49,7 @@ class _AddressManagerState extends State<AddressManager> {
 
         leading: IconButton(
           icon: Icon(Icons.arrow_back,size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomeGrid())),
         ),
       ),
       body: Consumer<GetAddressViewModel>(
