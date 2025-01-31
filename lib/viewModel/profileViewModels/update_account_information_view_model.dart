@@ -33,14 +33,20 @@ class AccountInfoViewModel extends ChangeNotifier {
 
       // Define a mapping between API response keys and form field keys
       final Map<String, String> apiToFormFieldMapping = {
-        'name': 'firmName',
-        'partner_display_name': 'proprietorName',
+        'name': 'name',
         'username': 'email',
-        'street': 'address',
         'zipcode': 'zipCode',
         'phone': 'phone',
         'vat': 'gstNumber',
+        'street': 'address',
+        'street2': 'address2',
+        'city': 'city',
+        'country': 'country',
+        'state': 'state',
+        'firm_name': 'firmName',  // mapping `firm_name` to `firmName` in form fields
       };
+
+
 
       // Extract the 'result' field from the API response
       final responseData = response.toJson()['result'];
@@ -107,14 +113,14 @@ class AccountInfoViewModel extends ChangeNotifier {
   // List of form fields
   List<Map<String, dynamic>> formFields = [
     {
-      'key': 'firmName',
+      'key': 'name',
       'label': 'Firm Name',
       'hint': 'Enter your firm name',
       'icon': Icons.business,
       'controller': TextEditingController(),
     },
     {
-      'key': 'proprietorName',
+      'key': 'firmName',
       'label': 'Proprietor Name',
       'hint': 'Enter proprietor name',
       'icon': Icons.person,
@@ -255,4 +261,12 @@ class AccountInfoViewModel extends ChangeNotifier {
       await updateAccountPostApi(jsonEncode(body), context, sessionId!);
     }
   }
+  @override
+  void dispose() {
+    for (var field in formFields) {
+      (field['controller'] as TextEditingController).dispose();
+    }
+    super.dispose();
+  }
+
 }
