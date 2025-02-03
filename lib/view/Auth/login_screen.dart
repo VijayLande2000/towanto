@@ -40,7 +40,7 @@ class LoginScreenContent extends StatelessWidget {
           style: TextStyle(
             // color: AppColors.white,
             fontSize: 20,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
             fontWeight: FontWeight.w500
           ),
         ),
@@ -124,7 +124,7 @@ class LoginForm extends StatelessWidget {
             'Forget Password ?',
             style: TextStyle(
               color: AppColors.red,
-              fontFamily: MyFonts.LexendDeca_Bold,
+              fontFamily: MyFonts.font_Bold,
               fontWeight: FontWeight.w500,
               fontSize: 14,
 
@@ -147,7 +147,7 @@ class LoginForm extends StatelessWidget {
                 "Don't have an account? ",
                 style: TextStyle(
                   color: AppColors.black,
-                  fontFamily: MyFonts.LexendDeca_Bold,
+                  fontFamily: MyFonts.font_Bold,
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
                 ),
@@ -162,7 +162,7 @@ class LoginForm extends StatelessWidget {
                   style: TextStyle(
                     color: AppColors.red,
                     fontSize: 14,
-                    fontFamily: MyFonts.LexendDeca_Bold,
+                    fontFamily: MyFonts.font_Bold,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -211,7 +211,7 @@ class CustomTextField extends StatelessWidget {
           label,
           style: const TextStyle(
             fontSize: 14,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
             fontWeight: FontWeight.w500,
             color: AppColors.black,
           ),
@@ -247,7 +247,7 @@ class CustomTextField extends StatelessWidget {
               hintStyle: TextStyle(
                 color: AppColors.grey.withOpacity(0.7),
                 fontSize: 14,
-                fontFamily: MyFonts.LexendDeca_Bold,
+                fontFamily: MyFonts.font_Bold,
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,
@@ -279,10 +279,10 @@ class CustomTextField extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8),
             child: Text(
               errorText!,
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.errorRed,
                 fontSize: 12,
-                fontFamily: MyFonts.Lexenddeca_regular,
+                fontFamily: MyFonts.font_regular,
               ),
             ),
           ),

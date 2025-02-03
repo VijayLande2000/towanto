@@ -145,7 +145,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               fontSize: 20,
               // color: AppColors.black,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.LexendDeca_Bold),
+              fontFamily: MyFonts.font_Bold),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back,  size: 20),
@@ -201,7 +201,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       fontSize: 20,
                       color: AppColors.black,
                       fontWeight: FontWeight.bold,
-                      fontFamily: MyFonts.LexendDeca_Bold),
+                      fontFamily: MyFonts.font_Bold),
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -215,7 +215,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         fontSize: 14,
                         color: AppColors.whiteColor,
                         fontWeight: FontWeight.w600,
-                        fontFamily: MyFonts.LexendDeca_SemiBold),
+                        fontFamily: MyFonts.font_SemiBold),
                   ),
                 ),
               ],
@@ -227,7 +227,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   fontSize: 14,
                   color: AppColors.tabtxt_color,
                   fontWeight: FontWeight.normal,
-                  fontFamily: MyFonts.Lexenddeca_regular),
+                  fontFamily: MyFonts.font_regular),
             ),
             const SizedBox(height: 8),
           ],
@@ -249,7 +249,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               fontSize: 16,
               color: AppColors.black,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.LexendDeca_Bold,
+              fontFamily: MyFonts.font_Bold,
             ),
           ),
         ),
@@ -294,7 +294,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 fontSize: 14,
                                 color: AppColors.black,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: MyFonts.LexendDeca_Bold,
+                                fontFamily: MyFonts.font_Bold,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -305,7 +305,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 fontSize: 12,
                                 color: AppColors.tabtxt_color,
                                 fontWeight: FontWeight.w500,
-                                fontFamily: MyFonts.Lexenddeca_regular,
+                                fontFamily: MyFonts.font_regular,
                               ),
                             ),
                             Text(
@@ -314,7 +314,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 fontSize: 14,
                                 color: AppColors.tabtxt_color,
                                 fontWeight: FontWeight.w700,
-                                fontFamily: MyFonts.LexendDeca_Bold,
+                                fontFamily: MyFonts.font_Bold,
                               ),
                             ),
                           ],
@@ -391,7 +391,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       fontSize: 16,
                       color: AppColors.black,
                       fontWeight: FontWeight.bold,
-                      fontFamily: MyFonts.LexendDeca_Bold,
+                      fontFamily: MyFonts.font_Bold,
                     ),
                   ),
                   Icon(
@@ -458,7 +458,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             fontSize: isTotal ? 16 : 14,
             color: isTotal ? AppColors.black : AppColors.tabtxt_color,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
           ),
         ),
         Text(
@@ -467,7 +467,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               fontSize: isTotal ? 16 : 14,
               color: isTotal ? AppColors.black : AppColors.tabtxt_color,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              fontFamily: MyFonts.LexendDeca_Bold),
+              fontFamily: MyFonts.font_Bold),
         ),
       ],
     );
@@ -499,7 +499,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   fontSize: 12,
                   color: AppColors.whiteColor,
                   fontWeight: FontWeight.w500,
-                  fontFamily: MyFonts.Lexenddeca_regular
+                  fontFamily: MyFonts.font_regular
               ),
             ),
           ),
@@ -529,7 +529,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   fontSize: 12,
                   color: AppColors.whiteColor,
                   fontWeight: FontWeight.w500,
-                  fontFamily: MyFonts.Lexenddeca_regular
+                  fontFamily: MyFonts.font_regular
               ),
             ),
           ),
@@ -571,7 +571,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   fontSize: 12,
                   color: AppColors.whiteColor,
                   fontWeight: FontWeight.w500,
-                  fontFamily: MyFonts.Lexenddeca_regular
+                  fontFamily: MyFonts.font_regular
               ),
             ),
           ),
@@ -596,7 +596,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   fontSize: 12,
                   color: AppColors.whiteColor,
                   fontWeight: FontWeight.w500,
-                  fontFamily: MyFonts.Lexenddeca_regular
+                  fontFamily: MyFonts.font_regular
               ),
             ),
           ),
@@ -650,7 +650,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     fontSize: 16,
                     color: AppColors.black,
                     fontWeight: FontWeight.w600,
-                    fontFamily: MyFonts.LexendDeca_SemiBold
+                    fontFamily: MyFonts.font_SemiBold
                 ),
               ),
             ],
@@ -666,7 +666,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     fontSize: 12,
                     color: AppColors.tabtxt_color,
                     fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.Lexenddeca_regular
+                    fontFamily: MyFonts.font_regular
                 ),
               ),
             ],
@@ -682,7 +682,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     fontSize: 12,
                     color: AppColors.tabtxt_color,
                     fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.Lexenddeca_regular
+                    fontFamily: MyFonts.font_regular
                 ),
               ),
             ],
@@ -726,7 +726,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           fontSize: 16,
                           color: AppColors.black,
                           fontWeight: FontWeight.w600,
-                          fontFamily: MyFonts.Lexenddeca_regular
+                          fontFamily: MyFonts.font_regular
                       ),
                     ),
                     SizedBox(height: 4),
@@ -736,7 +736,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           fontSize: 12,
                           color: AppColors.tabtxt_color,
                           fontWeight: FontWeight.w500,
-                          fontFamily: MyFonts.Lexenddeca_regular
+                          fontFamily: MyFonts.font_regular
                       ),
                     ),
                     SizedBox(height: 4),
@@ -746,7 +746,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           fontSize: 12,
                           color: AppColors.tabtxt_color,
                           fontWeight: FontWeight.w500,
-                          fontFamily: MyFonts.Lexenddeca_regular
+                          fontFamily: MyFonts.font_regular
                       ),
                     ),
                   ],
@@ -768,7 +768,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     fontSize: 12,
                     color: AppColors.whiteColor,
                     fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.Lexenddeca_regular
+                    fontFamily: MyFonts.font_regular
                 ),
               ),
             ),
@@ -806,7 +806,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         fontSize: 15,
                         color: AppColors.tabtxt_color,
                         fontWeight: FontWeight.w600,
-                        fontFamily: MyFonts.LexendDeca_SemiBold
+                        fontFamily: MyFonts.font_SemiBold
                     ),
                   ),
                 ],
@@ -823,7 +823,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     fontSize: 12,
                     color: Colors.orange[800],
                     fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.LexendDeca_SemiBold,
+                    fontFamily: MyFonts.font_SemiBold,
                   ),
                 ),
               ),
@@ -838,7 +838,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   fontSize: 12,
                   color: AppColors.tabtxt_color,
                   fontWeight: FontWeight.w500,
-                  fontFamily: MyFonts.Lexenddeca_regular
+                  fontFamily: MyFonts.font_regular
               ),
             ),
           ),

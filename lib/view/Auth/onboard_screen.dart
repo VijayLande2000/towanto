@@ -118,7 +118,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> with SingleTickerProvider
                               fontSize: screenWidth * 0.075,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              fontFamily:MyFonts.LexendDeca_Bold,
+                              fontFamily:MyFonts.font_Bold,
                               height: 1.2,
                             ),
                             textAlign: TextAlign.center,
@@ -130,7 +130,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> with SingleTickerProvider
                               fontSize: screenWidth * 0.045,
                               fontWeight: FontWeight.w500,
                               color: AppColors.calendartextcolor,
-                              fontFamily:MyFonts.LexendDeca_Bold,
+                              fontFamily:MyFonts.font_Bold,
 
                             ),
                             textAlign: TextAlign.center,

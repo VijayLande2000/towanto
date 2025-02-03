@@ -33,7 +33,7 @@ class EnquiryScreenContent extends StatelessWidget {
             fontSize: 20,
             color:  AppColors.black,
             fontWeight: FontWeight.bold,
-            fontFamily: MyFonts.LexendDeca_Bold
+            fontFamily: MyFonts.font_Bold
         ),),
 
         leading: IconButton(
@@ -52,9 +52,9 @@ class EnquiryScreenContent extends StatelessWidget {
                   Text(
                     "Please send your Requirements to any products.we'll do our best to get back to you as soon as possible.",
                     style: const TextStyle(
-                      fontSize: 18,
-                      fontFamily: MyFonts.LexendDeca_Bold,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      fontFamily: MyFonts.font_Bold,
+                      fontWeight: FontWeight.w400,
                       color: AppColors.black,
                     ),
                   ),

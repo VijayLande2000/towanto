@@ -39,7 +39,7 @@ class ForgotPasswordScreenContent extends StatelessWidget {
           style: TextStyle(
             // color: AppColors.white,
             fontSize: 20,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -54,7 +54,7 @@ class ForgotPasswordScreenContent extends StatelessWidget {
               'Enter your email address to receive a password reset link',
               style: TextStyle(
                 fontSize: 16,
-                fontFamily: MyFonts.LexendDeca_Bold,
+                fontFamily: MyFonts.font_Bold,
                 fontWeight: FontWeight.w500,
                 color: AppColors.black,
               ),
@@ -108,7 +108,7 @@ class CustomTextField extends StatelessWidget {
           label,
           style: const TextStyle(
             fontSize: 14,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
             fontWeight: FontWeight.w500,
             color: AppColors.black,
           ),
@@ -135,7 +135,7 @@ class CustomTextField extends StatelessWidget {
               hintStyle: TextStyle(
                 color: AppColors.grey.withOpacity(0.7),
                 fontSize: 14,
-                fontFamily: MyFonts.LexendDeca_Bold,
+                fontFamily: MyFonts.font_Bold,
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,
@@ -155,10 +155,10 @@ class CustomTextField extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8),
             child: Text(
               errorText!,
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.errorRed,
                 fontSize: 12,
-                fontFamily: MyFonts.Lexenddeca_regular,
+                fontFamily: MyFonts.font_regular,
               ),
             ),
           ),

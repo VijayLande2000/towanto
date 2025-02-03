@@ -86,7 +86,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
             fontSize: 20,
             // color:  AppColors.black,
             fontWeight: FontWeight.bold,
-            fontFamily: MyFonts.LexendDeca_Bold
+            fontFamily: MyFonts.font_Bold
         ),
         ),
 
@@ -116,7 +116,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
                       "No orders",
                       style: TextStyle(
                         color: AppColors.black,
-                        fontFamily: MyFonts.LexendDeca_Bold,
+                        fontFamily: MyFonts.font_Bold,
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                       )
@@ -197,7 +197,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
                                                 fontSize: 18,
                                                 color:  AppColors.tabtxt_color,
                                                 fontWeight: FontWeight.w600,
-                                                fontFamily: MyFonts.LexendDeca_SemiBold
+                                                fontFamily: MyFonts.font_SemiBold
                                             ),
                                           ),
                                         ],
@@ -217,7 +217,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
                                               fontSize: 14,
                                               color:  AppColors.whiteColor,
                                               fontWeight: FontWeight.normal,
-                                              fontFamily: MyFonts.Lexenddeca_regular
+                                              fontFamily: MyFonts.font_regular
                                           ),
                                         ),
                                       ),
@@ -230,7 +230,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
                                         fontSize: 16,
                                         color:  AppColors.tabtxt_color,
                                         fontWeight: FontWeight.w500,
-                                        fontFamily: MyFonts.LexendDeca_Light
+                                        fontFamily: MyFonts.font_Light
                                     ),
                                   ),
                                   const SizedBox(height: 4),
@@ -240,7 +240,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
                                         fontSize: 14,
                                         color:  AppColors.tabtxt_color,
                                         fontWeight: FontWeight.w500,
-                                        fontFamily: MyFonts.Lexenddeca_regular
+                                        fontFamily: MyFonts.font_regular
                                     ),
                                   ),
                                 ],

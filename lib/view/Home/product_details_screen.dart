@@ -102,7 +102,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           'Product Details',
           style: TextStyle(
             fontSize: 18,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -154,7 +154,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           "${productDetails.displayName}",
                           style: TextStyle(
                             fontSize: 18,
-                            fontFamily: MyFonts.LexendDeca_Bold,
+                            fontFamily: MyFonts.font_Bold,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -177,7 +177,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               '(${productDetails.ratingCount} review${productDetails.ratingCount > 1 ? 's' : ''})',
                               style: TextStyle(
                                 fontSize: 14,
-                                fontFamily: MyFonts.Lexenddeca_regular,
+                                fontFamily: MyFonts.font_regular,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -200,7 +200,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 'Product Details:',
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontFamily: MyFonts.LexendDeca_Bold,
+                                  fontFamily: MyFonts.font_Bold,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -238,7 +238,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   fontSize: 16,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: MyFonts.LexendDeca_Bold),
+                                  fontFamily: MyFonts.font_Bold),
                             ),
                             IconButton(
                               icon: Icon(
@@ -263,7 +263,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 quantity.toString(),
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontFamily: MyFonts.LexendDeca_Bold,
+                                  fontFamily: MyFonts.font_Bold,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -300,7 +300,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     fontSize: 18,
                                     color: AppColors.whiteColor,
                                     fontWeight: FontWeight.bold,
-                                    fontFamily: MyFonts.LexendDeca_Bold,
+                                    fontFamily: MyFonts.font_Bold,
                                   ),
                                 ),
                               )
@@ -373,7 +373,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 18,
-                                          fontFamily: MyFonts.LexendDeca_Bold,
+                                          fontFamily: MyFonts.font_Bold,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -428,7 +428,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 style: TextStyle(
                                   color: Colors.red,
                                   fontSize: 16,
-                                  fontFamily: MyFonts.Lexenddeca_regular,
+                                  fontFamily: MyFonts.font_regular,
                                   fontWeight: FontWeight.normal,
                                 ),
                               ),
@@ -447,7 +447,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
-                                        fontFamily: MyFonts.LexendDeca_Bold,
+                                        fontFamily: MyFonts.font_Bold,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(height: 4),
@@ -456,7 +456,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 14,
-                                        fontFamily: MyFonts.Lexenddeca_regular,
+                                        fontFamily: MyFonts.font_regular,
                                         fontWeight: FontWeight.normal),
                                   ),
                                 ],
@@ -486,7 +486,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               label,
               style: TextStyle(
                   fontSize: 14,
-                  fontFamily: MyFonts.LexendDeca_Bold,
+                  fontFamily: MyFonts.font_Bold,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textbox_textcolor),
             ),
@@ -496,7 +496,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               value,
               style: TextStyle(
                   fontSize: 12,
-                  fontFamily: MyFonts.Lexenddeca_regular,
+                  fontFamily: MyFonts.font_regular,
                   fontWeight: FontWeight.normal,
                   color: AppColors.textbox_textcolor),
             ),

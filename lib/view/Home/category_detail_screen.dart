@@ -111,17 +111,23 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     // Get current navigation level
     String currentLevel = navigationStack.isEmpty ? "root" : navigationStack.last;
 
-    setState(() {
-      selectedCategoryId = categoryId;
+    // Check if state changes are necessary before calling setState
+    bool isCategoryChanged = selectedCategoryId != categoryId;
+    bool isLevelUpdated = levelSelections.indexWhere((selection) => selection.level == currentLevel) == -1;
 
-      // Update or add selection for current level
-      int existingIndex = levelSelections.indexWhere((selection) => selection.level == currentLevel);
-      if (existingIndex != -1) {
-        levelSelections[existingIndex] = NavigationLevelSelection(currentLevel, category, categoryId);
-      } else {
-        levelSelections.add(NavigationLevelSelection(currentLevel, category, categoryId));
-      }
-    });
+    if (isCategoryChanged || isLevelUpdated) {
+      setState(() {
+        selectedCategoryId = categoryId;
+
+        // Update or add selection for the current level
+        int existingIndex = levelSelections.indexWhere((selection) => selection.level == currentLevel);
+        if (existingIndex != -1) {
+          levelSelections[existingIndex] = NavigationLevelSelection(currentLevel, category, categoryId);
+        } else {
+          levelSelections.add(NavigationLevelSelection(currentLevel, category, categoryId));
+        }
+      });
+    }
 
     try {
       await fetchSubCategories(categoryId);
@@ -137,9 +143,11 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         return;
       }
 
-      setState(() {
-        navigationStack.add(category);
-      });
+      if (!navigationStack.contains(category)) {
+        setState(() {
+          navigationStack.add(category);
+        });
+      }
 
       if (subcategories.length == 1) {
         String nextCategory = subcategories.keys.first;
@@ -147,6 +155,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       }
     }
   }
+
 
   void _handleBack() async {
     print("--- Starting Back Navigation ---");
@@ -430,7 +439,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
           widget.category.name,
           style: TextStyle(
             fontSize: 20,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
             // color: AppColors.black,
             fontWeight: FontWeight.w500,
           ),
@@ -501,7 +510,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                               Text("No Products Available1",
                                   style: TextStyle(
                                     color: AppColors.black,
-                                    fontFamily: MyFonts.LexendDeca_Bold,
+                                    fontFamily: MyFonts.font_Bold,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 18,
                                   )),

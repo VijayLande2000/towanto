@@ -198,10 +198,10 @@ class _HomeGridState extends State<HomeGrid> {
       backgroundColor: AppColors.backgroundcolormenu,
       appBar: AppBar(
         title: const Text(
-          'Categories',
+          'Towanto',
           style: TextStyle(
             fontSize: 20,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
             // color: AppColors.black,
             fontWeight: FontWeight.w500,
           ),
@@ -246,7 +246,7 @@ class _HomeGridState extends State<HomeGrid> {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 8,
-                    fontFamily: MyFonts.Lexenddeca_regular,
+                    fontFamily: MyFonts.font_regular,
                     fontWeight: FontWeight.normal,
                   ),
                 ),
@@ -279,7 +279,7 @@ class _HomeGridState extends State<HomeGrid> {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 10 ,
-                    fontFamily: MyFonts.Lexenddeca_regular,
+                    fontFamily: MyFonts.font_regular,
                     fontWeight: FontWeight.normal,
                   ),
                 ),
@@ -361,7 +361,7 @@ class _HomeGridState extends State<HomeGrid> {
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: AppColors.appBarTitleTextColor,
-                      fontFamily: MyFonts.LexendDeca_SemiBold,
+                      fontFamily: MyFonts.font_SemiBold,
                     ),
                   ),
                 ),
@@ -410,7 +410,7 @@ class _HomeGridState extends State<HomeGrid> {
                             color: AppColors
                                 .whiteColor, // Text color (white for contrast)
                             fontFamily: MyFonts
-                                .LexendDeca_Bold // Ensure this font is available in your project
+                                .font_Bold // Ensure this font is available in your project
                             ),
                       ),
                     ),
@@ -424,7 +424,7 @@ class _HomeGridState extends State<HomeGrid> {
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: AppColors.appBarTitleTextColor,
-                      fontFamily: MyFonts.LexendDeca_SemiBold,
+                      fontFamily: MyFonts.font_SemiBold,
                     ),
                   ),
                 ),
@@ -472,7 +472,7 @@ class _HomeGridState extends State<HomeGrid> {
                             color: AppColors
                                 .whiteColor, // Text color (white for contrast)
                             fontFamily: MyFonts
-                                .LexendDeca_Bold // Ensure this font is available in your project
+                                .font_Bold // Ensure this font is available in your project
                             ),
                       ),
                     ),
@@ -550,7 +550,7 @@ class _CategoryCardState extends State<CategoryCard> {
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: AppColors.appBarTitleTextColor,
-                      fontFamily: MyFonts.LexendDeca_SemiBold,
+                      fontFamily: MyFonts.font_SemiBold,
                     ),
                   ),
                 ),
@@ -815,7 +815,7 @@ class DrawerItem extends StatelessWidget {
                 ? Colors.grey.shade800
                 : Colors.white, // Darker color for selected text
             fontSize: 16,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
             fontWeight: isSelected
                 ? FontWeight.bold
                 : FontWeight.normal, // Bold selected text
@@ -903,7 +903,7 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: AppColors.appBarTitleTextColor,
-                        fontFamily: MyFonts.LexendDeca_SemiBold,
+                        fontFamily: MyFonts.font_SemiBold,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -924,7 +924,7 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
                         Text(
                           '46',
                           style: TextStyle(
-                            fontFamily: MyFonts.Lexenddeca_regular,
+                            fontFamily: MyFonts.font_regular,
                             color: Colors.grey.shade600,
                             fontSize: 12,
                           ),
@@ -939,7 +939,7 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: AppColors.appBarTitleTextColor,
-                        fontFamily: MyFonts.LexendDeca_SemiBold,
+                        fontFamily: MyFonts.font_SemiBold,
                       ),
                     ),
                   ],
@@ -1030,7 +1030,7 @@ Widget _buildHorizontalBrandListView(HomePageDataViewModel viewModel) {
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: AppColors.appBarTitleTextColor,
-                        fontFamily: MyFonts.LexendDeca_SemiBold,
+                        fontFamily: MyFonts.font_SemiBold,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -1051,7 +1051,7 @@ Widget _buildHorizontalBrandListView(HomePageDataViewModel viewModel) {
                         Text(
                           '46',
                           style: TextStyle(
-                            fontFamily: MyFonts.Lexenddeca_regular,
+                            fontFamily: MyFonts.font_regular,
                             color: Colors.grey.shade600,
                             fontSize: 12,
                           ),
@@ -1066,7 +1066,7 @@ Widget _buildHorizontalBrandListView(HomePageDataViewModel viewModel) {
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: AppColors.appBarTitleTextColor,
-                        fontFamily: MyFonts.LexendDeca_SemiBold,
+                        fontFamily: MyFonts.font_SemiBold,
                       ),
                     ),
                   ],

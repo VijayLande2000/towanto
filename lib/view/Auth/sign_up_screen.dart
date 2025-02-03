@@ -128,7 +128,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           style: TextStyle(
             // color: AppColors.white,
             fontSize: 20,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -265,7 +265,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           data: Theme.of(context).copyWith(
                             textTheme: Theme.of(context).textTheme.copyWith(
                               titleMedium: const TextStyle(
-                                fontFamily: MyFonts.LexendDeca_Bold,
+                                fontFamily: MyFonts.font_Bold,
                                 color: AppColors.cardcolor,
                                 fontSize: 14, // Adjusted font color
                               ),
@@ -322,7 +322,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         label: Text(
                           gstFileName ?? 'Upload GST Document',
                           style: TextStyle(
-                              fontFamily: MyFonts.LexendDeca_Bold,
+                              fontFamily: MyFonts.font_Bold,
                               color: AppColors.cardcolor),
                         ),
                         onPressed: _pickGSTFile,
@@ -346,7 +346,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         'I accept the terms and conditions',
                         style: TextStyle(
                             fontSize: 14,
-                            fontFamily: MyFonts.LexendDeca_Bold,
+                            fontFamily: MyFonts.font_Bold,
                             color: AppColors.cardcolor),
                       ),
                       controlAffinity: ListTileControlAffinity.leading,
@@ -422,7 +422,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 hintStyle: TextStyle(
                     color: AppColors.grey,
                     fontSize: 16,
-                    fontFamily: MyFonts.LexendDeca_Bold),
+                    fontFamily: MyFonts.font_Bold),
                 prefixIcon: Icon(
                   prefixIcon,
                   color: AppColors.cardcolor,
@@ -498,7 +498,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         style: const TextStyle(
                           color: Colors.red,
                           fontSize: 12,
-                          fontFamily: MyFonts.LexendDeca_Bold,
+                          fontFamily: MyFonts.font_Bold,
                         ),
                       )
                     : const SizedBox.shrink();

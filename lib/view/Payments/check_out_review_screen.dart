@@ -89,7 +89,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                                   fontSize: 14,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w500,
-                                  fontFamily: MyFonts.Lexenddeca_regular,
+                                  fontFamily: MyFonts.font_regular,
                                   height: 1.3,
                                 ),
                               ),
@@ -138,7 +138,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
               fontSize: 16,
               color: AppColors.black,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.LexendDeca_Bold,
+              fontFamily: MyFonts.font_Bold,
             ),
           ),
         ),
@@ -182,7 +182,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                           fontSize: 14,
                           color: AppColors.black,
                           fontWeight: FontWeight.bold,
-                          fontFamily: MyFonts.LexendDeca_Bold,
+                          fontFamily: MyFonts.font_Bold,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -193,7 +193,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                           fontSize: 12,
                           color: AppColors.tabtxt_color,
                           fontWeight: FontWeight.w500,
-                          fontFamily: MyFonts.Lexenddeca_regular,
+                          fontFamily: MyFonts.font_regular,
                         ),
                       ),
                       Text(
@@ -202,7 +202,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                           fontSize: 14,
                           color: AppColors.tabtxt_color,
                           fontWeight: FontWeight.w700,
-                          fontFamily: MyFonts.LexendDeca_Bold,
+                          fontFamily: MyFonts.font_Bold,
                         ),
                       ),
                     ],
@@ -371,7 +371,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
           fontSize: 12,
           color: AppColors.whiteColor,
           fontWeight: FontWeight.w500,
-          fontFamily: MyFonts.Lexenddeca_regular,
+          fontFamily: MyFonts.font_regular,
         ),
       ),
     );
@@ -404,7 +404,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                       fontSize: 16,
                       color: AppColors.black,
                       fontWeight: FontWeight.bold,
-                      fontFamily: MyFonts.LexendDeca_Bold,
+                      fontFamily: MyFonts.font_Bold,
                     ),
                   ),
                   Icon(
@@ -442,7 +442,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
             fontSize: isTotal ? 16 : 14,
             color: isTotal ? AppColors.black : AppColors.tabtxt_color,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
           ),
         ),
         Text(
@@ -451,7 +451,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
               fontSize: isTotal ? 16 : 14,
               color: isTotal ? AppColors.black : AppColors.tabtxt_color,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              fontFamily: MyFonts.LexendDeca_Bold),
+              fontFamily: MyFonts.font_Bold),
         ),
       ],
     );
@@ -481,7 +481,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                     fontSize: 16,
                     color: AppColors.black,
                     fontWeight: FontWeight.w600,
-                    fontFamily: MyFonts.LexendDeca_SemiBold
+                    fontFamily: MyFonts.font_SemiBold
                 ),
               ),
             ],
@@ -497,7 +497,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                     fontSize: 12,
                     color: AppColors.tabtxt_color,
                     fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.Lexenddeca_regular
+                    fontFamily: MyFonts.font_regular
                 ),
               ),
             ],
@@ -513,7 +513,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                     fontSize: 12,
                     color: AppColors.tabtxt_color,
                     fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.Lexenddeca_regular
+                    fontFamily: MyFonts.font_regular
                 ),
               ),
             ],
@@ -557,7 +557,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                           fontSize: 16,
                           color: AppColors.black,
                           fontWeight: FontWeight.w600,
-                          fontFamily: MyFonts.Lexenddeca_regular
+                          fontFamily: MyFonts.font_regular
                       ),
                     ),
                     SizedBox(height: 4),
@@ -567,7 +567,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                           fontSize: 12,
                           color: AppColors.tabtxt_color,
                           fontWeight: FontWeight.w500,
-                          fontFamily: MyFonts.Lexenddeca_regular
+                          fontFamily: MyFonts.font_regular
                       ),
                     ),
                     SizedBox(height: 4),
@@ -577,7 +577,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                           fontSize: 12,
                           color: AppColors.tabtxt_color,
                           fontWeight: FontWeight.w500,
-                          fontFamily: MyFonts.Lexenddeca_regular
+                          fontFamily: MyFonts.font_regular
                       ),
                     ),
                   ],
@@ -599,7 +599,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                     fontSize: 12,
                     color: AppColors.whiteColor,
                     fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.Lexenddeca_regular
+                    fontFamily: MyFonts.font_regular
                 ),
               ),
             ),
@@ -637,7 +637,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                         fontSize: 15,
                         color: AppColors.tabtxt_color,
                         fontWeight: FontWeight.w600,
-                        fontFamily: MyFonts.LexendDeca_SemiBold
+                        fontFamily: MyFonts.font_SemiBold
                     ),
                   ),
                 ],
@@ -654,7 +654,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                     fontSize: 12,
                     color: Colors.orange[800],
                     fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.LexendDeca_SemiBold,
+                    fontFamily: MyFonts.font_SemiBold,
                   ),
                 ),
               ),
@@ -669,7 +669,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                   fontSize: 12,
                   color: AppColors.tabtxt_color,
                   fontWeight: FontWeight.w500,
-                  fontFamily: MyFonts.Lexenddeca_regular
+                  fontFamily: MyFonts.font_regular
               ),
             ),
           ),

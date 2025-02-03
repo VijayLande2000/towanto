@@ -62,7 +62,7 @@ class _AccountInfoScreenContentState extends State<AccountInfoScreenContent> {
             fontSize: 20,
             // color: AppColors.black,
             fontWeight: FontWeight.bold,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
           ),
         ),
         leading: IconButton(
@@ -117,7 +117,7 @@ class _AccountInfoScreenContentState extends State<AccountInfoScreenContent> {
                         data: Theme.of(context).copyWith(
                           textTheme: Theme.of(context).textTheme.copyWith(
                             titleMedium: const TextStyle(
-                              fontFamily: MyFonts.LexendDeca_Bold,
+                              fontFamily: MyFonts.font_Bold,
                               color: AppColors.cardcolor,
                               fontSize: 14,
                             ),

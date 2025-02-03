@@ -90,7 +90,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
               fontSize: 20,
               // color: AppColors.black,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.LexendDeca_Bold),
+              fontFamily: MyFonts.font_Bold),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, /*color: AppColors.black*/ size: 20),
@@ -118,7 +118,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         "No items in your wishlist",
                         style: TextStyle(
                           color: AppColors.black,
-                          fontFamily: MyFonts.LexendDeca_Bold,
+                          fontFamily: MyFonts.font_Bold,
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
                         )
@@ -208,7 +208,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                           fontSize: 16,
                                           color: AppColors.black,
                                           fontWeight: FontWeight.bold,
-                                          fontFamily: MyFonts.LexendDeca_Bold),
+                                          fontFamily: MyFonts.font_Bold),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -219,7 +219,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                           fontSize: 14,
                                           color: AppColors.lightBlue,
                                           fontWeight: FontWeight.bold,
-                                          fontFamily: MyFonts.LexendDeca_Bold),
+                                          fontFamily: MyFonts.font_Bold),
                                     ),
                                   ],
                                 ),
@@ -312,7 +312,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                       style: const TextStyle(
                                         color : Colors.white,
                                         fontSize: 14,
-                                        fontFamily: MyFonts.LexendDeca_Bold,
+                                        fontFamily: MyFonts.font_Bold,
                                         fontWeight: FontWeight.w500,
 
                                       ),
@@ -439,7 +439,7 @@ class WishlistCard extends StatelessWidget {
                             fontSize: 16,
                             color: AppColors.black,
                             fontWeight: FontWeight.bold,
-                            fontFamily: MyFonts.LexendDeca_Bold),
+                            fontFamily: MyFonts.font_Bold),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -450,7 +450,7 @@ class WishlistCard extends StatelessWidget {
                             fontSize: 14,
                             color: AppColors.lightBlue,
                             fontWeight: FontWeight.bold,
-                            fontFamily: MyFonts.LexendDeca_Bold),
+                            fontFamily: MyFonts.font_Bold),
                       ),
                     ],
                   ),
