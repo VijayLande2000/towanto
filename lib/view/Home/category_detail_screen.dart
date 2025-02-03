@@ -170,6 +170,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
 
 
 
+
   void _handleBack() async {
     print("--- Starting Back Navigation ---");
 
@@ -378,7 +379,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                         color: Colors.black,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        fontFamily: MyFonts.LexendDeca_Bold
                       ),
                     ),
                     if (idx < navigationStack.length - 1)
@@ -470,7 +470,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
           widget.category.name,
           style: TextStyle(
             fontSize: 20,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
             // color: AppColors.black,
             fontWeight: FontWeight.w500,
           ),
@@ -541,7 +541,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                               Text("No Products Available1",
                                   style: TextStyle(
                                     color: AppColors.black,
-                                    fontFamily: MyFonts.LexendDeca_Bold,
+                                    fontFamily: MyFonts.font_Bold,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 18,
                                   )),

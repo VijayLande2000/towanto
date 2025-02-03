@@ -109,7 +109,7 @@ class _CartScreenState extends State<CartScreen> {
               fontSize: 20,
               // color: AppColors.black,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.LexendDeca_Bold
+              fontFamily: MyFonts.font_Bold
           ),
         ),
         leading: IconButton(
@@ -141,7 +141,7 @@ class _CartScreenState extends State<CartScreen> {
                         "No items in your cart.",
                         style: TextStyle(
                           color: AppColors.black,
-                          fontFamily: MyFonts.LexendDeca_Bold,
+                          fontFamily: MyFonts.font_Bold,
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
                         )
@@ -202,7 +202,7 @@ class _CartScreenState extends State<CartScreen> {
                                       fontSize: 16,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.bold,
-                                      fontFamily: MyFonts.LexendDeca_Bold
+                                      fontFamily: MyFonts.font_Bold
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -212,7 +212,7 @@ class _CartScreenState extends State<CartScreen> {
                                       fontSize: 14,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.bold,
-                                      fontFamily: MyFonts.LexendDeca_Bold
+                                      fontFamily: MyFonts.font_Bold
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -247,7 +247,7 @@ class _CartScreenState extends State<CartScreen> {
                                             fontSize: 16,
                                             color: AppColors.black,
                                             fontWeight: FontWeight.bold,
-                                            fontFamily: MyFonts.LexendDeca_Bold,
+                                            fontFamily: MyFonts.font_Bold,
                                           ),
                                         ),
                                       ),
@@ -329,7 +329,7 @@ Widget _buildPriceRow(String label, double amount, {bool isTotal = false}) {
               fontSize: 16,
               color: AppColors.black,
               fontWeight: isTotal ? FontWeight.w600 : FontWeight.w500,
-              fontFamily: MyFonts.LexendDeca_Bold
+              fontFamily: MyFonts.font_Bold
           ),
         ),
         Text(
@@ -338,7 +338,7 @@ Widget _buildPriceRow(String label, double amount, {bool isTotal = false}) {
               fontSize: 16,
               color: AppColors.black,
               fontWeight: isTotal ? FontWeight.w600 : FontWeight.normal,
-              fontFamily: MyFonts.LexendDeca_Bold
+              fontFamily: MyFonts.font_Bold
           ),
         ),
       ],

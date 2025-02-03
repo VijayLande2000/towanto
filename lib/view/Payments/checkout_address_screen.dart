@@ -207,7 +207,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
                 fontSize: 16,
                 color:  AppColors.whiteColor,
                 fontWeight: FontWeight.bold,
-                fontFamily: MyFonts.LexendDeca_Bold
+                fontFamily: MyFonts.font_Bold
             ),
           ),
         ],
@@ -346,7 +346,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
                           ? AppColors.whiteColor
                           : AppColors.tabtxt_color,
                       fontWeight: FontWeight.bold,
-                      fontFamily: MyFonts.LexendDeca_Bold),
+                      fontFamily: MyFonts.font_Bold),
                 ),
               ),
             ),
@@ -358,7 +358,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
                   color:
                       isActive ? AppColors.brightBlue : AppColors.tabtxt_color,
                   fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                  fontFamily: MyFonts.LexendDeca_Bold),
+                  fontFamily: MyFonts.font_Bold),
             ),
           ],
         ),
@@ -403,7 +403,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
                     fontSize: 16,
                     color: AppColors.grey,
                     fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.Lexenddeca_regular),
+                    fontFamily: MyFonts.font_regular),
               ),
               const SizedBox(height: 4),
               Consumer<CartListViewModel>(
@@ -414,7 +414,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
                       fontSize: 24,
                       color: AppColors.black,
                       fontWeight: FontWeight.bold,
-                      fontFamily: MyFonts.LexendDeca_Bold,
+                      fontFamily: MyFonts.font_Bold,
                     ),
                   );
                 },
@@ -441,7 +441,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
                   fontSize: 16,
                   color: AppColors.whiteColor,
                   fontWeight: FontWeight.bold,
-                  fontFamily: MyFonts.LexendDeca_Bold),
+                  fontFamily: MyFonts.font_Bold),
             ),
           ),
         ],
@@ -507,7 +507,7 @@ class AddressCard extends StatelessWidget {
                         fontSize: 16,
                         color: AppColors.black,
                         fontWeight: FontWeight.w600,
-                        fontFamily: MyFonts.LexendDeca_SemiBold),
+                        fontFamily: MyFonts.font_SemiBold),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -516,7 +516,7 @@ class AddressCard extends StatelessWidget {
                         fontSize: 14,
                         color: AppColors.grey,
                         fontWeight: FontWeight.w500,
-                        fontFamily: MyFonts.Lexenddeca_regular),
+                        fontFamily: MyFonts.font_regular),
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -527,7 +527,7 @@ class AddressCard extends StatelessWidget {
                             fontSize: 15,
                             color: AppColors.black,
                             fontWeight: FontWeight.w500,
-                            fontFamily: MyFonts.Lexenddeca_regular),
+                            fontFamily: MyFonts.font_regular),
                       ),
                       Text(
                         ' $contact',
@@ -535,7 +535,7 @@ class AddressCard extends StatelessWidget {
                             fontSize: 14,
                             color: AppColors.grey,
                             fontWeight: FontWeight.w500,
-                            fontFamily: MyFonts.Lexenddeca_regular),
+                            fontFamily: MyFonts.font_regular),
                       ),
                     ],
                   ),
@@ -548,7 +548,7 @@ class AddressCard extends StatelessWidget {
                             fontSize: 15,
                             color: AppColors.black,
                             fontWeight: FontWeight.w500,
-                            fontFamily: MyFonts.Lexenddeca_regular),
+                            fontFamily: MyFonts.font_regular),
                       ),
                       Expanded(
                         child: Text(
@@ -557,7 +557,7 @@ class AddressCard extends StatelessWidget {
                             fontSize: 14,
                             color: AppColors.grey,
                             fontWeight: FontWeight.w500,
-                            fontFamily: MyFonts.Lexenddeca_regular,
+                            fontFamily: MyFonts.font_regular,
                           ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
@@ -599,7 +599,7 @@ class AddressCard extends StatelessWidget {
                             fontSize: 14,
                             color: AppColors.black,
                             fontWeight: FontWeight.bold,
-                            fontFamily: MyFonts.LexendDeca_Bold),
+                            fontFamily: MyFonts.font_Bold),
                       ),
                     ],
                   ),
@@ -620,7 +620,7 @@ class AddressCard extends StatelessWidget {
                             fontSize: 14,
                             color: AppColors.black,
                             fontWeight: FontWeight.bold,
-                            fontFamily: MyFonts.LexendDeca_Bold),
+                            fontFamily: MyFonts.font_Bold),
                       ),
                     ],
                   ),

@@ -46,7 +46,7 @@ class CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> with Autom
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        fontFamily: MyFonts.LexendDeca_Bold,
+                        fontFamily: MyFonts.font_Bold,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -132,7 +132,7 @@ class CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> with Autom
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color:AppColors.black,
-                      fontFamily: MyFonts.LexendDeca_Bold,
+                      fontFamily: MyFonts.font_Bold,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -141,7 +141,7 @@ class CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> with Autom
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.grey,
-                      fontFamily: MyFonts.Lexenddeca_regular,
+                      fontFamily: MyFonts.font_regular,
                     ),
                   ),
                 ],

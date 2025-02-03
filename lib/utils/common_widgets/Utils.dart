@@ -52,7 +52,7 @@ class Utils {
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
-                fontFamily: MyFonts.LexendDeca_Bold,
+                fontFamily: MyFonts.font_Bold,
                 fontWeight: FontWeight.w600,
               ),
             ),

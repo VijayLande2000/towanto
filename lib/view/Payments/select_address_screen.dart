@@ -72,7 +72,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
             fontSize: 20,
             // color: AppColors.black,
             fontWeight: FontWeight.bold,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
           ),
         ),
         leading: IconButton(
@@ -119,7 +119,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                                     fontSize: 16,
                                     color:  AppColors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontFamily: MyFonts.LexendDeca_Bold
+                                    fontFamily: MyFonts.font_Bold
                                 ),
                               ),
                             ],
@@ -140,7 +140,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                                       fontSize: 14,
                                       color:  AppColors.black,
                                       fontWeight: FontWeight.w500,
-                                      fontFamily: MyFonts.LexendDeca_Bold
+                                      fontFamily: MyFonts.font_Bold
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -160,7 +160,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                                     fontSize: 14,
                                     color:  AppColors.black,
                                     fontWeight: FontWeight.w500,
-                                    fontFamily: MyFonts.LexendDeca_Bold
+                                    fontFamily: MyFonts.font_Bold
                                 ),
                               ),
                             ],
@@ -175,7 +175,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                                     fontSize: 14,
                                     color:  AppColors.black,
                                     fontWeight: FontWeight.w500,
-                                    fontFamily: MyFonts.LexendDeca_Bold
+                                    fontFamily: MyFonts.font_Bold
                                 ),
                               ),
                             ],
@@ -228,7 +228,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                 fontSize: 16,
                 color:  AppColors.whiteColor,
                 fontWeight: FontWeight.bold,
-                fontFamily: MyFonts.LexendDeca_Bold
+                fontFamily: MyFonts.font_Bold
             ),
           ),
         ],

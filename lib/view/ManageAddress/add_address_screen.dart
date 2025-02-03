@@ -70,7 +70,7 @@ class _AddAddressInfoScreenContentState extends State<AddAddressInfoScreenConten
             fontSize: 20,
             // color: AppColors.black,
             fontWeight: FontWeight.bold,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
           ),
         ),
         leading: IconButton(
@@ -138,7 +138,7 @@ class _AddAddressInfoScreenContentState extends State<AddAddressInfoScreenConten
                         data: Theme.of(context).copyWith(
                           textTheme: Theme.of(context).textTheme.copyWith(
                             titleMedium: const TextStyle(
-                              fontFamily: MyFonts.LexendDeca_Bold,
+                              fontFamily: MyFonts.font_Bold,
                               color: AppColors.cardcolor,
                               fontSize: 14,
                             ),
@@ -213,7 +213,7 @@ class CustomDropdownField extends StatelessWidget {
           label,
           style: const TextStyle(
             fontSize: 14,
-            fontFamily: MyFonts.LexendDeca_Bold,
+            fontFamily: MyFonts.font_Bold,
             fontWeight: FontWeight.w500,
             color: AppColors.black,
           ),
@@ -248,7 +248,7 @@ class CustomDropdownField extends StatelessWidget {
                 style: TextStyle(
                   color: AppColors.grey.withOpacity(0.7),
                   fontSize: 14,
-                  fontFamily: MyFonts.LexendDeca_Bold,
+                  fontFamily: MyFonts.font_Bold,
                 ),
               ),
               isExpanded: true,
@@ -264,7 +264,7 @@ class CustomDropdownField extends StatelessWidget {
                     item,
                     style: const TextStyle(
                       fontSize: 14,
-                      fontFamily: MyFonts.Lexenddeca_regular,
+                      fontFamily: MyFonts.font_regular,
                     ),
                   ),
                 );
@@ -281,7 +281,7 @@ class CustomDropdownField extends StatelessWidget {
               style: const TextStyle(
                 color: AppColors.errorRed,
                 fontSize: 12,
-                fontFamily: MyFonts.Lexenddeca_regular,
+                fontFamily: MyFonts.font_regular,
               ),
             ),
           ),

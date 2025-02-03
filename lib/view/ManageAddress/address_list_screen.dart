@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:towanto/view/Home/home_screen.dart';
 import 'package:towanto/view/ManageAddress/edit_address_screen.dart';
 import 'package:towanto/viewModel/Address_ViewModels/remove_Address_view_model.dart';
 
@@ -43,12 +44,12 @@ class _AddressManagerState extends State<AddressManager> {
             fontSize: 20,
             // color:  AppColors.black,
             fontWeight: FontWeight.bold,
-            fontFamily: MyFonts.LexendDeca_Bold
+            fontFamily: MyFonts.font_Bold
         ),),
 
         leading: IconButton(
           icon: Icon(Icons.arrow_back,size: 20),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomeGrid())),
         ),
       ),
       body: Consumer<GetAddressViewModel>(
@@ -94,7 +95,7 @@ class _AddressManagerState extends State<AddressManager> {
                                           fontSize: 16,
                                           color:  AppColors.black,
                                           fontWeight: FontWeight.bold,
-                                          fontFamily: MyFonts.LexendDeca_Bold
+                                          fontFamily: MyFonts.font_Bold
                                       ),
                                     ),
                                   ],
@@ -115,7 +116,7 @@ class _AddressManagerState extends State<AddressManager> {
                                             fontSize: 14,
                                             color:  AppColors.black,
                                             fontWeight: FontWeight.w500,
-                                            fontFamily: MyFonts.LexendDeca_Bold
+                                            fontFamily: MyFonts.font_Bold
                                         ),
                                       ),
                                     ),
@@ -134,7 +135,7 @@ class _AddressManagerState extends State<AddressManager> {
                                           fontSize: 14,
                                           color:  AppColors.black,
                                           fontWeight: FontWeight.w500,
-                                          fontFamily: MyFonts.LexendDeca_Bold
+                                          fontFamily: MyFonts.font_Bold
                                       ),
                                     ),
                                   ],
@@ -179,7 +180,7 @@ class _AddressManagerState extends State<AddressManager> {
                                             fontSize: 16,
                                             color: AppColors.lightBlue,
                                             fontWeight: FontWeight.w400,
-                                            fontFamily: MyFonts.Lexenddeca_regular,
+                                            fontFamily: MyFonts.font_regular,
                                           ),
                                         ),
                                         style: TextButton.styleFrom(
@@ -199,7 +200,7 @@ class _AddressManagerState extends State<AddressManager> {
                                                 style: TextStyle(
                                                   color: AppColors.red,
                                                   fontWeight: FontWeight.w600,
-                                                  fontFamily: MyFonts.LexendDeca_Bold,
+                                                  fontFamily: MyFonts.font_Bold,
                                                 ),
                                                 overflow: TextOverflow.ellipsis, // Ensures text does not overflow
                                               ),
@@ -219,7 +220,7 @@ class _AddressManagerState extends State<AddressManager> {
                                                   style: TextStyle(
                                                     color: AppColors.red,
                                                     fontWeight: FontWeight.w600,
-                                                    fontFamily: MyFonts.LexendDeca_Bold,
+                                                    fontFamily: MyFonts.font_Bold,
                                                   ),
                                                   overflow: TextOverflow.ellipsis, // Ensures text does not overflow
                                                 ),
@@ -239,7 +240,7 @@ class _AddressManagerState extends State<AddressManager> {
                                                 fontSize: 16,
                                                 color: AppColors.red,
                                                 fontWeight: FontWeight.w400,
-                                                fontFamily: MyFonts.Lexenddeca_regular,
+                                                fontFamily: MyFonts.font_regular,
                                               ),
                                             ),
                                             style: TextButton.styleFrom(
@@ -295,7 +296,7 @@ class _AddressManagerState extends State<AddressManager> {
                 fontSize: 16,
                 color:  AppColors.whiteColor,
                 fontWeight: FontWeight.bold,
-                fontFamily: MyFonts.LexendDeca_Bold
+                fontFamily: MyFonts.font_Bold
             ),
           ),
         ],
