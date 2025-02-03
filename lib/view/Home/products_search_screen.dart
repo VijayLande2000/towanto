@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/view/Home/product_details_screen.dart';
@@ -125,7 +126,13 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
           ),
           child: InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsPage(categoryId: product.id.toString(),),));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailsPage(
+                      categoryId: product.id.toString(),
+                    ),
+                  ));
 
               // Handle product tap
             },
@@ -264,50 +271,145 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
           return Column(
             children: [
               // Search Bar
+              // Container(
+              //   padding: const EdgeInsets.all(16),
+              //   child: TextField(
+              //     controller: _searchController,
+              //     focusNode: _searchFocusNode,
+              //     onChanged: (query) => _handleSearch(query, viewModel),
+              //     decoration: InputDecoration(
+              //       hintText: 'Search products...',
+              //       hintStyle: TextStyle(
+              //         fontSize: 14,
+              //         color: AppColors.black,
+              //         fontWeight: FontWeight.normal,
+              //         fontFamily: MyFonts.Lexenddeca_regular,
+              //       ),
+              //       prefixIcon: const Icon(Icons.search, color: AppColors.grey),
+              //       filled: true,
+              //       fillColor: Colors.white,
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(12),
+              //         borderSide: BorderSide.none,
+              //       ),
+              //       enabledBorder: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(12),
+              //         borderSide: BorderSide(color: Colors.grey.shade300),
+              //       ),
+              //       focusedBorder: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(12),
+              //         borderSide: BorderSide(color: Colors.blue.shade400),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Container(
                 padding: const EdgeInsets.all(16),
-                child: TextField(
-                  controller: _searchController,
-                  focusNode: _searchFocusNode,
-                  onChanged: (query) => _handleSearch(query, viewModel),
-                  decoration: InputDecoration(
-                    hintText: 'Search products...',
-                    hintStyle: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.black,
-                      fontWeight: FontWeight.normal,
-                      fontFamily: MyFonts.Lexenddeca_regular,
+                child: Stack(
+                  children: [
+                    TextField(
+                      controller: _searchController,
+                      focusNode: _searchFocusNode,
+                      onChanged: (query) => _handleSearch(query, viewModel),
+                      decoration: InputDecoration(
+                        hintText: '',
+                        prefixIcon: const Icon(Icons.search, color: AppColors.grey),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Colors.blue.shade400),
+                        ),
+                      ),
                     ),
-                    prefixIcon: const Icon(Icons.search, color: AppColors.grey),
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
+                    Positioned(
+                      left: 48,
+                      top: 0,
+                      bottom: 0,
+                      child: ValueListenableBuilder<TextEditingValue>(
+                        valueListenable: _searchController,
+                        builder: (context, value, child) {
+                          return value.text.isEmpty
+                              ? Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Search',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: MyFonts.Lexenddeca_regular,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                DefaultTextStyle(
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: MyFonts.Lexenddeca_regular,
+                                  ),
+                                  child: AnimatedTextKit(
+                                    pause: const Duration(milliseconds: 1000),
+                                    animatedTexts: [
+                                      RotateAnimatedText(
+                                        'seeds...',
+                                        duration: const Duration(milliseconds: 1000),
+                                      ),
+                                      RotateAnimatedText(
+                                        'pesticides...',
+                                        duration: const Duration(milliseconds: 1000),
+                                      ),
+                                      RotateAnimatedText(
+                                        'machinery...',
+                                        duration: const Duration(milliseconds: 1000),
+                                      ),
+                                      RotateAnimatedText(
+                                        'seasonal products...',
+                                        duration: const Duration(milliseconds: 000),
+                                      ),
+                                      RotateAnimatedText(
+                                        'brands...',
+                                        duration: const Duration(milliseconds: 2000),
+                                      ),
+                                    ],
+                                    repeatForever: true,
+                                    isRepeatingAnimation: true,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                              : const SizedBox.shrink();
+                        },
+                      ),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.grey.shade300),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.blue.shade400),
-                    ),
-                  ),
+                  ],
                 ),
               ),
-
               // Content Area
               Expanded(
-              child: viewModel.loading
-              ? Center(
-          child: Utils.loadingIndicator(context), // Corrected this line
-          )
-              : !isSearching
-          ? _buildEmptyState()
-              : viewModel.products.isEmpty
-                 ? _buildNoResultsFound()
-                 : _buildProductGrid(viewModel.products),
+                child: viewModel.loading
+                    ? Center(
+                        child: Utils.loadingIndicator(
+                            context), // Corrected this line
+                      )
+                    : !isSearching
+                        ? _buildEmptyState()
+                        : viewModel.products.isEmpty
+                            ? _buildNoResultsFound()
+                            : _buildProductGrid(viewModel.products),
               ),
             ],
           );

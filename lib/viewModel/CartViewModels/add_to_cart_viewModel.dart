@@ -26,6 +26,12 @@ class AddToCartViewModel extends ChangeNotifier {
     _inCart[productId] = value;
     notifyListeners();
   }
+  /// **Method to Remove All Items from Cart**
+  void clearCart() {
+    _inCart.clear(); // Remove all cart items
+    _loading.clear(); // Clear loading states
+    notifyListeners();
+  }
 
   Future<void> addToCartApi(int productId, dynamic data, BuildContext context,String SessionId) async {
     try {

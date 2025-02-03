@@ -26,7 +26,6 @@ class CategoriesListViewModel extends ChangeNotifier {
   /// Recursive function to build a nested map for categories and subcategories
   Map<String, dynamic> buildCategoryTree(List<CategoryChilds> subcategories) {
     Map<String, dynamic> tree = {};
-
     for (var subcategory in subcategories) {
       String name = subcategory.displayName ?? "Unknown";
       String id = subcategory.id?.toString() ?? "Unknown"; // Convert int to String
@@ -41,7 +40,6 @@ class CategoriesListViewModel extends ChangeNotifier {
         tree[name] = {'id': id, 'subcategories': {}}; // No further subcategories, empty map
       }
     }
-
     return tree;
   }
 

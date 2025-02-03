@@ -90,6 +90,18 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       await _fetchSubCartItems();
     }
   }
+  Future<void> fetchInitialSubCategories(dynamic categoryId) async {
+    // Obtain the instance of CategoriesListViewModel
+    final categoriesListViewModel =
+    Provider.of<CategoriesListViewModel>(context, listen: false);
+    print("fnvklnf" + widget.category.id.toString());
+    print("fnvklnf" + categoryId.toString());
+      await categoriesListViewModel.subCategoriesListViewModelApi(
+          categoryId.toString(), context);
+      await _fetchSubCartItems();
+
+  }
+
 
   String? selectedCategoryId;
   List<String> navigationStack = [];
@@ -111,17 +123,23 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     // Get current navigation level
     String currentLevel = navigationStack.isEmpty ? "root" : navigationStack.last;
 
-    setState(() {
-      selectedCategoryId = categoryId;
+    // Check if state changes are necessary before calling setState
+    bool isCategoryChanged = selectedCategoryId != categoryId;
+    bool isLevelUpdated = levelSelections.indexWhere((selection) => selection.level == currentLevel) == -1;
 
-      // Update or add selection for current level
-      int existingIndex = levelSelections.indexWhere((selection) => selection.level == currentLevel);
-      if (existingIndex != -1) {
-        levelSelections[existingIndex] = NavigationLevelSelection(currentLevel, category, categoryId);
-      } else {
-        levelSelections.add(NavigationLevelSelection(currentLevel, category, categoryId));
-      }
-    });
+    if (isCategoryChanged || isLevelUpdated) {
+      setState(() {
+        selectedCategoryId = categoryId;
+
+        // Update or add selection for the current level
+        int existingIndex = levelSelections.indexWhere((selection) => selection.level == currentLevel);
+        if (existingIndex != -1) {
+          levelSelections[existingIndex] = NavigationLevelSelection(currentLevel, category, categoryId);
+        } else {
+          levelSelections.add(NavigationLevelSelection(currentLevel, category, categoryId));
+        }
+      });
+    }
 
     try {
       await fetchSubCategories(categoryId);
@@ -137,9 +155,11 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         return;
       }
 
-      setState(() {
-        navigationStack.add(category);
-      });
+      if (!navigationStack.contains(category)) {
+        setState(() {
+          navigationStack.add(category);
+        });
+      }
 
       if (subcategories.length == 1) {
         String nextCategory = subcategories.keys.first;
@@ -147,6 +167,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       }
     }
   }
+
+
 
   void _handleBack() async {
     print("--- Starting Back Navigation ---");
@@ -163,28 +185,45 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     setState(() {
       navigationStack.removeLast();
 
-      // Restore previous level's selection if it exists
-      String previousLevel = navigationStack.isEmpty ? "root" : navigationStack.last;
-      NavigationLevelSelection? previousSelection = levelSelections
-          .firstWhere((selection) => selection.level == previousLevel,
-          orElse: () => NavigationLevelSelection("", "", ""));
-
-      if (previousSelection.level.isNotEmpty) {
-        selectedCategoryId = previousSelection.selectedId;
-      } else {
+      // If we're going back to root, clear all selections
+      if (navigationStack.length==1) {
+        levelSelections.clear();
         selectedCategoryId = null;
+
+        // Make API call with widget.category.id
+        try {
+          final categoryId = widget.category.id.toString();
+          fetchInitialSubCategories(categoryId); // Assuming this is your API call method
+          print("Making root level API call with category ID: $categoryId");
+        } catch (e) {
+          print("Error making root level API call: $e");
+        }
+      } else {
+        // Restore previous level's selection if not at root
+        String previousLevel = navigationStack.last;
+        NavigationLevelSelection? previousSelection = levelSelections
+            .firstWhere((selection) => selection.level == previousLevel,
+            orElse: () => NavigationLevelSelection("", "", ""));
+
+        if (previousSelection.level.isNotEmpty) {
+          selectedCategoryId = previousSelection.selectedId;
+        } else {
+          selectedCategoryId = null;
+        }
+
+        // Fetch subcategories for previous selection if it exists
+        if (selectedCategoryId != null) {
+          try {
+            fetchSubCategories(selectedCategoryId!);
+          } catch (e) {
+            print("Error fetching subcategories: $e");
+          }
+        }
       }
     });
-
-    // Fetch subcategories for previous selection if it exists
-    if (selectedCategoryId != null) {
-      try {
-        await fetchSubCategories(selectedCategoryId!);
-      } catch (e) {
-        print("Error fetching subcategories: $e");
-      }
-    }
   }
+
+
   Widget _buildCategoryChip(BuildContext context, String category) {
     final hasSubcategories = _hasSubcategories(context, category);
     final categoryId = _getCategoryId(context, category);
@@ -339,6 +378,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                         color: Colors.black,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
+                        fontFamily: MyFonts.LexendDeca_Bold
                       ),
                     ),
                     if (idx < navigationStack.length - 1)
@@ -718,7 +758,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                                         child:
                                                             CircularProgressIndicator(
                                                           strokeWidth: 2,
-                                                          color: Colors.black87,
+                                                          color: AppColors.brightBlue,
                                                         ),
                                                       )
                                                     : Text(

@@ -6,6 +6,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:towanto/model/OrdersModels/create_order_model.dart';
 import 'package:towanto/view/Cart/cart_screen.dart';
 import 'package:towanto/view/Payments/order_confirmation_screen.dart';
+import 'package:towanto/viewModel/CartViewModels/add_to_cart_viewModel.dart';
 import 'package:towanto/viewModel/OrdersViewModels/create_order_view_model.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
@@ -153,6 +154,10 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
     // await PreferencesHelper.saveString("selectedPaymentMethod","");
     final paymentConfirmationViewModel = Provider.of<PaymentConfirmationViewModel>(context, listen: false);
     paymentConfirmationViewModel.paymentConfirmation(context);
+    final addtoCartViewModel = Provider.of<AddToCartViewModel>(context, listen: false);
+    addtoCartViewModel.clearCart();
+
+
   }
 
   Future<void> _handlePaymentError(PaymentFailureResponse response) async {
