@@ -19,10 +19,17 @@ class CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> with Autom
   @override
   bool get wantKeepAlive => true;
 
+
+  void clearPaymentSelection() {
+    setState(() {
+      selectedPaymentMethod = null; // Reset selection
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-
+    clearPaymentSelection();
     super.initState();
   }
   static String? selectedPaymentMethod;

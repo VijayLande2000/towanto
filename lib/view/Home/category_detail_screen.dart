@@ -90,18 +90,17 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       await _fetchSubCartItems();
     }
   }
+
   Future<void> fetchInitialSubCategories(dynamic categoryId) async {
     // Obtain the instance of CategoriesListViewModel
     final categoriesListViewModel =
-    Provider.of<CategoriesListViewModel>(context, listen: false);
+        Provider.of<CategoriesListViewModel>(context, listen: false);
     print("fnvklnf" + widget.category.id.toString());
     print("fnvklnf" + categoryId.toString());
-      await categoriesListViewModel.subCategoriesListViewModelApi(
-          categoryId.toString(), context);
-      await _fetchSubCartItems();
-
+    await categoriesListViewModel.subCategoriesListViewModelApi(
+        categoryId.toString(), context);
+    await _fetchSubCartItems();
   }
-
 
   String? selectedCategoryId;
   List<String> navigationStack = [];
@@ -111,7 +110,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
 
   List<NavigationLevelSelection> levelSelections = [];
 
-  Future<void> _handleCategorySelect(BuildContext context, String category) async {
+  Future<void> _handleCategorySelect(
+      BuildContext context, String category) async {
     print("--- Starting Category Selection ---");
 
     String? categoryId = _getCategoryId(context, category);
@@ -121,22 +121,28 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     }
 
     // Get current navigation level
-    String currentLevel = navigationStack.isEmpty ? "root" : navigationStack.last;
+    String currentLevel =
+        navigationStack.isEmpty ? "root" : navigationStack.last;
 
     // Check if state changes are necessary before calling setState
     bool isCategoryChanged = selectedCategoryId != categoryId;
-    bool isLevelUpdated = levelSelections.indexWhere((selection) => selection.level == currentLevel) == -1;
+    bool isLevelUpdated = levelSelections
+            .indexWhere((selection) => selection.level == currentLevel) ==
+        -1;
 
     if (isCategoryChanged || isLevelUpdated) {
       setState(() {
         selectedCategoryId = categoryId;
 
         // Update or add selection for the current level
-        int existingIndex = levelSelections.indexWhere((selection) => selection.level == currentLevel);
+        int existingIndex = levelSelections
+            .indexWhere((selection) => selection.level == currentLevel);
         if (existingIndex != -1) {
-          levelSelections[existingIndex] = NavigationLevelSelection(currentLevel, category, categoryId);
+          levelSelections[existingIndex] =
+              NavigationLevelSelection(currentLevel, category, categoryId);
         } else {
-          levelSelections.add(NavigationLevelSelection(currentLevel, category, categoryId));
+          levelSelections.add(
+              NavigationLevelSelection(currentLevel, category, categoryId));
         }
       });
     }
@@ -149,7 +155,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     }
 
     if (_hasSubcategories(context, category)) {
-      Map<String, dynamic>? subcategories = _getSubcategories(context, category);
+      Map<String, dynamic>? subcategories =
+          _getSubcategories(context, category);
       if (subcategories == null) {
         print("No subcategories found");
         return;
@@ -168,9 +175,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     }
   }
 
-
-
-
   void _handleBack() async {
     print("--- Starting Back Navigation ---");
 
@@ -187,14 +191,15 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       navigationStack.removeLast();
 
       // If we're going back to root, clear all selections
-      if (navigationStack.length==1) {
+      if (navigationStack.length == 1) {
         levelSelections.clear();
         selectedCategoryId = null;
 
         // Make API call with widget.category.id
         try {
           final categoryId = widget.category.id.toString();
-          fetchInitialSubCategories(categoryId); // Assuming this is your API call method
+          fetchInitialSubCategories(
+              categoryId); // Assuming this is your API call method
           print("Making root level API call with category ID: $categoryId");
         } catch (e) {
           print("Error making root level API call: $e");
@@ -204,7 +209,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         String previousLevel = navigationStack.last;
         NavigationLevelSelection? previousSelection = levelSelections
             .firstWhere((selection) => selection.level == previousLevel,
-            orElse: () => NavigationLevelSelection("", "", ""));
+                orElse: () => NavigationLevelSelection("", "", ""));
 
         if (previousSelection.level.isNotEmpty) {
           selectedCategoryId = previousSelection.selectedId;
@@ -224,29 +229,30 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     });
   }
 
-
   Widget _buildCategoryChip(BuildContext context, String category) {
     final hasSubcategories = _hasSubcategories(context, category);
     final categoryId = _getCategoryId(context, category);
 
     // Get current navigation level
-    String currentLevel = navigationStack.isEmpty ? "root" : navigationStack.last;
+    String currentLevel =
+        navigationStack.isEmpty ? "root" : navigationStack.last;
 
     // Check if this category is selected in current level
-    bool isSelected = levelSelections
-        .any((selection) => selection.level == currentLevel &&
+    bool isSelected = levelSelections.any((selection) =>
+        selection.level == currentLevel &&
         selection.selectedCategory == category);
 
     return Container(
       margin: const EdgeInsets.only(right: 8.0),
       child: Material(
-        color: isSelected ? Color(0xFFFFD814): AppColors.brightBlue,
+        color: isSelected ? Color(0xFFFFD814) : AppColors.brightBlue,
         borderRadius: BorderRadius.circular(4),
         child: InkWell(
           borderRadius: BorderRadius.circular(4),
           onTap: () => _handleCategorySelect(context, category),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -255,7 +261,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 14,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight:
+                        isSelected ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
                 if (hasSubcategories)
@@ -274,7 +281,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       ),
     );
   }
-
 
 // Helper Methods with null safety
   Map<String, dynamic>? _getSubcategories(
@@ -459,8 +465,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -519,14 +523,14 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                   _buildCategoriesList(context),
                   Consumer2<CategoriesListViewModel, CartListViewModel>(
                       builder: (context, viewModel, cartListViewModel, child) {
-                    if (viewModel.subCategoryLoading ||
-                        cartListViewModel.subCategoryLoading) {
-                      return Container(
-                          margin: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height * 0.3),
-                          child: Utils.loadingIndicator(context));
-                    } else if (viewModel.responseList?.products?.isEmpty ??
-                        true) {
+                    // if (viewModel.subCategoryLoading ||
+                    //     cartListViewModel.subCategoryLoading) {
+                    //   return Container(
+                    //       margin: EdgeInsets.only(
+                    //           top: MediaQuery.of(context).size.height * 0.3),
+                    //       child: Utils.loadingIndicator(context));
+                    // } else
+                    if (viewModel.responseList?.products?.isEmpty ?? true) {
                       return Center(
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.6,
@@ -758,7 +762,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                                         child:
                                                             CircularProgressIndicator(
                                                           strokeWidth: 2,
-                                                          color: AppColors.brightBlue,
+                                                          color: AppColors
+                                                              .brightBlue,
                                                         ),
                                                       )
                                                     : Text(
@@ -803,6 +808,7 @@ class CategorySelection {
 
   CategorySelection(this.category, this.id);
 }
+
 class NavigationLevelSelection {
   final String level;
   final String selectedCategory;
