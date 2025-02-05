@@ -192,7 +192,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            '${order.name}',
+                                            'Order ID: ${order.id}',
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 color:  AppColors.tabtxt_color,

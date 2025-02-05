@@ -49,7 +49,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       fetchCategories();
       partnerId = await PreferencesHelper.getString("partnerId");
-      _fetchCartItems();
+      // _fetchCartItems();
     });
   }
 
@@ -87,20 +87,21 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     if (widget.category.id.toString() != categoryId.toString()) {
       await categoriesListViewModel.subCategoriesListViewModelApi(
           categoryId.toString(), context);
-      await _fetchSubCartItems();
+      // await _fetchSubCartItems();
     }
   }
-
   Future<void> fetchInitialSubCategories(dynamic categoryId) async {
     // Obtain the instance of CategoriesListViewModel
     final categoriesListViewModel =
-        Provider.of<CategoriesListViewModel>(context, listen: false);
+    Provider.of<CategoriesListViewModel>(context, listen: false);
     print("fnvklnf" + widget.category.id.toString());
     print("fnvklnf" + categoryId.toString());
-    await categoriesListViewModel.subCategoriesListViewModelApi(
-        categoryId.toString(), context);
-    await _fetchSubCartItems();
+      await categoriesListViewModel.subCategoriesListViewModelApi(
+          categoryId.toString(), context);
+      // await _fetchSubCartItems();
+
   }
+
 
   String? selectedCategoryId;
   List<String> navigationStack = [];
@@ -110,53 +111,62 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
 
   List<NavigationLevelSelection> levelSelections = [];
 
-  Future<void> _handleCategorySelect(
-      BuildContext context, String category) async {
+  Future<void> _handleCategorySelect(BuildContext context, String category) async {
     print("--- Starting Category Selection ---");
 
+    // Fetch the category ID, handling the possibility of a null return
     String? categoryId = _getCategoryId(context, category);
-    if (categoryId == null) {
+    if (categoryId == null || categoryId.isEmpty) {
       print("No category ID found for: $category");
-      return;
+      return; // Exit if the category ID is null or empty
     }
 
     // Get current navigation level
-    String currentLevel =
-        navigationStack.isEmpty ? "root" : navigationStack.last;
+    String currentLevel = navigationStack.isEmpty ? "root" : navigationStack.last;
 
     // Check if state changes are necessary before calling setState
     bool isCategoryChanged = selectedCategoryId != categoryId;
-    bool isLevelUpdated = levelSelections
-            .indexWhere((selection) => selection.level == currentLevel) ==
-        -1;
 
-    if (isCategoryChanged || isLevelUpdated) {
+    if (isCategoryChanged) {
       setState(() {
         selectedCategoryId = categoryId;
 
         // Update or add selection for the current level
-        int existingIndex = levelSelections
-            .indexWhere((selection) => selection.level == currentLevel);
+        int existingIndex = levelSelections.indexWhere((selection) => selection.level == currentLevel);
         if (existingIndex != -1) {
-          levelSelections[existingIndex] =
-              NavigationLevelSelection(currentLevel, category, categoryId);
+          levelSelections[existingIndex] = NavigationLevelSelection(currentLevel, category, categoryId);
         } else {
-          levelSelections.add(
-              NavigationLevelSelection(currentLevel, category, categoryId));
+          levelSelections.add(NavigationLevelSelection(currentLevel, category, categoryId));
         }
       });
     }
 
-    try {
-      await fetchSubCategories(categoryId);
-      print("Successfully fetched subcategories");
-    } catch (e) {
-      print("Error fetching subcategories: $e");
+    // Avoid duplicate API calls by checking if the category is already being processed
+    if (_isCategoryLoading(categoryId)) {
+      print("Category is already being loaded: $categoryId");
+      return;
     }
 
+    try {
+      // Mark category as loading
+      _markCategoryAsLoading(categoryId);
+
+      // Fetch subcategories
+      if (isCategoryChanged) {
+        await fetchSubCategories(categoryId);
+        print("Successfully fetched subcategories");
+      }
+
+    } catch (e) {
+      print("Error fetching subcategories: $e");
+    } finally {
+      // Mark category as loaded
+      _markCategoryAsLoaded(categoryId);
+    }
+
+    // Check for subcategories
     if (_hasSubcategories(context, category)) {
-      Map<String, dynamic>? subcategories =
-          _getSubcategories(context, category);
+      Map<String, dynamic>? subcategories = _getSubcategories(context, category);
       if (subcategories == null) {
         print("No subcategories found");
         return;
@@ -168,12 +178,37 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         });
       }
 
+      // Handle single subcategory case without redundant calls
       if (subcategories.length == 1) {
-        String nextCategory = subcategories.keys.first;
-        await _handleCategorySelect(context, nextCategory);
+        String? nextCategoryId = _getCategoryId(context, subcategories.keys.first);
+
+        // Ensure no repeated calls for the same subcategory
+        if (nextCategoryId != null && !_isCategoryLoading(nextCategoryId)) {
+          await _handleCategorySelect(context, subcategories.keys.first);
+        }
       }
     }
   }
+
+
+// Helper methods to manage loading state
+  final Set<String> _loadingCategories = {};
+
+  bool _isCategoryLoading(String categoryId) {
+    return _loadingCategories.contains(categoryId);
+  }
+
+  void _markCategoryAsLoading(String categoryId) {
+    _loadingCategories.add(categoryId);
+  }
+
+  void _markCategoryAsLoaded(String categoryId) {
+    _loadingCategories.remove(categoryId);
+  }
+
+
+
+
 
   void _handleBack() async {
     print("--- Starting Back Navigation ---");
@@ -191,15 +226,14 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       navigationStack.removeLast();
 
       // If we're going back to root, clear all selections
-      if (navigationStack.length == 1) {
+      if (navigationStack.length==1) {
         levelSelections.clear();
         selectedCategoryId = null;
 
         // Make API call with widget.category.id
         try {
           final categoryId = widget.category.id.toString();
-          fetchInitialSubCategories(
-              categoryId); // Assuming this is your API call method
+          fetchInitialSubCategories(categoryId); // Assuming this is your API call method
           print("Making root level API call with category ID: $categoryId");
         } catch (e) {
           print("Error making root level API call: $e");
@@ -209,7 +243,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         String previousLevel = navigationStack.last;
         NavigationLevelSelection? previousSelection = levelSelections
             .firstWhere((selection) => selection.level == previousLevel,
-                orElse: () => NavigationLevelSelection("", "", ""));
+            orElse: () => NavigationLevelSelection("", "", ""));
 
         if (previousSelection.level.isNotEmpty) {
           selectedCategoryId = previousSelection.selectedId;
@@ -229,30 +263,29 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     });
   }
 
+
   Widget _buildCategoryChip(BuildContext context, String category) {
     final hasSubcategories = _hasSubcategories(context, category);
     final categoryId = _getCategoryId(context, category);
 
     // Get current navigation level
-    String currentLevel =
-        navigationStack.isEmpty ? "root" : navigationStack.last;
+    String currentLevel = navigationStack.isEmpty ? "root" : navigationStack.last;
 
     // Check if this category is selected in current level
-    bool isSelected = levelSelections.any((selection) =>
-        selection.level == currentLevel &&
+    bool isSelected = levelSelections
+        .any((selection) => selection.level == currentLevel &&
         selection.selectedCategory == category);
 
     return Container(
       margin: const EdgeInsets.only(right: 8.0),
       child: Material(
-        color: isSelected ? Color(0xFFFFD814) : AppColors.brightBlue,
+        color: isSelected ? Color(0xFFFFD814): AppColors.brightBlue,
         borderRadius: BorderRadius.circular(4),
         child: InkWell(
           borderRadius: BorderRadius.circular(4),
           onTap: () => _handleCategorySelect(context, category),
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -261,8 +294,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 14,
-                    fontWeight:
-                        isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
                 if (hasSubcategories)
@@ -281,6 +313,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       ),
     );
   }
+
 
 // Helper Methods with null safety
   Map<String, dynamic>? _getSubcategories(
@@ -465,6 +498,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -505,298 +540,290 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
           ),
         ],
       ),
-      body: Center(
-        child: Consumer2<CategoriesListViewModel, CartListViewModel>(
-          builder: (context, viewModel, cartListViewModel, child) {
-            if (viewModel.loading || cartListViewModel.loading) {
-              return Utils.loadingIndicator(context);
-            } else {
-              // // Wait until data is available before showing categories
-              // if (viewModel.responseList != null && viewModel.categoryTree.isNotEmpty) {
-              //   categories = viewModel.categoryTree.keys.toList();
-              //   categoryTree = viewModel.categoryTree;
-              // }
+      body: Consumer<CategoriesListViewModel>(
+        builder: (context, categoriesViewModel, child) {
+          if (categoriesViewModel.loading) {
+            return Utils.loadingIndicator(context);
+          }
 
-              return Column(
-                children: [
-                  _buildNavigationHeader(),
-                  _buildCategoriesList(context),
-                  Consumer2<CategoriesListViewModel, CartListViewModel>(
-                      builder: (context, viewModel, cartListViewModel, child) {
-                    // if (viewModel.subCategoryLoading ||
-                    //     cartListViewModel.subCategoryLoading) {
-                    //   return Container(
-                    //       margin: EdgeInsets.only(
-                    //           top: MediaQuery.of(context).size.height * 0.3),
-                    //       child: Utils.loadingIndicator(context));
-                    // } else
-                    if (viewModel.responseList?.products?.isEmpty ?? true) {
-                      return Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          height: MediaQuery.of(context).size.height * 0.6,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              LottieBuilder.asset(
-                                "assets/lottie/empty_products.json",
+          return Column(
+            children: [
+              _buildNavigationHeader(),
+              _buildCategoriesList(context),
+              Builder(
+                builder: (context) {
+                  if (categoriesViewModel.subCategoryLoading) {
+                    return Container(
+                      margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
+                      child: Utils.loadingIndicator(context),
+                    );
+                  }
+
+                  if (categoriesViewModel.responseList?.products?.isEmpty ?? true) {
+                    return Center(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            LottieBuilder.asset("assets/lottie/empty_products.json"),
+                            Text(
+                              "No Products Available1",
+                              style: TextStyle(
+                                color: AppColors.black,
+                                fontFamily: MyFonts.font_Bold,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
                               ),
-                              Text("No Products Available1",
-                                  style: TextStyle(
-                                    color: AppColors.black,
-                                    fontFamily: MyFonts.font_Bold,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18,
-                                  )),
-                            ],
-                          ),
-                        ),
-                      );
-                    } else {
-                      return Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 12.0,
-                              crossAxisSpacing: 12.0,
-                              childAspectRatio:
-                                  0.65, // Adjusted ratio for better fit
                             ),
-                            itemCount: viewModel.responseList!.products.length,
-                            itemBuilder: (context, index) {
-                              final product =
-                                  viewModel.responseList!.products[index];
-                              bool alreadyAddedToCart = cartListViewModel
-                                  .productIds
-                                  .contains(product.id.toString());
+                          ],
+                        ),
+                      ),
+                    );
+                  }
 
-                              print(
-                                  "product id = ${product.id.toString()}"); // Ensure id is a string
-                              cartListViewModel.productIds.forEach((element) {
-                                print(
-                                    "id = ${element.toString()}"); // Ensure each element in productIds is a string
-                              });
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: GridView.builder(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 12.0,
+                          crossAxisSpacing: 12.0,
+                          childAspectRatio: 0.65,
+                        ),
+                        itemCount: categoriesViewModel.responseList!.products.length,
+                        itemBuilder: (context, index) {
+                          final product = categoriesViewModel.responseList!.products[index];
+                          bool alreadyAddedToCart = false;
 
-                              print("alreadyAddedToCart = $alreadyAddedToCart");
-
-                              print("dcxdc" + alreadyAddedToCart.toString());
-                              return Card(
-                                color: Colors.white,
-                                elevation: 2,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  side: BorderSide(color: Colors.grey.shade200),
-                                ),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductDetailsPage(
-                                                categoryId:
-                                                    product.id.toString()),
+                          return Card(
+                            color: Colors.white,
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: BorderSide(color: Colors.grey.shade200),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductDetailsPage(
+                                      categoryId: product.id.toString(),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      flex: 4,
+                                      child: Container(
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(4),
+                                        ),
+                                        child: Center(
+                                          child: Image.network(
+                                            'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.id}&field=image_1920',
+                                            fit: BoxFit.fitHeight,
+                                            errorBuilder: (context, error, stackTrace) => Icon(
+                                              Icons.error,
+                                              size: 48,
+                                              color: Colors.grey.shade400,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    SizedBox(
+                                      height: 40,
+                                      child: Text(
+                                        product.name,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Row(
                                       children: [
-                                        // Product Image
-                                        Expanded(
-                                          flex: 4,
-                                          child: Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                            ),
-                                            child: Center(
-                                              child: Image.network(
-                                                'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.id}&field=image_1920',
-                                                // width: 48, // Adjust size as needed
-                                                // height: 48, // Adjust size as needed
-                                                fit: BoxFit.fitHeight,
-                                                errorBuilder: (context, error,
-                                                        stackTrace) =>
-                                                    Icon(
-                                                  Icons
-                                                      .error, // Fallback icon in case of an error
-                                                  size: 48,
-                                                  color: Colors.grey.shade400,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-
-                                        // Product Details
-                                        const SizedBox(height: 8),
-                                        // Product Name
-                                        SizedBox(
-                                          height: 40, // Fixed height for title
-                                          child: Text(
-                                            product.name,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-
-                                        // Rating
-                                        const SizedBox(height: 4),
                                         Row(
-                                          children: [
-                                            Row(
-                                              children: List.generate(
-                                                5,
+                                          children: List.generate(
+                                            5,
                                                 (index) => Icon(
-                                                  Icons.star,
-                                                  size: 14,
-                                                  color: index < 4
-                                                      ? Colors.orange
-                                                      : Colors.grey.shade300,
-                                                ),
-                                              ),
+                                              Icons.star,
+                                              size: 14,
+                                              color: index < 4 ? Colors.orange : Colors.grey.shade300,
                                             ),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              '46',
-                                              style: TextStyle(
-                                                color: Colors.grey.shade600,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ],
+                                          ),
                                         ),
-
-                                        // Price
-                                        const SizedBox(height: 8),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.baseline,
-                                          textBaseline: TextBaseline.alphabetic,
-                                          children: [
-                                            Text(
-                                              '₹${product.lstPrice}',
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              '₹${(product.baseUnitPrice! * 1.5).round()}',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.grey.shade600,
-                                                decoration:
-                                                    TextDecoration.lineThrough,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-
-                                        // Add to Cart Button
-                                        const SizedBox(height: 8),
-                                        Consumer<AddToCartViewModel>(
-                                          builder:
-                                              (context, cartViewModel, child) {
-                                            bool isInCart = cartViewModel
-                                                .isInCart(product.id!);
-                                            bool isLoading = cartViewModel
-                                                .isLoading(product.id!);
-
-                                            print("frvasdf" +
-                                                isInCart.toString());
-                                            print("frvadssdf" +
-                                                alreadyAddedToCart.toString());
-                                            return SizedBox(
-                                              width: double.infinity,
-                                              height: 32,
-                                              child: ElevatedButton(
-                                                onPressed: isLoading
-                                                    ? null
-                                                    : () async {
-                                                        if (!(isInCart ||
-                                                            alreadyAddedToCart)) {
-                                                          cartViewModel
-                                                              .toggleCartStatus(
-                                                            partnerId,
-                                                            product.id!,
-                                                            1,
-                                                            context,
-                                                          );
-                                                        }
-                                                      },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: isInCart ||
-                                                          alreadyAddedToCart
-                                                      ? Colors.grey[300]
-                                                      : const Color(0xFFFFD814),
-                                                  foregroundColor:
-                                                      Colors.black87,
-                                                  elevation: 0,
-                                                  padding: EdgeInsets.zero,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                  ),
-                                                ),
-                                                child: isLoading
-                                                    ? const SizedBox(
-                                                        width: 20,
-                                                        height: 20,
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          strokeWidth: 2,
-                                                          color: AppColors
-                                                              .brightBlue,
-                                                        ),
-                                                      )
-                                                    : Text(
-                                                        alreadyAddedToCart ||
-                                                                isInCart
-                                                            ? 'Added to  Cart'
-                                                            : 'Add to Cart',
-                                                        style: const TextStyle(
-                                                          fontSize: 13,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                              ),
-                                            );
-                                          },
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          '46',
+                                          style: TextStyle(
+                                            color: Colors.grey.shade600,
+                                            fontSize: 12,
+                                          ),
                                         ),
                                       ],
                                     ),
-                                  ),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                                      textBaseline: TextBaseline.alphabetic,
+                                      children: [
+                                        Text(
+                                          '₹${product.lstPrice}',
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          '₹${(product.baseUnitPrice! * 1.5).round()}',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey.shade600,
+                                            decoration: TextDecoration.lineThrough,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8),
+                                    // Replace the ValueListenableBuilder section with:
+                                    Consumer<AddToCartViewModel>(
+                                      builder: (context, cartViewModel, child) {
+                                        bool isInCart = cartViewModel.isInCart(product.id!);
+                                        bool isLoading = cartViewModel.isLoading(product.id!);
+
+                                        return SizedBox(
+                                          width: double.infinity,
+                                          height: 32,
+                                          child: ElevatedButton(
+                                            onPressed: isLoading
+                                                ? null
+                                                : () async {
+                                              if (!(isInCart || alreadyAddedToCart)) {
+                                                cartViewModel.toggleCartStatus(
+                                                  partnerId,
+                                                  product.id!,
+                                                  1,
+                                                  context,
+                                                );
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: isInCart || alreadyAddedToCart
+                                                  ? Colors.grey[300]
+                                                  : const Color(0xFFFFD814),
+                                              foregroundColor: Colors.black87,
+                                              elevation: 0,
+                                              padding: EdgeInsets.zero,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(20),
+                                              ),
+                                            ),
+                                            child: isLoading
+                                                ? const SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                color: AppColors.brightBlue,
+                                              ),
+                                            )
+                                                : Text(
+                                              alreadyAddedToCart || isInCart
+                                                  ? 'Added to Cart'
+                                                  : 'Add to Cart',
+                                              style: const TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    )
+                                    // ValueListenableBuilder<AddToCartViewModel>(
+                                    //   valueListenable: context.read<AddToCartViewModel>(),
+                                    //   builder: (context, cartViewModel, child) {
+                                    //     bool isInCart = cartViewModel.isInCart(product.id!);
+                                    //     bool isLoading = cartViewModel.isLoading(product.id!);
+                                    //
+                                    //     return SizedBox(
+                                    //       width: double.infinity,
+                                    //       height: 32,
+                                    //       child: ElevatedButton(
+                                    //         onPressed: isLoading
+                                    //             ? null
+                                    //             : () async {
+                                    //           if (!(isInCart || alreadyAddedToCart)) {
+                                    //             cartViewModel.toggleCartStatus(
+                                    //               partnerId,
+                                    //               product.id!,
+                                    //               1,
+                                    //               context,
+                                    //             );
+                                    //           }
+                                    //         },
+                                    //         style: ElevatedButton.styleFrom(
+                                    //           backgroundColor:
+                                    //           isInCart || alreadyAddedToCart ? Colors.grey[300] : const Color(0xFFFFD814),
+                                    //           foregroundColor: Colors.black87,
+                                    //           elevation: 0,
+                                    //           padding: EdgeInsets.zero,
+                                    //           shape: RoundedRectangleBorder(
+                                    //             borderRadius: BorderRadius.circular(20),
+                                    //           ),
+                                    //         ),
+                                    //         child: isLoading
+                                    //             ? const SizedBox(
+                                    //           width: 20,
+                                    //           height: 20,
+                                    //           child: CircularProgressIndicator(
+                                    //             strokeWidth: 2,
+                                    //             color: AppColors.brightBlue,
+                                    //           ),
+                                    //         )
+                                    //             : Text(
+                                    //           alreadyAddedToCart || isInCart ? 'Added to Cart' : 'Add to Cart',
+                                    //           style: const TextStyle(
+                                    //             fontSize: 13,
+                                    //             fontWeight: FontWeight.w500,
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     );
+                                    //   },
+                                    // ),
+                                  ],
                                 ),
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    }
-                  }),
-                ],
-              );
-            }
-          },
-        ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -808,7 +835,6 @@ class CategorySelection {
 
   CategorySelection(this.category, this.id);
 }
-
 class NavigationLevelSelection {
   final String level;
   final String selectedCategory;

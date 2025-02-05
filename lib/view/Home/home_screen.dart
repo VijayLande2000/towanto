@@ -34,7 +34,7 @@ class _HomeGridState extends State<HomeGrid> {
   late String savedUsername = "";
 
   Future<void> getUserName() async {
-    savedUsername = (await PreferencesHelper.getString("login"))!;
+    savedUsername = (await PreferencesHelper.getString("login")) ?? "";
     print("dfvbnfjdk" + savedUsername);
   }
 

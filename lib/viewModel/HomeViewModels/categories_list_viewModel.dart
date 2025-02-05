@@ -69,12 +69,14 @@ class CategoriesListViewModel extends ChangeNotifier {
       responseData = null;
       categoryTree.clear(); // Reset tree before updating
       this.context = context;
+      final sessionId = await PreferencesHelper.getString("session_id");
+
       setLoading(true);
       // developer.log(
       //     'Starting CategoriesListViewModel process with data: ${jsonEncode(
       //         categoryId)}', name: 'CategoriesListViewModel');
 
-      final value = await _myRepo.getCategoryListApi(categoryId, context);
+      final value = await _myRepo.getCategoryListApi(categoryId, context,sessionId);
           responseData=value;
 //model = repose
       //notifiy providres
@@ -137,12 +139,15 @@ class CategoriesListViewModel extends ChangeNotifier {
   Future<void> subCategoriesListViewModelApi(String categoryId, BuildContext context) async {
     try {
       this.context = context;
+
+      final sessionId = await PreferencesHelper.getString("session_id");
+
       setSubCategoryLoading(true);
       developer.log(
           'Starting CategoriesListViewModel process with data: ${jsonEncode(
               categoryId)}', name: 'CategoriesListViewModel');
 
-      final value = await _myRepo.getCategoryListApi(categoryId, context);
+      final value = await _myRepo.getCategoryListApi(categoryId, context,sessionId);
       responseData=value;
       //   for (var category in value.categories) {
       //     categories.add(category.displayName??"");

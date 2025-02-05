@@ -97,11 +97,12 @@ class NetworkApiService extends BaseApiServices {
 
   @override
   Future getCategoriesListApiResponse(String url, String categoryId,
-      BuildContext context) async {
+      BuildContext context,dynamic sessionId) async {
     try {
       var headers = {
         'Content-Type': 'application/json',
         'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
       };
 
       String finalUrl = '$url&category_ids=$categoryId';

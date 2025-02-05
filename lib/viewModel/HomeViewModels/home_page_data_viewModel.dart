@@ -46,7 +46,7 @@ class HomePageDataViewModel extends ChangeNotifier {
       _cartCount = response.cartCount ?? 0;
       _wishlistCount = response.wishlistCount ?? 0;
       _sliderData = (response.sliderData ?? [])
-          .map((sliderItem) => 'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?$sliderItem')
+          .map((sliderItem) => 'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/$sliderItem')
           .toList();
 
       // Separate categories into two lists based on criteria

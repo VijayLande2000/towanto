@@ -8,10 +8,10 @@ import '../../network/networkService/network_service.dart';
 class CategoriesListRepository {
   final BaseApiServices _apiServices = NetworkApiService();
 
-  Future<CategoriesListDetailsModel> getCategoryListApi(dynamic data, BuildContext context) async {
+  Future<CategoriesListDetailsModel> getCategoryListApi(dynamic data, BuildContext context,dynamic sessionId) async {
     try {
       dynamic response = await _apiServices.getCategoriesListApiResponse(
-          AppUrl.getCatogiresListUrl, data, context);
+          AppUrl.getCatogiresListUrl, data, context,sessionId);
       // Assuming response is a List
       return CategoriesListDetailsModel.fromJson(response);
 
