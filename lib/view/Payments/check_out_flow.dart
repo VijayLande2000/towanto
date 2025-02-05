@@ -129,8 +129,8 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
 
     var options = {
       'key': 'rzp_test_fIctHuxShCWu6C', // Replace with your Test/Live API Key
-      'amount': "345678", // Amount in smallest currency unit (e.g., 50000 = 500 INR)
-      'order_id': orderId.toString(),
+      // 'amount': savedAmount, // Amount in smallest currency unit (e.g., 50000 = 500 INR)
+      'order_id': (orderId.toString()),
       'name': savedName.toString(),
       'description': 'Test Payment',
       'prefill': {

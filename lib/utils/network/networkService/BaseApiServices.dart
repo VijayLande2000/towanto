@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 abstract class BaseApiServices {
   Future<dynamic> postApiResponse(String url, dynamic data, BuildContext context);
   Future<dynamic> postSignUpApiResponse(String url, dynamic data, BuildContext context);
-  Future<dynamic> getCategoriesListApiResponse(String url, String categoryId, BuildContext context);
+  Future<dynamic> getCategoriesListApiResponse(String url, String categoryId, BuildContext context,dynamic sessionId);
   Future<dynamic> getHomePageDataApiResponse(String url, String categoryIds,BuildContext context);
   Future<dynamic> getProductDetailsApiResponse(String url, String categoryId, BuildContext context);
   Future<dynamic> postAddToCartApiResponse(String url, dynamic data, BuildContext context,String SessionId);

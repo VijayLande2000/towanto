@@ -349,7 +349,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                     fontSize: 14,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.normal,
-                                    fontFamily: MyFonts.Lexenddeca_regular,
+                                    fontFamily: MyFonts.font_regular,
                                   ),
                                 ),
                                 const SizedBox(width: 4),
@@ -358,7 +358,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                     fontSize: 14,
                                     color: AppColors.black,
                                     fontWeight: FontWeight.normal,
-                                    fontFamily: MyFonts.Lexenddeca_regular,
+                                    fontFamily: MyFonts.font_regular,
                                   ),
                                   child: AnimatedTextKit(
                                     pause: const Duration(milliseconds: 1000),
