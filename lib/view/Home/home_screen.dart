@@ -22,7 +22,7 @@ import '../../viewModel/HomeViewModels/categories_list_viewModel.dart';
 import '../Orders/orders_screen.dart';
 import '../WhishList/whish_list_screen.dart';
 import 'category_detail_screen.dart';
-
+//checking the git track
 class HomeGrid extends StatefulWidget {
   HomeGrid({Key? key}) : super(key: key);
   @override
@@ -793,7 +793,7 @@ Widget buildDynamicCategoryLists(HomePageDataViewModel viewModel, BuildContext c
                     fontWeight: FontWeight.w600,
                     color: AppColors.whiteColor,
                     fontFamily: MyFonts.font_Bold,
-                  ),
+                  ), 
                 ),
               ),
             ),
