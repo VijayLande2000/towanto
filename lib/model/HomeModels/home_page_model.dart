@@ -34,16 +34,19 @@ class HomeDataModel {
 
 class Category {
   final dynamic categoryId;
+  final dynamic categoryName;
   final List<Product> products;
 
   Category({
     required this.categoryId,
+    required this.categoryName,
     required this.products,
   });
 
   factory Category.fromJson(Map<dynamic, dynamic> json) {
     return Category(
       categoryId: json['category_id'] as dynamic,
+      categoryName: json['category_name'] as dynamic,
       products: (json['products'] as List<dynamic>)
           .map((productJson) => Product.fromJson(productJson))
           .toList(),
@@ -53,6 +56,7 @@ class Category {
   Map<dynamic, dynamic> toJson() {
     return {
       'category_id': categoryId,
+      'category_name': categoryName,
       'products': products.map((product) => product.toJson()).toList(),
     };
   }

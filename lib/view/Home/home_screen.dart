@@ -353,131 +353,20 @@ class _HomeGridState extends State<HomeGrid> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 16, bottom: 8),
-                  child: Text(
-                    "Seasonal",
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.appBarTitleTextColor,
-                      fontFamily: MyFonts.font_SemiBold,
-                    ),
-                  ),
-                ),
-                Container(
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    width: double.maxFinite,
-                    child: _buildHorizontalSeasonalListView(homePageViewModel)),
-                Center(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16, bottom: 8, top: 16),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            AppColors.brightBlue, // Button color (blue)
-                        padding: EdgeInsets.symmetric(
-                            vertical: 4,
-                            horizontal: 12), // Padding inside the button
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(100), // Rounded corners
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CategoryDetailScreen(
-                              category: CategoryItem(
-                                name: 'Seasonal',
-                                imageUrl: 'assets/images/seasonal.jpg',
-                                backgroundColor:
-                                    const Color(0xFFC8E6C9), // Light green
-                                imagePadding: 28.0,
-                                id: 6,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        "View All Seasonal Products",
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors
-                                .whiteColor, // Text color (white for contrast)
-                            fontFamily: MyFonts
-                                .font_Bold // Ensure this font is available in your project
-                            ),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, bottom: 8),
-                  child: Text(
-                    "Brands",
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.appBarTitleTextColor,
-                      fontFamily: MyFonts.font_SemiBold,
-                    ),
-                  ),
-                ),
-                Container(
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    width: double.maxFinite,
-                    child: _buildHorizontalBrandListView(homePageViewModel)),
-                Center(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16, bottom: 16, top: 16),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            AppColors.brightBlue, // Button color (blue)
-                        padding: EdgeInsets.symmetric(
-                            vertical: 4,
-                            horizontal: 12), // Padding inside the button
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(100), // Rounded corners
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CategoryDetailScreen(
-                                category: CategoryItem(
-                              name: 'Brands',
-                              imageUrl: 'assets/images/brands.jpg',
-                              backgroundColor:
-                                  const Color(0xFFD1C4E9), // Light purple
-                              imagePadding: 20.0,
-                              id: 4,
-                            )),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        "View All Brands",
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors
-                                .whiteColor, // Text color (white for contrast)
-                            fontFamily: MyFonts
-                                .font_Bold // Ensure this font is available in your project
-                            ),
-                      ),
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.only(left: 16, bottom: 8),
+                //   child: Text(
+                //     "Seasonal",
+                //     style: const TextStyle(
+                //       fontSize: 20,
+                //       fontWeight: FontWeight.w600,
+                //       color: AppColors.appBarTitleTextColor,
+                //       fontFamily: MyFonts.font_SemiBold,
+                //     ),
+                //   ),
+                // ),
+                // In your build method
+                buildDynamicCategoryLists(homePageViewModel, context)
               ],
             ),
           );
@@ -827,10 +716,101 @@ class DrawerItem extends StatelessWidget {
   }
 }
 
-Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
-  // Calculate the total number of products across all categories
+
+
+class Category {
+  final int categoryId;
+  final String categoryName;
+  final List<Product> products;
+
+  Category({
+    required this.categoryId,
+    required this.categoryName,
+    required this.products,
+  });
+}
+
+Widget buildDynamicCategoryLists(HomePageDataViewModel viewModel, BuildContext context) {
+  return Column(
+    children: viewModel.categoriesMap.entries.map((entry) {
+      final categoryId = entry.key;
+      final categories = entry.value;
+      // Get the first category from the list to access category name
+      final categoryName = categories.isNotEmpty ? categories.first.categoryName : '';
+
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16, bottom: 8),
+            child: Text(
+              categoryName.toString(),
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: AppColors.appBarTitleTextColor,
+                fontFamily: MyFonts.font_SemiBold,
+              ),
+            ),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            width: double.maxFinite,
+            child: _buildHorizontalListView(viewModel, categoryId),
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, bottom: 16, top: 16),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.brightBlue,
+                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryDetailScreen(
+                        category: CategoryItem(
+                          name: categoryName,
+                          imageUrl: 'assets/images/category_$categoryId.jpg',
+                          backgroundColor: Colors.grey.shade100, // Default background color
+                          imagePadding: 24.0, // Default padding
+                          id: categoryId,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Text(
+                  "View All ${categoryName}s",
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.whiteColor,
+                    fontFamily: MyFonts.font_Bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }).toList(),
+  );
+}
+
+Widget _buildHorizontalListView(HomePageDataViewModel viewModel, int categoryId) {
+  // Get the categories for the specified ID
+  final categories = viewModel.getCategoriesById(categoryId);
+
+  // Calculate the total number of products
   int totalProductCount = 0;
-  viewModel.categoryList1.forEach((category) {
+  categories.forEach((category) {
     totalProductCount += category.products.length;
   });
 
@@ -838,12 +818,13 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
     scrollDirection: Axis.horizontal,
     itemCount: totalProductCount,
     itemBuilder: (context, index) {
-      // Calculate which category and which product to access based on the total count
+      // Calculate which category and which product to access
       int productIndex = 0;
-      Category category;
-      for (category in viewModel.categoryList1) {
+      Category? currentCategory;
+
+      for (var category in categories) {
         if (index < productIndex + category.products.length) {
-          // This category contains the item at the 'index' position
+          // currentCategory = category;
           final product = category.products[index - productIndex];
           final screenHeight = MediaQuery.of(context).size.height;
 
@@ -873,9 +854,8 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Product Image
                     Container(
-                      height: screenHeight * 0.15,
+                      height: categoryId == 4 ? screenHeight * 0.17 : screenHeight * 0.15,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -894,7 +874,6 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    // Product Name
                     Text(
                       product.name,
                       maxLines: 2,
@@ -907,7 +886,6 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    // Rating
                     Row(
                       children: [
                         ...List.generate(
@@ -915,9 +893,7 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
                               (index) => Icon(
                             Icons.star,
                             size: 14,
-                            color: index < 4
-                                ? Colors.orange
-                                : Colors.grey.shade300,
+                            color: index < 4 ? Colors.orange : Colors.grey.shade300,
                           ),
                         ),
                         const SizedBox(width: 4),
@@ -932,7 +908,6 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    // Price
                     Text(
                       '₹${product.price}',
                       style: const TextStyle(
@@ -954,130 +929,259 @@ Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
     },
   );
 }
-Widget _buildHorizontalBrandListView(HomePageDataViewModel viewModel) {
-  // Calculate the total number of products across all categories
-  int totalProductCount = 0;
-  viewModel.categoryList2.forEach((category) {
-    totalProductCount += category.products.length;
-  });
 
-  return ListView.builder(
-    scrollDirection: Axis.horizontal,
-    itemCount: totalProductCount,
-    itemBuilder: (context, index) {
-      // Calculate which category and which product to access based on the total count
-      int productIndex = 0;
-      Category category;
-      for (category in viewModel.categoryList2) {
-        if (index < productIndex + category.products.length) {
-          // This category contains the item at the 'index' position
-          final product = category.products[index - productIndex];
-          final screenHeight = MediaQuery.of(context).size.height;
 
-          return Card(
-            color: AppColors.white,
-            elevation: 2,
-            margin: const EdgeInsets.symmetric(horizontal: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-              side: BorderSide(color: Colors.grey.shade200),
-            ),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductDetailsPage(
-                      categoryId: product.id.toString(),
-                    ),
-                  ),
-                );
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                padding: const EdgeInsets.only(left: 12,right: 12,top: 12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Product Image
-                    Container(
-                      height: screenHeight * 0.17,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Center(
-                        child: Image.network(
-                          'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.id}&field=image_1920',
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) => Icon(
-                            Icons.error,
-                            size: 48,
-                            color: Colors.grey.shade400,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    // Product Name
-                    Text(
-                      product.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.appBarTitleTextColor,
-                        fontFamily: MyFonts.font_SemiBold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    // Rating
-                    Row(
-                      children: [
-                        ...List.generate(
-                          5,
-                              (index) => Icon(
-                            Icons.star,
-                            size: 14,
-                            color: index < 4
-                                ? Colors.orange
-                                : Colors.grey.shade300,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          '46',
-                          style: TextStyle(
-                            fontFamily: MyFonts.font_regular,
-                            color: Colors.grey.shade600,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    // Price
-                    Text(
-                      '₹${product.price}',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.appBarTitleTextColor,
-                        fontFamily: MyFonts.font_SemiBold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }
-        productIndex += category.products.length;
-      }
-      return const SizedBox.shrink();
-    },
-  );
-}
+// Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
+//   // Calculate the total number of products across all categories
+//   int totalProductCount = 0;
+//   viewModel.categoryList1.forEach((category) {
+//     totalProductCount += category.products.length;
+//   });
+//
+//   return ListView.builder(
+//     scrollDirection: Axis.horizontal,
+//     itemCount: totalProductCount,
+//     itemBuilder: (context, index) {
+//       // Calculate which category and which product to access based on the total count
+//       int productIndex = 0;
+//       Category category;
+//       for (category in viewModel.categoryList1) {
+//         if (index < productIndex + category.products.length) {
+//           // This category contains the item at the 'index' position
+//           final product = category.products[index - productIndex];
+//           final screenHeight = MediaQuery.of(context).size.height;
+//
+//           return Card(
+//             color: AppColors.white,
+//             elevation: 2,
+//             margin: const EdgeInsets.symmetric(horizontal: 8),
+//             shape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(8),
+//               side: BorderSide(color: Colors.grey.shade200),
+//             ),
+//             child: InkWell(
+//               onTap: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                     builder: (context) => ProductDetailsPage(
+//                       categoryId: product.id.toString(),
+//                     ),
+//                   ),
+//                 );
+//               },
+//               child: Container(
+//                 width: MediaQuery.of(context).size.width * 0.5,
+//                 padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.start,
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     // Product Image
+//                     Container(
+//                       height: screenHeight * 0.15,
+//                       width: double.infinity,
+//                       decoration: BoxDecoration(
+//                         color: Colors.white,
+//                         borderRadius: BorderRadius.circular(4),
+//                       ),
+//                       child: Center(
+//                         child: Image.network(
+//                           'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.id}&field=image_1920',
+//                           fit: BoxFit.contain,
+//                           errorBuilder: (context, error, stackTrace) => Icon(
+//                             Icons.error,
+//                             size: 48,
+//                             color: Colors.grey.shade400,
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                     const SizedBox(height: 8),
+//                     // Product Name
+//                     Text(
+//                       product.name,
+//                       maxLines: 2,
+//                       overflow: TextOverflow.ellipsis,
+//                       style: const TextStyle(
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w500,
+//                         color: AppColors.appBarTitleTextColor,
+//                         fontFamily: MyFonts.font_SemiBold,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 4),
+//                     // Rating
+//                     Row(
+//                       children: [
+//                         ...List.generate(
+//                           5,
+//                               (index) => Icon(
+//                             Icons.star,
+//                             size: 14,
+//                             color: index < 4
+//                                 ? Colors.orange
+//                                 : Colors.grey.shade300,
+//                           ),
+//                         ),
+//                         const SizedBox(width: 4),
+//                         Text(
+//                           '46',
+//                           style: TextStyle(
+//                             fontFamily: MyFonts.font_regular,
+//                             color: Colors.grey.shade600,
+//                             fontSize: 12,
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                     const SizedBox(height: 8),
+//                     // Price
+//                     Text(
+//                       '₹${product.price}',
+//                       style: const TextStyle(
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w600,
+//                         color: AppColors.appBarTitleTextColor,
+//                         fontFamily: MyFonts.font_SemiBold,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           );
+//         }
+//         productIndex += category.products.length;
+//       }
+//       return const SizedBox.shrink();
+//     },
+//   );
+// }
+// Widget _buildHorizontalBrandListView(HomePageDataViewModel viewModel) {
+//   // Calculate the total number of products across all categories
+//   int totalProductCount = 0;
+//   viewModel.categoryList2.forEach((category) {
+//     totalProductCount += category.products.length;
+//   });
+//
+//   return ListView.builder(
+//     scrollDirection: Axis.horizontal,
+//     itemCount: totalProductCount,
+//     itemBuilder: (context, index) {
+//       // Calculate which category and which product to access based on the total count
+//       int productIndex = 0;
+//       Category category;
+//       for (category in viewModel.categoryList2) {
+//         if (index < productIndex + category.products.length) {
+//           // This category contains the item at the 'index' position
+//           final product = category.products[index - productIndex];
+//           final screenHeight = MediaQuery.of(context).size.height;
+//
+//           return Card(
+//             color: AppColors.white,
+//             elevation: 2,
+//             margin: const EdgeInsets.symmetric(horizontal: 8),
+//             shape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(8),
+//               side: BorderSide(color: Colors.grey.shade200),
+//             ),
+//             child: InkWell(
+//               onTap: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                     builder: (context) => ProductDetailsPage(
+//                       categoryId: product.id.toString(),
+//                     ),
+//                   ),
+//                 );
+//               },
+//               child: Container(
+//                 width: MediaQuery.of(context).size.width * 0.5,
+//                 padding: const EdgeInsets.only(left: 12,right: 12,top: 12),
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.start,
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     // Product Image
+//                     Container(
+//                       height: screenHeight * 0.17,
+//                       width: double.infinity,
+//                       decoration: BoxDecoration(
+//                         color: Colors.white,
+//                         borderRadius: BorderRadius.circular(4),
+//                       ),
+//                       child: Center(
+//                         child: Image.network(
+//                           'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.id}&field=image_1920',
+//                           fit: BoxFit.contain,
+//                           errorBuilder: (context, error, stackTrace) => Icon(
+//                             Icons.error,
+//                             size: 48,
+//                             color: Colors.grey.shade400,
+//                           ),
+//                         ),
+//                       ),
+//                     ),
+//                     const SizedBox(height: 8),
+//                     // Product Name
+//                     Text(
+//                       product.name,
+//                       maxLines: 2,
+//                       overflow: TextOverflow.ellipsis,
+//                       style: const TextStyle(
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w500,
+//                         color: AppColors.appBarTitleTextColor,
+//                         fontFamily: MyFonts.font_SemiBold,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 4),
+//                     // Rating
+//                     Row(
+//                       children: [
+//                         ...List.generate(
+//                           5,
+//                               (index) => Icon(
+//                             Icons.star,
+//                             size: 14,
+//                             color: index < 4
+//                                 ? Colors.orange
+//                                 : Colors.grey.shade300,
+//                           ),
+//                         ),
+//                         const SizedBox(width: 4),
+//                         Text(
+//                           '46',
+//                           style: TextStyle(
+//                             fontFamily: MyFonts.font_regular,
+//                             color: Colors.grey.shade600,
+//                             fontSize: 12,
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                     const SizedBox(height: 8),
+//                     // Price
+//                     Text(
+//                       '₹${product.price}',
+//                       style: const TextStyle(
+//                         fontSize: 14,
+//                         fontWeight: FontWeight.w600,
+//                         color: AppColors.appBarTitleTextColor,
+//                         fontFamily: MyFonts.font_SemiBold,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           );
+//         }
+//         productIndex += category.products.length;
+//       }
+//       return const SizedBox.shrink();
+//     },
+//   );
+// }

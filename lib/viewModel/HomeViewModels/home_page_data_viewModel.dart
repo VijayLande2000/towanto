@@ -14,56 +14,64 @@ class HomePageDataViewModel extends ChangeNotifier {
   int _cartCount = 0;
   int _wishlistCount = 0;
   List<String> _sliderData = [];
-  List<Category> _categoryList1 = [];
-  List<Category> _categoryList2 = [];
+  Map<int, List<Category>> _categoriesMap = {};
 
   // Getters for the parsed data
   bool get isLoading => _isLoading;
   int get cartCount => _cartCount;
   int get wishlistCount => _wishlistCount;
   List<String> get sliderData => _sliderData;
-  List<Category> get categoryList1 => _categoryList1;
-  List<Category> get categoryList2 => _categoryList2;
+  Map<int, List<Category>> get categoriesMap => _categoriesMap;
 
-  // Private setter for the loading state
   void _setLoading(bool value) {
     _isLoading = value;
     developer.log('Loading state updated: $_isLoading', name: 'HomePageDataViewModel');
     notifyListeners();
   }
 
-  // Method to fetch and parse home page data
   Future<void> fetchHomePageData(String categoryIds, BuildContext context) async {
     try {
       this.context = context;
       _setLoading(true);
       developer.log('Fetching home page data...', name: 'HomePageDataViewModel');
 
-      // API call to fetch home page data
       final response = await _homePageDataRepository.getHomePagedataApi(categoryIds, context);
 
-      // Parse the response (assuming it's a JSON object)
+      // Parse basic response data
       _cartCount = response.cartCount ?? 0;
       _wishlistCount = response.wishlistCount ?? 0;
       _sliderData = (response.sliderData ?? [])
           .map((sliderItem) => 'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/$sliderItem')
           .toList();
 
-      // Separate categories into two lists based on criteria
-      _categoryList1 = (response.categories ?? [])
-          .where((category) => category.categoryId == 6)
-          .toList();
+      // Clear existing categories map
+      _categoriesMap = {};
 
-      _categoryList2 = (response.categories ?? [])
-          .where((category) => category.categoryId == 4)
-          .toList();
+      // Only add categories that have products
+      for (var category in response.categories ?? []) {
+        if (category.products.isNotEmpty) {  // Only add if there are products
+          if (!_categoriesMap.containsKey(category.categoryId)) {
+            _categoriesMap[category.categoryId] = [];
+          }
+          _categoriesMap[category.categoryId]?.add(category);
+
+          developer.log(
+              'Added category ${category.categoryId} with ${category.products.length} products',
+              name: 'HomePageDataViewModel'
+          );
+        } else {
+          developer.log(
+              'Skipped empty category ${category.categoryId}',
+              name: 'HomePageDataViewModel'
+          );
+        }
+      }
 
       developer.log(
         'Home page data parsed successfully: '
             'cartCount=$_cartCount, wishlistCount=$_wishlistCount, '
             'sliderData=${_sliderData.length}, '
-            'categoryList1=${_categoryList1.length}, '
-            'categoryList2=${_categoryList2.length}',
+            'active categories=${_categoriesMap.keys.length}',
         name: 'HomePageDataViewModel',
       );
     } catch (e, stackTrace) {
@@ -76,5 +84,10 @@ class HomePageDataViewModel extends ChangeNotifier {
     } finally {
       _setLoading(false);
     }
+  }
+
+  // Helper method to get categories by ID
+  List<Category> getCategoriesById(int categoryId) {
+    return _categoriesMap[categoryId] ?? [];
   }
 }
