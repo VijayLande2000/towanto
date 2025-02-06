@@ -804,6 +804,7 @@ Widget buildDynamicCategoryLists(HomePageDataViewModel viewModel, BuildContext c
   );
 }
 
+
 Widget _buildHorizontalListView(HomePageDataViewModel viewModel, int categoryId) {
   // Get the categories for the specified ID
   final categories = viewModel.getCategoriesById(categoryId);
