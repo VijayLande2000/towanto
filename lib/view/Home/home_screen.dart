@@ -793,7 +793,7 @@ Widget buildDynamicCategoryLists(HomePageDataViewModel viewModel, BuildContext c
                     fontWeight: FontWeight.w600,
                     color: AppColors.whiteColor,
                     fontFamily: MyFonts.font_Bold,
-                  ),
+                  ), 
                 ),
               ),
             ),
