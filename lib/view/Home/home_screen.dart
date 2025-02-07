@@ -788,7 +788,7 @@ Widget buildDynamicCategoryLists(
                     MaterialPageRoute(
                       builder: (context) => CategoryDetailScreen(
                         category: CategoryItem(
-                          name: categoryName,
+                          name: categoryName ?? "",
                           imageUrl: 'assets/images/category_$categoryId.jpg',
                           backgroundColor:
                               Colors.grey.shade100, // Default background color
