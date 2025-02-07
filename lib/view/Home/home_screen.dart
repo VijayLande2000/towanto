@@ -22,6 +22,7 @@ import '../../viewModel/HomeViewModels/categories_list_viewModel.dart';
 import '../Orders/orders_screen.dart';
 import '../WhishList/whish_list_screen.dart';
 import 'category_detail_screen.dart';
+
 //checking the git track
 class HomeGrid extends StatefulWidget {
   HomeGrid({Key? key}) : super(key: key);
@@ -137,7 +138,8 @@ class _HomeGridState extends State<HomeGrid> {
                     if (onTap != null) onTap(imageUrls[itemIndex]);
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(4.0), // Use your desired padding here
+                    padding: const EdgeInsets.all(
+                        4.0), // Use your desired padding here
                     child: Image.network(
                       imageUrls[itemIndex],
                       width: MediaQuery.of(context).size.width,
@@ -163,24 +165,24 @@ class _HomeGridState extends State<HomeGrid> {
             imageUrls.length == 1
                 ? Container()
                 : Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: imageUrls.asMap().entries.map((entry) {
-                return Container(
-                  width: 8.0,
-                  height: 8.0,
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 4, horizontal: 6.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: (Theme.of(context).brightness ==
-                        Brightness.dark
-                        ? Colors.white
-                        : Colors.black)
-                        .withOpacity(current == entry.key ? 0.9 : 0.4),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: imageUrls.asMap().entries.map((entry) {
+                      return Container(
+                        width: 8.0,
+                        height: 8.0,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 4, horizontal: 6.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: (Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black)
+                              .withOpacity(current == entry.key ? 0.9 : 0.4),
+                        ),
+                      );
+                    }).toList(),
                   ),
-                );
-              }).toList(),
-            ),
           ],
         );
       },
@@ -235,11 +237,14 @@ class _HomeGridState extends State<HomeGrid> {
               size: 24,
             ),
           ),
-          SizedBox(width: 24,),
+          SizedBox(
+            width: 24,
+          ),
 
           // Wishlist Icon with Badge
           Consumer<HomePageDataViewModel>(
-            builder: (BuildContext context, HomePageDataViewModel value, Widget? child) {
+            builder: (BuildContext context, HomePageDataViewModel value,
+                Widget? child) {
               return badges.Badge(
                 badgeContent: Text(
                   value.cartCount.toString(),
@@ -250,7 +255,8 @@ class _HomeGridState extends State<HomeGrid> {
                     fontWeight: FontWeight.normal,
                   ),
                 ),
-                badgeStyle: badges.BadgeStyle(badgeColor: AppColors.yellow_color),
+                badgeStyle:
+                    badges.BadgeStyle(badgeColor: AppColors.yellow_color),
                 child: InkWell(
                   onTap: () {
                     Navigator.push(
@@ -268,17 +274,21 @@ class _HomeGridState extends State<HomeGrid> {
               );
             },
           ),
-          SizedBox(width: 24,),
+          SizedBox(
+            width: 24,
+          ),
           // Cart Icon with Badge
           Consumer<HomePageDataViewModel>(
-            builder: (BuildContext context, HomePageDataViewModel value, Widget? child) {
+            builder: (BuildContext context, HomePageDataViewModel value,
+                Widget? child) {
               return badges.Badge(
-                badgeStyle: badges.BadgeStyle(badgeColor: AppColors.yellow_color),
+                badgeStyle:
+                    badges.BadgeStyle(badgeColor: AppColors.yellow_color),
                 badgeContent: Text(
                   value.wishlistCount.toString(),
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 10 ,
+                    fontSize: 10,
                     fontFamily: MyFonts.font_regular,
                     fontWeight: FontWeight.normal,
                   ),
@@ -301,7 +311,9 @@ class _HomeGridState extends State<HomeGrid> {
             },
           ),
 
-          SizedBox(width: 12,),
+          SizedBox(
+            width: 12,
+          ),
         ],
       ),
       // drawer: CustomDrawer(selectedIndex: 1, categories: categories),
@@ -499,7 +511,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   CategoryItem _getCategoryByName(String name) {
     return widget.categories.firstWhere(
       (category) => category.name == name,
-      orElse: () =>    CategoryItem(
+      orElse: () => CategoryItem(
         name: 'Brands',
         imageUrl: 'assets/images/brands.jpg',
         backgroundColor: const Color(0xFFD1C4E9), // Light purple
@@ -531,124 +543,123 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ),
         ),
         child: ListView(
-         children: [
-           DrawerHeader(
-             decoration: const BoxDecoration(
-               color: Colors.transparent,
-             ),
-             child: Column(
-               mainAxisAlignment: MainAxisAlignment.center,
-               children: [
-                 Image.asset(
-                   'assets/images/ic_launcher_foreground.png',
-                   height: 80,
-                   width: 80,
-                 ),
-                 const SizedBox(height: 10),
-                 Text(
-                   savedUsername ?? "",
-                   style: TextStyle(
-                       color: AppColors.white,
-                       fontSize: 16,
-                       fontWeight: FontWeight.bold,
-                       overflow: TextOverflow.ellipsis),
-                 ),
-               ],
-             ),
-           ),
-           DrawerItem(
-             icon: Icons.grass,
-             title: 'Seeds',
-             isSelected: widget.selectedIndex == 0,
-             onTap: () => _handleNavigation(
-               context,
-               CategoryDetailScreen(category: _getCategoryByName('Seeds')),
-               0,
-             ),
-           ),
-           DrawerItem(
-             icon: Icons.science,
-             title: 'Pesticides',
-             isSelected: widget.selectedIndex == 1,
-             onTap: () => _handleNavigation(
-               context,
-               CategoryDetailScreen(
-                   category: _getCategoryByName('Pesticides')),
-               1,
-             ),
-           ),
-           DrawerItem(
-               icon: Icons.agriculture,
-               title: 'Machinery',
-               isSelected: widget.selectedIndex == 2,
-               onTap: () => _handleNavigation(
-                 context,
-                 CategoryDetailScreen(
-                     category: _getCategoryByName('Machinery')),
-                 2,
-               )),
-           DrawerItem(
-             icon: Icons.business,
-             title: 'Brands',
-             isSelected: widget.selectedIndex == 3,
-             onTap: () => _handleNavigation(
-               context,
-               CategoryDetailScreen(category: _getCategoryByName('Brands')),
-               3,
-             ),
-           ),
-           DrawerItem(
-             icon: Icons.contact_mail,
-             title: 'Enquiry',
-             isSelected: widget.selectedIndex == 4,
-             onTap: () => _handleNavigation(
-               context,
-               EnquiryScreen(),
-               4,
-             ),
-           ),
-           DrawerItem(
-             icon: Icons.person,
-             title: 'Profile',
-             isSelected: widget.selectedIndex == 5,
-             onTap: () => _handleNavigation(
-               context,
-               AccountInfoScreen(),
-               5,
-             ),
-           ),
-           DrawerItem(
-               icon: Icons.home,
-               title: 'Manage Address',
-               isSelected: widget.selectedIndex == 6,
-               onTap: () => _handleNavigation(
-                 context,
-                 AddressManager(),
-                 6,
-               )),
-           DrawerItem(
-               icon: Icons.list_alt_sharp,
-               title: 'Orders List',
-               isSelected: widget.selectedIndex == 7,
-               onTap: () => _handleNavigation(
-                 context,
-                 OrdersListScreen(),
-                 7,
-               )
-           ),
-           const SizedBox(height: 20),
-           const Divider(color: Colors.white30),
-           DrawerItem(
-             icon: Icons.logout_outlined,
-             title: 'Log Out',
-             isSelected: false,
-             onTap: () {
-               logOut();
-               // Add cart navigation logic here
-             },
-           ),
-           const SizedBox(height: 20),
-         ],
+          children: [
+            DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Colors.transparent,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/ic_launcher_foreground.png',
+                    height: 80,
+                    width: 80,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    savedUsername ?? "",
+                    style: TextStyle(
+                        color: AppColors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                ],
+              ),
+            ),
+            DrawerItem(
+              icon: Icons.grass,
+              title: 'Seeds',
+              isSelected: widget.selectedIndex == 0,
+              onTap: () => _handleNavigation(
+                context,
+                CategoryDetailScreen(category: _getCategoryByName('Seeds')),
+                0,
+              ),
+            ),
+            DrawerItem(
+              icon: Icons.science,
+              title: 'Pesticides',
+              isSelected: widget.selectedIndex == 1,
+              onTap: () => _handleNavigation(
+                context,
+                CategoryDetailScreen(
+                    category: _getCategoryByName('Pesticides')),
+                1,
+              ),
+            ),
+            DrawerItem(
+                icon: Icons.agriculture,
+                title: 'Machinery',
+                isSelected: widget.selectedIndex == 2,
+                onTap: () => _handleNavigation(
+                      context,
+                      CategoryDetailScreen(
+                          category: _getCategoryByName('Machinery')),
+                      2,
+                    )),
+            DrawerItem(
+              icon: Icons.business,
+              title: 'Brands',
+              isSelected: widget.selectedIndex == 3,
+              onTap: () => _handleNavigation(
+                context,
+                CategoryDetailScreen(category: _getCategoryByName('Brands')),
+                3,
+              ),
+            ),
+            DrawerItem(
+              icon: Icons.contact_mail,
+              title: 'Enquiry',
+              isSelected: widget.selectedIndex == 4,
+              onTap: () => _handleNavigation(
+                context,
+                EnquiryScreen(),
+                4,
+              ),
+            ),
+            DrawerItem(
+              icon: Icons.person,
+              title: 'Profile',
+              isSelected: widget.selectedIndex == 5,
+              onTap: () => _handleNavigation(
+                context,
+                AccountInfoScreen(),
+                5,
+              ),
+            ),
+            DrawerItem(
+                icon: Icons.home,
+                title: 'Manage Address',
+                isSelected: widget.selectedIndex == 6,
+                onTap: () => _handleNavigation(
+                      context,
+                      AddressManager(),
+                      6,
+                    )),
+            DrawerItem(
+                icon: Icons.list_alt_sharp,
+                title: 'Orders List',
+                isSelected: widget.selectedIndex == 7,
+                onTap: () => _handleNavigation(
+                      context,
+                      OrdersListScreen(),
+                      7,
+                    )),
+            const SizedBox(height: 20),
+            const Divider(color: Colors.white30),
+            DrawerItem(
+              icon: Icons.logout_outlined,
+              title: 'Log Out',
+              isSelected: false,
+              onTap: () {
+                logOut();
+                // Add cart navigation logic here
+              },
+            ),
+            const SizedBox(height: 20),
+          ],
         ),
       ),
     );
@@ -716,8 +727,6 @@ class DrawerItem extends StatelessWidget {
   }
 }
 
-
-
 class Category {
   final int categoryId;
   final String categoryName;
@@ -730,13 +739,15 @@ class Category {
   });
 }
 
-Widget buildDynamicCategoryLists(HomePageDataViewModel viewModel, BuildContext context) {
+Widget buildDynamicCategoryLists(
+    HomePageDataViewModel viewModel, BuildContext context) {
   return Column(
     children: viewModel.categoriesMap.entries.map((entry) {
       final categoryId = entry.key;
       final categories = entry.value;
       // Get the first category from the list to access category name
-      final categoryName = categories.isNotEmpty ? categories.first.categoryName : '';
+      final categoryName =
+          categories.isNotEmpty ? categories.first.categoryName : '';
 
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -765,7 +776,8 @@ Widget buildDynamicCategoryLists(HomePageDataViewModel viewModel, BuildContext c
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.brightBlue,
-                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100),
                   ),
@@ -778,7 +790,8 @@ Widget buildDynamicCategoryLists(HomePageDataViewModel viewModel, BuildContext c
                         category: CategoryItem(
                           name: categoryName,
                           imageUrl: 'assets/images/category_$categoryId.jpg',
-                          backgroundColor: Colors.grey.shade100, // Default background color
+                          backgroundColor:
+                              Colors.grey.shade100, // Default background color
                           imagePadding: 24.0, // Default padding
                           id: categoryId,
                         ),
@@ -793,7 +806,7 @@ Widget buildDynamicCategoryLists(HomePageDataViewModel viewModel, BuildContext c
                     fontWeight: FontWeight.w600,
                     color: AppColors.whiteColor,
                     fontFamily: MyFonts.font_Bold,
-                  ), 
+                  ),
                 ),
               ),
             ),
@@ -804,8 +817,8 @@ Widget buildDynamicCategoryLists(HomePageDataViewModel viewModel, BuildContext c
   );
 }
 
-
-Widget _buildHorizontalListView(HomePageDataViewModel viewModel, int categoryId) {
+Widget _buildHorizontalListView(
+    HomePageDataViewModel viewModel, int categoryId) {
   // Get the categories for the specified ID
   final categories = viewModel.getCategoriesById(categoryId);
 
@@ -856,7 +869,9 @@ Widget _buildHorizontalListView(HomePageDataViewModel viewModel, int categoryId)
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: categoryId == 4 ? screenHeight * 0.17 : screenHeight * 0.15,
+                      height: categoryId == 4
+                          ? screenHeight * 0.17
+                          : screenHeight * 0.15,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -891,10 +906,12 @@ Widget _buildHorizontalListView(HomePageDataViewModel viewModel, int categoryId)
                       children: [
                         ...List.generate(
                           5,
-                              (index) => Icon(
+                          (index) => Icon(
                             Icons.star,
                             size: 14,
-                            color: index < 4 ? Colors.orange : Colors.grey.shade300,
+                            color: index < 4
+                                ? Colors.orange
+                                : Colors.grey.shade300,
                           ),
                         ),
                         const SizedBox(width: 4),
@@ -930,7 +947,6 @@ Widget _buildHorizontalListView(HomePageDataViewModel viewModel, int categoryId)
     },
   );
 }
-
 
 // Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
 //   // Calculate the total number of products across all categories
