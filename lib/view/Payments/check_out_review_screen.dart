@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:towanto/view/Payments/order_confirmation_screen.dart';
@@ -17,12 +17,8 @@ class CheckOutReviewScreen extends StatefulWidget {
   State<CheckOutReviewScreen> createState() => _CheckOutReviewScreenState();
 }
 
-class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with AutomaticKeepAliveClientMixin {
+class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
   List<bool> _isExpanded = [false, false, false];
-
-  @override
-  bool get wantKeepAlive => true;
-
 
   @override
   void initState() {
@@ -301,7 +297,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
           SizedBox(height: 16),
           _buildAddressCard(
             address: partnerId.street ?? '',
-            unit: partnerId.street2?.toString() ?? '',
+            unit:partnerId.street2!=false? partnerId.street2?.toString() ?? '':"",
             city: partnerId.city ?? '',
             state: partnerId.stateId ?? '',
             zipCode: partnerId.zip ?? '',
@@ -346,7 +342,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
           SizedBox(height: 16),
           _buildAddressCard(
             address: shippingAddress.street ?? '',
-            unit: shippingAddress.street2?.toString() ?? '',
+            unit: shippingAddress.street2!=false?shippingAddress.street2?.toString() ?? '':"",
             city: shippingAddress.city ?? '',
             state: shippingAddress.stateId ?? '',
             zipCode: shippingAddress.zip.toString()?? '',
@@ -561,7 +557,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                       ),
                     ),
                     SizedBox(height: 4),
-                    Text(
+                    unit.isNotEmpty?Text(
                       unit,
                       style: TextStyle(
                           fontSize: 12,
@@ -569,7 +565,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen> with Automa
                           fontWeight: FontWeight.w500,
                           fontFamily: MyFonts.font_regular
                       ),
-                    ),
+                    ):SizedBox.shrink(),
                     SizedBox(height: 4),
                     Text(
                       '$city, $state $zipCode',

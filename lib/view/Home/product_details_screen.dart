@@ -250,8 +250,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     'Company:', productDetails.productCompany),
                                 _buildDetailRow('Packing Size:',
                                     productDetails.productWeight.toString()),
-                                _buildDetailRow('Price:',
-                                    productDetails.productPrice.toString()),
+                                // _buildDetailRow('Price:',
+                                //     productDetails.productPrice.toString()),
                                 _buildDetailRow('Per Case/Bag:',
                                     productDetails.perCaseBag.toString()),
                                 _buildDetailRow('Minimum Order Quantity:',
@@ -437,11 +437,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 productDetails.isInWishlist.toString());
                             return TextButton.icon(
                               onPressed: () async {
-                                await viewModel.toggleWishlistStatus(
-                                  partnerId,
-                                  productDetails.id,
-                                  context,
-                                );
+                                if(!(viewModel.isInWhishList || productDetails.isInWishlist)){
+                                  await viewModel.toggleWishlistStatus(
+                                    partnerId,
+                                    productDetails.id,
+                                    context,
+                                  );
+                                }
                               },
                               icon: viewModel.isLoading
                                   ? SizedBox(
@@ -453,8 +455,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                       ),
                                     )
                                   : Icon(
-                                      viewModel.isInWhishList ||
-                                              productDetails.isInWishlist
+                                      viewModel.isInWhishList || productDetails.isInWishlist
                                           ? Icons.favorite
                                           : Icons.favorite_border,
                                       color: Colors.red,

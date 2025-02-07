@@ -223,10 +223,12 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                                   color: AppColors.cardcolor,
                                   fontSize: 14,
                                 ),
+
                               ),
                         ),
                         child: SelectState(
-                          onCountryChanged: (country) {
+
+                          onCountryChanged: (country,) {
                             setState(() => selectedCountry = country);
                             setState(() => selectedCountry = country);
                             // print("lets check selected country ${selectedCountry}");
