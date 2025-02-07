@@ -445,6 +445,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   );
                                 }
                               },
+
                               icon: viewModel.isLoading
                                   ? SizedBox(
                                       width: 16,
