@@ -1,9 +1,4 @@
 class HomeDataModel {
-  final dynamic cartCount;
-  final dynamic wishlistCount;
-  final List<dynamic> sliderData;
-  final List<Category> categories;
-
   HomeDataModel({
     required this.cartCount,
     required this.wishlistCount,
@@ -11,65 +6,44 @@ class HomeDataModel {
     required this.categories,
   });
 
-  factory HomeDataModel.fromJson(Map<dynamic, dynamic> json) {
+  final int? cartCount;
+  final int? wishlistCount;
+  final List<String> sliderData;
+  final List<Category> categories;
+
+  factory HomeDataModel.fromJson(Map<String, dynamic> json){
     return HomeDataModel(
-      cartCount: json['cart_count'] as dynamic,
-      wishlistCount: json['wishlist_count'] as dynamic,
-      sliderData: List<dynamic>.from(json['slider_data'] ?? []),
-      categories: (json['categories'] as List<dynamic>)
-          .map((categoryJson) => Category.fromJson(categoryJson))
-          .toList(),
+      cartCount: json["cart_count"],
+      wishlistCount: json["wishlist_count"],
+      sliderData: json["slider_data"] == null ? [] : List<String>.from(json["slider_data"]!.map((x) => x)),
+      categories: json["categories"] == null ? [] : List<Category>.from(json["categories"]!.map((x) => Category.fromJson(x))),
     );
   }
 
-  Map<dynamic, dynamic> toJson() {
-    return {
-      'cart_count': cartCount,
-      'wishlist_count': wishlistCount,
-      'slider_data': sliderData,
-      'categories': categories.map((category) => category.toJson()).toList(),
-    };
-  }
 }
 
 class Category {
-  final dynamic categoryId;
-  final dynamic categoryName;
-  final List<Product> products;
-
   Category({
     required this.categoryId,
     required this.categoryName,
     required this.products,
   });
 
-  factory Category.fromJson(Map<dynamic, dynamic> json) {
+  final int? categoryId;
+  final String? categoryName;
+  final List<Product> products;
+
+  factory Category.fromJson(Map<String, dynamic> json){
     return Category(
-      categoryId: json['category_id'] as dynamic,
-      categoryName: json['category_name'] as dynamic,
-      products: (json['products'] as List<dynamic>)
-          .map((productJson) => Product.fromJson(productJson))
-          .toList(),
+      categoryId: json["category_id"],
+      categoryName: json["category_name"],
+      products: json["products"] == null ? [] : List<Product>.from(json["products"]!.map((x) => Product.fromJson(x))),
     );
   }
 
-  Map<dynamic, dynamic> toJson() {
-    return {
-      'category_id': categoryId,
-      'category_name': categoryName,
-      'products': products.map((product) => product.toJson()).toList(),
-    };
-  }
 }
 
 class Product {
-  final dynamic id;
-  final dynamic name;
-  final double price;
-  final dynamic categoryId;
-  final dynamic description;
-  final dynamic image1920;
-
   Product({
     required this.id,
     required this.name,
@@ -77,27 +51,30 @@ class Product {
     required this.categoryId,
     required this.description,
     required this.image1920,
+    required this.rating,
+    required this.ratingCount,
   });
 
-  factory Product.fromJson(Map<dynamic, dynamic> json) {
+  final dynamic id;
+  final dynamic name;
+  final dynamic price;
+  final dynamic categoryId;
+  final dynamic description;
+  final dynamic image1920;
+  final dynamic rating;
+  final dynamic ratingCount;
+
+  factory Product.fromJson(Map<String, dynamic> json){
     return Product(
-      id: json['id'] as dynamic,
-      name: json['name'] as dynamic,
-      price: (json['price'] as num).toDouble(),
-      categoryId: json['category_id'] as dynamic,
-      description: json['description'] as dynamic,
-      image1920: json['image_1920'] as dynamic,
+      id: json["id"],
+      name: json["name"],
+      price: json["price"],
+      categoryId: json["category_id"],
+      description: json["description"],
+      image1920: json["image_1920"],
+      rating: json["rating"],
+      ratingCount: json["rating_count"],
     );
   }
 
-  Map<dynamic, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'price': price,
-      'category_id': categoryId,
-      'description': description,
-      'image_1920': image1920,
-    };
-  }
 }

@@ -66,23 +66,25 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
     Future.microtask(() {
       if (widget.addressData != null) {
         widget.addressData?.forEach((key, value) {
-          print("key = "+key);
-          print("value = "+value.toString());
+          print("key = " + key);
+          print("value = " + value.toString());
         });
-        final provider = Provider.of<EditAddressViewModel>(context, listen: false);
+        final provider =
+            Provider.of<EditAddressViewModel>(context, listen: false);
 
         // Pre-fill form fields
         provider.formFields.forEach((field) {
           switch (field['key']) {
             case 'firmName':
-              field['controller'].text = widget.addressData!['company_name'].toString() ?? '';
+              field['controller'].text =
+                  widget.addressData!['company_name'].toString() ?? '';
               print({widget.addressData!['company_name'].toString()});
               break;
             case 'proprietorName':
               field['controller'].text = widget.addressData!['name'] != null
                   ? (widget.addressData!['name'] is String
-                  ? widget.addressData!['name']
-                  : '')
+                      ? widget.addressData!['name']
+                      : '')
                   : '';
               break;
 
@@ -93,11 +95,12 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
               field['controller'].text = widget.addressData!['street'] ?? '';
               break;
             case 'zipCode':
-              field['controller'].text = (widget.addressData!['zipcode'] is String)
-                  ? widget.addressData!['zipcode']
-                  : (widget.addressData!['zipcode'] is int)
-                  ? widget.addressData!['zipcode'].toString()
-                  : '';
+              field['controller'].text =
+                  (widget.addressData!['zipcode'] is String)
+                      ? widget.addressData!['zipcode']
+                      : (widget.addressData!['zipcode'] is int)
+                          ? widget.addressData!['zipcode'].toString()
+                          : '';
               break;
 
               break;
@@ -113,20 +116,26 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
         });
         // Pre-fill location fields
         setState(() {
+          print("the selected country :${selectedCountry}");
           selectedCountry = widget.addressData!['country'];
           selectedState = widget.addressData!['state'];
           selectedCity = widget.addressData!['city'];
-          if (widget.addressData != null && options.contains(widget.addressData!['type'])) {
+          if (widget.addressData != null &&
+              options.contains(widget.addressData!['type'])) {
             selectedOption = widget.addressData!['type'];
           }
         });
-        print("erh"+selectedOption.toString());
+        print("erh" + selectedOption.toString());
       }
     });
   }
+
   String? selectedOption;
 
-  final List<String> options = ['billing', 'delivery',];
+  final List<String> options = [
+    'billing',
+    'delivery',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -178,14 +187,17 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                     label: 'Type',
                     items: options,
                     selectedValue: selectedOption,
-                    hint: 'Choose one',
+                    // hint: 'Choose one',
+                    hint: widget.addressData!['type'] ?? '',
                     onChanged: (value) {
                       setState(() {
                         selectedOption = value;
                       });
                     },
                   ),
-                  SizedBox(height: 12.0,),
+                  SizedBox(
+                    height: 12.0,
+                  ),
                   // Country State City Picker
                   Container(
                     decoration: BoxDecoration(
@@ -216,6 +228,8 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                         child: SelectState(
                           onCountryChanged: (country) {
                             setState(() => selectedCountry = country);
+                            setState(() => selectedCountry = country);
+                            // print("lets check selected country ${selectedCountry}");
                           },
                           onStateChanged: (state) {
                             setState(() => selectedState = state);
@@ -231,19 +245,25 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                   const SizedBox(height: 20),
 
                   Utils.createButton(
-                      text: "update Address",
-                      onClick: () {
-                        print("sdced"+widget.addressData!['addressId'].toString());
-                        provider.submitAccountInfo(
-                            context,
-                            selectedCountry,
-                            selectedState,
-                            selectedCity,
-                            widget.addressData!['addressId'].toString(),
-                            widget.from,
-                            selectedOption??""
-                        );
-                      }),
+                    text: "Update Address",
+                    onClick: () {
+                      // Extract the country name by removing the flag emoji
+                      String? cleanCountryName = selectedCountry?.split(" ").last;
+
+                      print("sdced: ${widget.addressData!['addressId']}");
+                      print("lets check selected country: $cleanCountryName");
+
+                      provider.submitAccountInfo(
+                        context,
+                        cleanCountryName, // Pass only the country name
+                        selectedState,
+                        selectedCity,
+                        widget.addressData!['addressId'].toString(),
+                        widget.from,
+                        selectedOption ?? "",
+                      );
+                    },
+                  )
                 ],
               ),
             ),
@@ -254,6 +274,7 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
     );
   }
 }
+
 class CustomDropdownField extends StatelessWidget {
   final String label;
   final String? selectedValue;
@@ -272,7 +293,6 @@ class CustomDropdownField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -302,8 +322,7 @@ class CustomDropdownField extends StatelessWidget {
               ),
             ],
             border: Border.all(
-              color
-                  : AppColors.grey.withOpacity(0.3),
+              color: AppColors.grey.withOpacity(0.3),
               width: 1,
             ),
           ),

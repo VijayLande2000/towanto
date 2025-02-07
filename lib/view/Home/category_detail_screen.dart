@@ -659,20 +659,34 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                     const SizedBox(height: 4),
                                     Row(
                                       children: [
-                                        Row(
-                                          children: List.generate(
-                                            5,
-                                                (index) => Icon(
+                                        ...List.generate(5, (index) {
+                                          // Determine if the star should be filled, half-filled, or empty
+                                          if (index < product.ratingAvg.floor()) {
+                                            return Icon(
                                               Icons.star,
-                                              size: 14,
-                                              color: index < 4 ? Colors.orange : Colors.grey.shade300,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 4),
+                                              color: Colors.amber,
+                                              size: 16,
+                                            );
+                                          } else if (index < product.ratingAvg && product.ratingAvg % 1 != 0) {
+                                            return Icon(
+                                              Icons.star_half,
+                                              color: Colors.amber,
+                                              size: 16,
+                                            );
+                                          } else {
+                                            return Icon(
+                                              Icons.star_border,
+                                              color: Colors.amber,
+                                              size: 16,
+                                            );
+                                          }
+                                        }),
+                                        SizedBox(width: 8),
+                                        // Display the review count next to the stars
                                         Text(
-                                          '46',
+                                          '${product.ratingCount} reviews',
                                           style: TextStyle(
+                                            fontFamily: MyFonts.font_regular,
                                             color: Colors.grey.shade600,
                                             fontSize: 12,
                                           ),

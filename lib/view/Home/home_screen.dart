@@ -776,7 +776,7 @@ Widget buildDynamicCategoryLists(HomePageDataViewModel viewModel, BuildContext c
                     MaterialPageRoute(
                       builder: (context) => CategoryDetailScreen(
                         category: CategoryItem(
-                          name: categoryName,
+                          name: categoryName ?? "",
                           imageUrl: 'assets/images/category_$categoryId.jpg',
                           backgroundColor: Colors.grey.shade100, // Default background color
                           imagePadding: 24.0, // Default padding
@@ -876,7 +876,7 @@ Widget _buildHorizontalListView(HomePageDataViewModel viewModel, int categoryId)
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      product.name,
+                      product.name ?? "",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -887,19 +887,55 @@ Widget _buildHorizontalListView(HomePageDataViewModel viewModel, int categoryId)
                       ),
                     ),
                     const SizedBox(height: 4),
+                    // Row(
+                    //   children: [
+                    //     ...List.generate(
+                    //       5,
+                    //           (index) => Icon(
+                    //         Icons.star,
+                    //         size: 14,
+                    //         color: index < 4 ? Colors.orange : Colors.grey.shade300,
+                    //       ),
+                    //     ),
+                    //     const SizedBox(width: 4),
+                    //     Text(
+                    //       '46',
+                    //       style: TextStyle(
+                    //         fontFamily: MyFonts.font_regular,
+                    //         color: Colors.grey.shade600,
+                    //         fontSize: 12,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     Row(
                       children: [
-                        ...List.generate(
-                          5,
-                              (index) => Icon(
-                            Icons.star,
-                            size: 14,
-                            color: index < 4 ? Colors.orange : Colors.grey.shade300,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
+                        ...List.generate(5, (index) {
+                          // Determine if the star should be filled, half-filled, or empty
+                          if (index < product.rating.floor()) {
+                            return Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 16,
+                            );
+                          } else if (index < product.rating && product.rating % 1 != 0) {
+                            return Icon(
+                              Icons.star_half,
+                              color: Colors.amber,
+                              size: 16,
+                            );
+                          } else {
+                            return Icon(
+                              Icons.star_border,
+                              color: Colors.amber,
+                              size: 16,
+                            );
+                          }
+                        }),
+                        SizedBox(width: 8),
+                        // Display the review count next to the stars
                         Text(
-                          '46',
+                          '${product.ratingCount} reviews',
                           style: TextStyle(
                             fontFamily: MyFonts.font_regular,
                             color: Colors.grey.shade600,
@@ -908,6 +944,7 @@ Widget _buildHorizontalListView(HomePageDataViewModel viewModel, int categoryId)
                         ),
                       ],
                     ),
+
                     const SizedBox(height: 8),
                     Text(
                       '₹${product.price}',

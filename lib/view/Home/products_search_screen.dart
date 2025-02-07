@@ -213,20 +213,20 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                       ],
                     ],
                   ),
-                  const SizedBox(height: 4),
-                  product.description != false && product.description != null
-                      ? Text(
-                          product.description.toString() ?? '',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: AppColors.grey,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: MyFonts.font_regular,
-                          ),
-                        )
-                      : SizedBox.shrink(),
+                  // const SizedBox(height: 4),
+                  // product.description != false && product.description != null
+                  //     ? Text(
+                  //         product.description.toString() ?? '',
+                  //         maxLines: 2,
+                  //         overflow: TextOverflow.ellipsis,
+                  //         style: TextStyle(
+                  //           fontSize: 16,
+                  //           color: AppColors.grey,
+                  //           fontWeight: FontWeight.normal,
+                  //           fontFamily: MyFonts.font_regular,
+                  //         ),
+                  //       )
+                  //     : SizedBox.shrink(),
                 ],
               ),
             ),

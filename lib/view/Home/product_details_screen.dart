@@ -159,26 +159,63 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           ),
                         ),
                         SizedBox(height: 8),
+                        // Row(
+                        //   children: [
+                        //     ...List.generate(5, (index) {
+                        //       // Compare the index with the review rating to determine if the star should be filled
+                        //       return Icon(
+                        //         index < productDetails.ratingAvg
+                        //             ? Icons.star
+                        //             : Icons.star_border,
+                        //         color: Colors.amber,
+                        //         size: 20,
+                        //       );
+                        //     }),
+                        //     SizedBox(width: 8),
+                        //     // Display the review count next to the stars
+                        //     Text(
+                        //       '(${productDetails.ratingCount} review${productDetails.ratingCount > 1 ? 's' : ''})',
+                        //       style: TextStyle(
+                        //         fontSize: 14,
+                        //         fontFamily: MyFonts.font_regular,
+                        //         fontWeight: FontWeight.w400,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+
                         Row(
                           children: [
                             ...List.generate(5, (index) {
-                              // Compare the index with the review rating to determine if the star should be filled
-                              return Icon(
-                                index < productDetails.ratingCount
-                                    ? Icons.star
-                                    : Icons.star_border,
-                                color: Colors.amber,
-                                size: 20,
-                              );
+                              // Determine if the star should be filled, half-filled, or empty
+                              if (index < productDetails.ratingAvg.floor()) {
+                                return Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: 16,
+                                );
+                              } else if (index < productDetails.ratingAvg && productDetails.ratingAvg % 1 != 0) {
+                                return Icon(
+                                  Icons.star_half,
+                                  color: Colors.amber,
+                                  size: 16,
+                                );
+                              } else {
+                                return Icon(
+                                  Icons.star_border,
+                                  color: Colors.amber,
+                                  size: 16,
+                                );
+                              }
                             }),
                             SizedBox(width: 8),
                             // Display the review count next to the stars
                             Text(
-                              '(${productDetails.ratingCount} review${productDetails.ratingCount > 1 ? 's' : ''})',
+                              '${productDetails.ratingCount} reviews',
                               style: TextStyle(
-                                fontSize: 14,
                                 fontFamily: MyFonts.font_regular,
-                                fontWeight: FontWeight.w400,
+                                color: Colors.grey.shade600,
+                                fontSize: 12,
                               ),
                             ),
                           ],
@@ -221,6 +258,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     productDetails.minimumOrderQty.toString()),
                                 _buildDetailRow('price/kg:',
                                     productDetails.productPrice.toString()),
+                                _buildDetailRow('Product Price:',
+                                    productDetails.lstPrice.toString()),
                               ],
                             ),
                           ),
