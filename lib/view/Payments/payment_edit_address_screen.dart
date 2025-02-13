@@ -51,30 +51,33 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
   String? selectedCountry;
   String? selectedState;
   String? selectedCity;
-
+  dynamic selectedCountryId;
+  dynamic selectedStateId;
   @override
   void initState() {
     super.initState();
     print("dbfhbvhv" + widget.addressData!['addressId'].toString());
 
     // Use Future.microtask to avoid calling Provider during build
-    Future.microtask(() {
+    Future.microtask(() async {
       if (widget.addressData != null) {
         widget.addressData?.forEach((key, value) {
           print("key = "+key);
           print("value = "+value.toString());
         });
         final provider = Provider.of<EditAddressViewModel>(context, listen: false);
-
+        provider.stateMap.clear();
+        provider.countryMap.clear();
+        await provider.getCountries(context);
         // Pre-fill form fields
         provider.formFields.forEach((field) {
           switch (field['key']) {
             case 'firmName':
               field['controller'].text = widget.addressData!['name'] ?? '';
               break;
-            case 'proprietorName':
+            case 'proprietor_name':
               field['controller'].text =
-                  widget.addressData!['company_name'] ?? '';
+                  widget.addressData!['proprietor_name'] ?? '';
               break;
             case 'email':
               field['controller'].text = widget.addressData!['email'] ?? '';
@@ -88,16 +91,36 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
             case 'phone':
               field['controller'].text = widget.addressData!['phone'] ?? '';
               break;
-            case 'gstNumber':
+            case 'vat':
               field['controller'].text = widget.addressData!['vat'] ?? '';
+              break;
+              case 'city':
+              field['controller'].text = widget.addressData!['city'] ?? '';
               break;
           }
         });
+
+        selectedCountry = widget.addressData!['country'];
+        print("dsfdcds"+selectedCountry.toString());
+        selectedCountryId = provider.countryMap.keys.firstWhere(
+              (key) => provider.countryMap[key] == selectedCountry,
+          orElse: () => "",
+        );
+
+        await provider.getStates(context, selectedCountryId);
+        selectedState = widget.addressData!['state'];
+        selectedStateId = provider.stateMap.keys.firstWhere(
+              (key) => provider.stateMap[key] == selectedState,
+          orElse: () => "",
+        );
+
+        print("the selected country :${selectedCountry}");
+        print("the selected country :${selectedCountryId}");
         // Pre-fill location fields
         setState(() {
-          selectedCountry = widget.addressData!['country'];
-          selectedState = widget.addressData!['state'];
-          selectedCity = widget.addressData!['city'];
+          // selectedCountry = widget.addressData!['country'];
+          // selectedState = widget.addressData!['state'];
+          // selectedCity = widget.addressData!['city'];
           selectedOption = widget.addressData!['type'];
         });
         print("erh"+selectedOption.toString());
@@ -106,7 +129,10 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
   }
   String? selectedOption;
 
-  final List<String> options = ['invoice', 'delivery',];
+  final List<String> options = [
+    'invoice',
+    'delivery',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +147,7 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
             fontSize: 20,
             // color: AppColors.black,
             fontWeight: FontWeight.bold,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
           ),
         ),
         leading: IconButton(
@@ -153,6 +179,63 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 12.0,
+                  ),
+
+                  // In your build method
+                  Utils.buildDropdownButtonFormField(
+                      value: selectedCountryId,
+                      items: provider.countryMap,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedCountryId = newValue;
+                          // Since we're selecting a new country, clear dependent fields
+                          provider.stateMap.clear();
+                          selectedState = null;
+                          selectedCountry=provider.countryMap[newValue];
+
+                          print("Selected Country Name: ${provider.countryMap[newValue]}"); // Print the country name
+                          print("Selected Country Name: $selectedCountry"); // Print the country name
+                        });
+
+                        // Get states using the country ID (key)
+                        if (newValue != null) {
+                          // newValue is already the key/ID since we set it as the value in DropdownMenuItem
+                          provider.getStates(context, newValue);
+                        }
+                      },
+                      backgroundcolor: AppColors.whiteColor,
+                      hintText: 'Select Country',
+                      label: 'Country'
+                  ),
+                  SizedBox(
+                    height: 12.0,
+                  ),
+                  Utils.buildDropdownButtonFormField(
+                      value: selectedStateId,
+                      items: provider.stateMap,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedStateId = newValue;
+                          selectedState=provider.stateMap[newValue];
+                          print("Selected state Name: ${provider.stateMap[newValue]}"); // Print the country name
+                          print("Selected state Name: $selectedState"); // Print the country name
+                        });
+
+                        // Get states using the country ID (key)
+                        if (newValue != null) {
+                          // newValue is already the key/ID since we set it as the value in DropdownMenuItem
+                          // value.getStates(context, newValue);
+                        }
+                      },
+                      backgroundcolor: AppColors.whiteColor,
+                      hintText: 'Select State',
+                      label: 'State'
+                  ),
+                  SizedBox(
+                    height: 12.0,
+                  ),
 
                   CustomDropdownField(
                     label: 'Type',
@@ -167,46 +250,46 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
                   ),
                   SizedBox(height: 12.0,),
                   // Country State City Picker
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                      height: 180,
-                      child: Theme(
-                        data: Theme.of(context).copyWith(
-                          textTheme: Theme.of(context).textTheme.copyWith(
-                                titleMedium: const TextStyle(
-                                  fontFamily: MyFonts.font_Bold,
-                                  color: AppColors.cardcolor,
-                                  fontSize: 14,
-                                ),
-                              ),
-                        ),
-                        child: SelectState(
-                          onCountryChanged: (country) {
-                            setState(() => selectedCountry = country);
-                          },
-                          onStateChanged: (state) {
-                            setState(() => selectedState = state);
-                          },
-                          onCityChanged: (city) {
-                            setState(() => selectedCity = city);
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     borderRadius: BorderRadius.circular(30),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.grey.withOpacity(0.1),
+                  //         spreadRadius: 1,
+                  //         blurRadius: 10,
+                  //         offset: const Offset(0, 4),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                  //   child: SizedBox(
+                  //     height: 180,
+                  //     child: Theme(
+                  //       data: Theme.of(context).copyWith(
+                  //         textTheme: Theme.of(context).textTheme.copyWith(
+                  //               titleMedium: const TextStyle(
+                  //                 fontFamily: MyFonts.font_Bold,
+                  //                 color: AppColors.cardcolor,
+                  //                 fontSize: 14,
+                  //               ),
+                  //             ),
+                  //       ),
+                  //       child: SelectState(
+                  //         onCountryChanged: (country) {
+                  //           setState(() => selectedCountry = country);
+                  //         },
+                  //         onStateChanged: (state) {
+                  //           setState(() => selectedState = state);
+                  //         },
+                  //         onCityChanged: (city) {
+                  //           setState(() => selectedCity = city);
+                  //         },
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
 
                   const SizedBox(height: 20),
 
@@ -218,7 +301,6 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
                             context,
                             selectedCountry,
                             selectedState,
-                            selectedCity,
                             widget.addressData!['addressId'].toString(),
                             "back",
                             selectedOption??""
@@ -260,7 +342,7 @@ class CustomDropdownField extends StatelessWidget {
           label,
           style: const TextStyle(
             fontSize: 14,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
             fontWeight: FontWeight.w500,
             color: AppColors.black,
           ),
@@ -294,7 +376,7 @@ class CustomDropdownField extends StatelessWidget {
                 style: TextStyle(
                   color: AppColors.grey.withOpacity(0.7),
                   fontSize: 14,
-                  fontFamily: MyFonts.font_Bold,
+                  fontFamily: MyFonts.font_regular,
                 ),
               ),
               isExpanded: true,

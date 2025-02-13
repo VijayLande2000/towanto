@@ -1,12 +1,11 @@
 class AppUrl {
 
   // Dev URLs
-  static const String devBaseurlauth = "https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/";
+  static const String devBaseurlauth = "https://towanto-ecommerce-mainbranch-18244307.dev.odoo.com/";
 
 
   // URLs to be used based on the environment
   static late String baseurlauth;
-
 
 
   // Auth URLs
@@ -39,6 +38,9 @@ class AppUrl {
   static late String createOrder;
   static late String paymentConfirmation;
   static late String deactivateAccount;
+  static late String getAllCountries;
+  static late String getAllStates;
+  static late String getAllFilters;
 
 
   // Method to set the URLs based on the environment key
@@ -87,6 +89,9 @@ class AppUrl {
     createOrder = baseurlauth + "api/createOrder";
     paymentConfirmation = baseurlauth +"api/payment_confirm";
     deactivateAccount = baseurlauth +"my/deactivate_user_account";
+    getAllCountries = baseurlauth +"get_country";
+    getAllStates = baseurlauth +"get_states";
+    getAllFilters = baseurlauth +"api/get_filters";
     //we need to give here end point of the api
   }
 

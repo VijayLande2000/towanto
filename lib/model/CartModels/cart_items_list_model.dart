@@ -1,10 +1,10 @@
 class CartItemsListModel {
   List<Product> products;
-  double totalAmount;
+  dynamic totalAmount;
 
   CartItemsListModel({required this.products, required this.totalAmount});
 
-  factory CartItemsListModel.fromJson(Map<String, dynamic> json) {
+  factory CartItemsListModel.fromJson(Map<dynamic, dynamic> json) {
     // Check if 'products' is null or empty and provide an empty list as a fallback
     return CartItemsListModel(
       products: json['products'] != null
@@ -15,7 +15,7 @@ class CartItemsListModel {
   }
 
 
-  Map<String, dynamic> toJson() {
+  Map<dynamic, dynamic> toJson() {
     return {
       'products': products.map((product) => product.toJson()).toList(),
       'total_amount': totalAmount,
@@ -25,93 +25,93 @@ class CartItemsListModel {
 
 
 class Product {
-  int id;
-  bool analyticDistribution;
-  bool analyticDistributionSearch;
-  int analyticPrecision;
+  dynamic id;
+  dynamic analyticDistribution;
+  dynamic analyticDistributionSearch;
+  dynamic analyticPrecision;
   List<dynamic> orderId;
-  int sequence;
+  dynamic sequence;
   List<dynamic> companyId;
   List<dynamic> currencyId;
   List<dynamic> orderPartnerId;
   List<dynamic> salesmanId;
-  String state;
+  dynamic state;
   List<dynamic> taxCountryId;
-  bool displayType;
-  bool isDownpayment;
-  bool isExpense;
+  dynamic displayType;
+  dynamic isDownpayment;
+  dynamic isExpense;
   List<dynamic> productId;
   List<dynamic> productTemplateId;
   List<dynamic> productUomCategoryId;
   List<dynamic> productCustomAttributeValueIds;
   List<dynamic> productNoVariantAttributeValueIds;
-  String name;
-  double productUomQty;
+  dynamic name;
+  dynamic productUomQty;
   List<dynamic> productUom;
   List<dynamic> taxId;
-  bool pricelistItemId;
-  double priceUnit;
-  double discount;
-  double priceSubtotal;
-  double priceTax;
-  double priceTotal;
-  double priceReduceTaxexcl;
-  double priceReduceTaxinc;
-  bool productPackagingId;
-  double productPackagingQty;
-  double customerLead;
-  String qtyDeliveredMethod;
-  double qtyDelivered;
-  double qtyInvoiced;
-  double qtyToInvoice;
+  dynamic pricelistItemId;
+  dynamic priceUnit;
+  dynamic discount;
+  dynamic priceSubtotal;
+  dynamic priceTax;
+  dynamic priceTotal;
+  dynamic priceReduceTaxexcl;
+  dynamic priceReduceTaxinc;
+  dynamic productPackagingId;
+  dynamic productPackagingQty;
+  dynamic customerLead;
+  dynamic qtyDeliveredMethod;
+  dynamic qtyDelivered;
+  dynamic qtyInvoiced;
+  dynamic qtyToInvoice;
   List<dynamic> analyticLineIds;
   List<dynamic> invoiceLines;
-  String invoiceStatus;
-  double untaxedAmountInvoiced;
-  double untaxedAmountToInvoice;
-  String productType;
-  bool productUpdatable;
-  bool productUomReadonly;
-  String taxCalculationRoundingMethod;
-  String displayName;
+  dynamic invoiceStatus;
+  dynamic untaxedAmountInvoiced;
+  dynamic untaxedAmountToInvoice;
+  dynamic productType;
+  dynamic productUpdatable;
+  dynamic productUomReadonly;
+  dynamic taxCalculationRoundingMethod;
+  dynamic displayName;
   List<dynamic> createUid;
-  String createDate;
+  dynamic createDate;
   List<dynamic> writeUid;
-  String writeDate;
-  bool isDelivery;
-  double productQty;
-  bool recomputeDeliveryPrice;
-  bool isRewardLine;
+  dynamic writeDate;
+  dynamic isDelivery;
+  dynamic productQty;
+  dynamic recomputeDeliveryPrice;
+  dynamic isRewardLine;
   dynamic rewardId;
   dynamic couponId;
   dynamic rewardIdentifierCode;
-  double pointsCost;
+  dynamic pointsCost;
   List<dynamic> saleOrderOptionIds;
-  bool isConfigurableProduct;
-  List<int> productTemplateAttributeValueIds;
+  dynamic isConfigurableProduct;
+  List<dynamic> productTemplateAttributeValueIds;
   dynamic routeId;
   List<dynamic> moveIds;
-  double virtualAvailableAtDate;
-  String scheduledDate;
+  dynamic virtualAvailableAtDate;
+  dynamic scheduledDate;
   dynamic forecastExpectedDate;
-  double freeQtyToday;
-  double qtyAvailableToday;
+  dynamic freeQtyToday;
+  dynamic qtyAvailableToday;
   List<dynamic> warehouseId;
-  double qtyToDeliver;
-  bool isMto;
-  bool displayQtyWidget;
+  dynamic qtyToDeliver;
+  dynamic isMto;
+  dynamic displayQtyWidget;
   dynamic linkedLineId;
   List<dynamic> optionLineIds;
-  String nameShort;
-  bool shopWarning;
+  dynamic nameShort;
+  dynamic shopWarning;
   dynamic sellerId;
-  String marketplaceStatus;
-  double marginPercentage;
-  double marginAmount;
-  bool isSellerGroup;
+  dynamic marketplaceStatus;
+  dynamic marginPercentage;
+  dynamic marginAmount;
+  dynamic isSellerGroup;
   dynamic pickingId;
-  double deliveryCharges;
-  int deliveryOrderCount;
+  dynamic deliveryCharges;
+  dynamic deliveryOrderCount;
 
   Product({
     required this.id,
@@ -203,7 +203,7 @@ class Product {
     required this.deliveryOrderCount,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) {
+  factory Product.fromJson(Map<dynamic, dynamic> json) {
     return Product(
       id: json['id'],
       analyticDistribution: json['analytic_distribution'],
@@ -273,7 +273,7 @@ class Product {
       saleOrderOptionIds: List<dynamic>.from(json['sale_order_option_ids']),
       isConfigurableProduct: json['is_configurable_product'],
       productTemplateAttributeValueIds:
-      List<int>.from(json['product_template_attribute_value_ids']),
+      List<dynamic>.from(json['product_template_attribute_value_ids']),
       routeId: json['route_id'],
       moveIds: List<dynamic>.from(json['move_ids']),
       virtualAvailableAtDate: json['virtual_available_at_date'].toDouble(),
@@ -291,16 +291,17 @@ class Product {
       shopWarning: json['shop_warning'],
       sellerId: json['seller_id'],
       marketplaceStatus: json['marketplace_status'],
-      marginPercentage: json['margin_percentage'].toDouble(),
-      marginAmount: json['margin_amount'].toDouble(),
+      marginPercentage: json['margin_percentage']?.toDouble(),
+
+      marginAmount: json['margin_amount']?.toDouble(),
       isSellerGroup: json['is_seller_group'],
       pickingId: json['picking_id'],
-      deliveryCharges: json['delivery_charges'].toDouble(),
+      deliveryCharges: json['delivery_charges']?.toDouble(),
       deliveryOrderCount: json['delivery_order_count'],
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<dynamic, dynamic> toJson() {
     return {
       'id': id,
       'analytic_distribution': analyticDistribution,

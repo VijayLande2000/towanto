@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:towanto/model/Address_Models/payment_address_model.dart';
 
 import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
@@ -19,7 +20,7 @@ class SelectAddressScreen extends StatefulWidget {
 }
 
 class _SelectAddressScreenState extends State<SelectAddressScreen> {
-  List<Map<String, dynamic>> _savedAddresses = [];
+  List<PaymentAddressModel> _savedAddresses = [];
 
   @override
   void initState() {
@@ -30,28 +31,40 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
       if (provider.addresses.isNotEmpty) {
         setState(() {
           print("ewgyucd"+widget.type.toString());
-
             for (var address in provider.addresses) {
               if (widget.type == "Billing Address" && address.type == "invoice") {
-                _savedAddresses.add({
-                  'address': '${address.street}, ${address.city}\n${address.stateName}, ${address.countryName}\n${address.zipcode}',
-                  'contact': address.phone?.toString() ?? '',
-                  'name': address.firmName ?? '',
-                  'email': address.email ?? '',
-                  'addressId': address.id?.toString() ?? '',
-                });
+                _savedAddresses.add(PaymentAddressModel(
+                  addressId: address.id!,
+                  name: address.firmName,
+                  proprietorName: address.proprietorName!,
+                  email: address.email!,
+                  phone: address.phone!,
+                  street: address.street!,
+                  city: address.city!,
+                  zipcode: address.zipcode,
+                  type: address.type!,
+                  country: address.countryName!,
+                  state: address.stateName!,
+                  vat: address.vat!,
+                ));
               }
               else if (widget.type == "Shipping Address" && address.type == "delivery")
                 {
-                  _savedAddresses.add({
-                    'address': '${address.street}, ${address.city}\n${address.stateName}, ${address.countryName}\n${address.zipcode}',
-                    'contact': address.phone?.toString() ?? '',
-                    'name': address.firmName ?? '',
-                    'email': address.email ?? '',
-                    'addressId': address.id?.toString() ?? '',
-                  });
+                  _savedAddresses.add(PaymentAddressModel(
+                    addressId: address.id!,
+                    name: address.firmName,
+                    proprietorName: address.proprietorName!,
+                    email: address.email!,
+                    phone: address.phone!,
+                    street: address.street!,
+                    city: address.city!,
+                    zipcode: address.zipcode,
+                    type: address.type!,
+                    country: address.countryName!,
+                    state: address.stateName!,
+                    vat: address.vat!,
+                  ));
                 }
-
           }
         });
       }
@@ -72,7 +85,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
             fontSize: 20,
             // color: AppColors.black,
             fontWeight: FontWeight.bold,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
           ),
         ),
         leading: IconButton(
@@ -114,12 +127,12 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                               const Icon(Icons.person_outline, size: 20, color: Colors.grey),
                               const SizedBox(width: 8),
                               Text(
-                                address['name'].toString(),
+                                address.name.toString(),
                                 style: TextStyle(
                                     fontSize: 16,
                                     color:  AppColors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontFamily: MyFonts.font_Bold
+                                    fontFamily: MyFonts.font_regular
                                 ),
                               ),
                             ],
@@ -135,12 +148,12 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
-                                  "${address['address']}",
+                                  "${address.city}",
                                   style: TextStyle(
                                       fontSize: 14,
                                       color:  AppColors.black,
                                       fontWeight: FontWeight.w500,
-                                      fontFamily: MyFonts.font_Bold
+                                      fontFamily: MyFonts.font_regular
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -155,12 +168,12 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                               const Icon(Icons.phone_outlined, size: 20, color: Colors.grey),
                               const SizedBox(width: 8),
                               Text(
-                                address['contact'].toString(),
+                                address.phone.toString(),
                                 style: TextStyle(
                                     fontSize: 14,
                                     color:  AppColors.black,
                                     fontWeight: FontWeight.w500,
-                                    fontFamily: MyFonts.font_Bold
+                                    fontFamily: MyFonts.font_regular
                                 ),
                               ),
                             ],
@@ -170,12 +183,12 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                               const Icon(Icons.email_outlined, size: 20, color: Colors.grey),
                               const SizedBox(width: 8),
                               Text(
-                                address['email'].toString(),
+                                address.email.toString(),
                                 style: TextStyle(
                                     fontSize: 14,
                                     color:  AppColors.black,
                                     fontWeight: FontWeight.w500,
-                                    fontFamily: MyFonts.font_Bold
+                                    fontFamily: MyFonts.font_regular
                                 ),
                               ),
                             ],
@@ -228,7 +241,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                 fontSize: 16,
                 color:  AppColors.whiteColor,
                 fontWeight: FontWeight.bold,
-                fontFamily: MyFonts.font_Bold
+                fontFamily: MyFonts.font_regular
             ),
           ),
         ],

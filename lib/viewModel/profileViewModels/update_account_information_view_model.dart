@@ -13,7 +13,9 @@ class AccountInfoViewModel extends ChangeNotifier {
   late BuildContext context;
   bool _loading = false;
   bool get loading => _loading;
-
+   Map<String, String> apiToFormFieldMapping={};
+  String? selectedCountry;
+  String? selectedState;
   setLoading(bool value) {
     _loading = value;
     developer.log('Loading state changed to: $_loading', name: 'updateAccountViewModel');
@@ -23,7 +25,8 @@ class AccountInfoViewModel extends ChangeNotifier {
     try {
       setLoading(true);
       final sessionId = await PreferencesHelper.getString("session_id");
-
+      selectedCountry=null;
+      selectedState=null;
       var body = {
         "jsonrpc": "2.0",
         "params": {}
@@ -32,7 +35,7 @@ class AccountInfoViewModel extends ChangeNotifier {
           jsonEncode(body), context, sessionId!);
 
       // Define a mapping between API response keys and form field keys
-      final Map<String, String> apiToFormFieldMapping = {
+      apiToFormFieldMapping = {
         'name': 'name',
         'username': 'email',
         'zipcode': 'zipCode',
@@ -50,9 +53,12 @@ class AccountInfoViewModel extends ChangeNotifier {
 
       // Extract the 'result' field from the API response
       final responseData = response.toJson()['result'];
-
+      selectedCountry = responseData['country'];
+      selectedState = responseData['state'];
       // Print the API response for debugging
       developer.log('API Response: ${response.toJson()}', name: 'AccountInfo');
+      developer.log('API selectedCountry: ${selectedCountry}', name: 'selectedCountry');
+      developer.log('API selectedState: ${selectedState}', name: 'selectedState');
 
       // Assign fetched data to the corresponding form field controllers
       formFields.forEach((field) {
@@ -95,7 +101,7 @@ class AccountInfoViewModel extends ChangeNotifier {
     try {
       this.context = context;
       setLoading(true);
-      developer.log('Starting login process with data: ${jsonEncode(data)}', name: 'updateAccountViewModel');
+      developer.log('Starting update account process with data: ${jsonEncode(data)}', name: 'updateAccountViewModel');
       final value = await _myRepo.updateAccountInformationApiResponse(data, context, sessionId);
       developer.log('Account API response received: ${value.toString()}', name: 'updateAccountViewModel');
     } catch (e, stackTrace) {
@@ -160,6 +166,12 @@ class AccountInfoViewModel extends ChangeNotifier {
       'hint': 'Enter your GST Number',
       'icon': Icons.business_center,
       'controller': TextEditingController(),
+    }, {
+      'key': 'city',
+      'label': 'city',
+      'hint': 'Enter your city Name',
+      'icon': Icons.business_center,
+      'controller': TextEditingController(),
     },
   ];
 
@@ -184,26 +196,19 @@ class AccountInfoViewModel extends ChangeNotifier {
   }
 
   // Dynamic validation for country, state, and city
-  void validateLocationFields(dynamic selectedCountry, dynamic selectedState, dynamic selectedCity, BuildContext context) {
+  void validateLocationFields(dynamic selectedCountry, dynamic selectedState,BuildContext context) {
     if (selectedCountry == null || selectedCountry.isEmpty) {
-      Utils.flushBarErrorMessages("Country  or state or city cannot be empty", context);
+      Utils.flushBarErrorMessages("Country  or state cannot be empty", context);
       errors['country'] = "Country cannot be empty";
     } else {
       errors['country'] = null;
     }
 
     if (selectedState == null || selectedState.isEmpty) {
-      Utils.flushBarErrorMessages("Country  or state or city cannot be empty", context);
+      Utils.flushBarErrorMessages("Country  or state cannot be empty", context);
       errors['state'] = "State cannot be empty";
     } else {
       errors['state'] = null;
-    }
-
-    if (selectedCity == null || selectedCity.isEmpty) {
-      Utils.flushBarErrorMessages("Country  or state or city cannot be empty", context);
-      errors['city'] = "City cannot be empty";
-    } else {
-      errors['city'] = null;
     }
 
     notifyListeners();
@@ -217,7 +222,7 @@ class AccountInfoViewModel extends ChangeNotifier {
     }
 
     // Validate country, state, and city dynamically
-    validateLocationFields(selectedCountry, selectedState, selectedCity, context);
+    validateLocationFields(selectedCountry, selectedState, context);
 
     // Check if all fields are valid
     if (errors.values.every((error) => error == null)) {
@@ -229,15 +234,16 @@ class AccountInfoViewModel extends ChangeNotifier {
       var body = {
         "jsonrpc": "2.0",
         "params": {
-          "name": (formFields.firstWhere((field) => field['key'] == 'firmName')['controller'] as TextEditingController).text.trim(),
+          "name": (formFields.firstWhere((field) => field['key'] == 'name')['controller'] as TextEditingController).text.trim(),
           "email": (formFields.firstWhere((field) => field['key'] == 'email')['controller'] as TextEditingController).text.trim(),
           "phone": (formFields.firstWhere((field) => field['key'] == 'phone')['controller'] as TextEditingController).text.trim(),
           "vat": (formFields.firstWhere((field) => field['key'] == 'gstNumber')['controller'] as TextEditingController).text.trim(),
           "street": (formFields.firstWhere((field) => field['key'] == 'address')['controller'] as TextEditingController).text.trim(),
-          "street2": selectedCountry,  // Use street2 if available
-          "city": selectedCity,
+          "country": selectedCountry,  // Use street2 if available
+          "state": selectedState,  // Use street2 if available
+          "city": (formFields.firstWhere((field) => field['key'] == 'city')['controller'] as TextEditingController).text.trim(),
           "zipcode": (formFields.firstWhere((field) => field['key'] == 'zipCode')['controller'] as TextEditingController).text.trim(),
-          "company_name":"ahex"
+          "firm_name":(formFields.firstWhere((field) => field['key'] == 'firmName')['controller'] as TextEditingController).text.trim(),
         }
       };
 

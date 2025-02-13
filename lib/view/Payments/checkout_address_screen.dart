@@ -8,6 +8,7 @@ import 'package:towanto/view/Payments/payment_edit_address_screen.dart';
 import 'package:towanto/view/Payments/select_address_screen.dart';
 import 'package:towanto/viewModel/CartViewModels/cart_list_view_model.dart';
 
+import '../../model/Address_Models/payment_address_model.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
@@ -41,6 +42,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
             billingAddress = {
               'title': 'Billing Address',
               'city': element.city ?? '',
+              'proprietor_name': element.proprietorName ?? '',
               'street': element.street ?? '',
               'state': element.stateName ?? '',
               'country': element.countryName ?? '',
@@ -49,6 +51,8 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
               'addressId': element.id?.toString() ?? '',
               'name': element.firmName?.toString() ?? '',
               'email': element.email?.toString() ?? '',
+              'vat': element.vat?.toString() ?? '',
+              'type': element.type?.toString() ?? '',
             };
           }
           // Check for delivery address and add only the first one
@@ -56,6 +60,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
             shippingAddress = {
               'title': 'Shipping Address',
               'city': element.city ?? '',
+              'proprietor_name': element.proprietorName ?? '',
               'street': element.street ?? '',
               'state': element.stateName ?? '',
               'country': element.countryName ?? '',
@@ -64,6 +69,8 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
               'addressId': element.id?.toString() ?? '',
               'name': element.firmName?.toString() ?? '',
               'email': element.email?.toString() ?? '',
+              'vat': element.vat?.toString() ?? '',
+              'type': element.type?.toString() ?? '',
             };
           }
 
@@ -142,13 +149,11 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
                             title: 'Billing Address',
                             icon: Icons.credit_card,
                             borderColor: Colors.green,
-                            address:
-                                "${billingAddress['street']}, ${billingAddress['city']}, ${billingAddress['state']}, ${billingAddress['country']}, ${billingAddress['zipcode']}",
+                            address: "${billingAddress['street']}, ${billingAddress['city']}, ${billingAddress['state']}, ${billingAddress['country']}, ${billingAddress['zipcode']}",
                             contact: billingAddress['phone'].toString(),
                             email: billingAddress['email'].toString(),
                             onEdit: () => _handleEdit(context, billingAddress,"Billing Address"),
-                            onChangeAddress: () => ({
-                              _handleChangeAddress(context, billingAddress, 'Billing Address',)
+                            onChangeAddress: () => ({_handleChangeAddress(context, billingAddress, 'Billing Address',)
                             }) /* _handleChangeAddress(
                                 context, billingAddress, 'Billing Address')*/
                             ,
@@ -207,7 +212,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
                 fontSize: 16,
                 color:  AppColors.whiteColor,
                 fontWeight: FontWeight.bold,
-                fontFamily: MyFonts.font_Bold
+                fontFamily: MyFonts.font_regular
             ),
           ),
         ],
@@ -216,101 +221,125 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
   }
 
 
-  Future<void> _handleEdit(
-      BuildContext context, Map<String, dynamic> address,String type) async {
-    final result = await Navigator.push(context,
-      MaterialPageRoute(builder: (context) => PaymentEditAddressScreen(addressData: address)),
-    );
-    print(("ewcd" + result.toString()));
+  Future<void> _handleEdit(BuildContext context, Map<String, dynamic> address, String type) async {
+    try {
+      final PaymentAddressModel? result = await Navigator.push<PaymentAddressModel>(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PaymentEditAddressScreen(addressData: address),
+        ),
+      );
 
-    if (result != null && result is Map<String, dynamic>) {
-      // Create a properly formatted address map with all required fields
-      final addressLines = result['address']?.toString().split('\n') ?? [];
+      if (result != null) {
+        // Log address details for debugging
+        debugPrint('Address Details:');
+        debugPrint('Address ID: ${result.addressId}');
+        debugPrint('Name: ${result.name}');
+        debugPrint('Proprietor Name: ${result.proprietorName}');
+        debugPrint('Email: ${result.email}');
+        debugPrint('Phone: ${result.phone}');
+        debugPrint('Street: ${result.street}');
+        debugPrint('City: ${result.city}');
+        debugPrint('Zipcode: ${result.zipcode}');
+        debugPrint('Type: ${result.type}');
+        debugPrint('Country: ${result.country}');
+        debugPrint('State: ${result.state}');
+        debugPrint('VAT: ${result.vat}');
 
-      final formattedAddress = {
-        'title': type,
-        'street': addressLines.isNotEmpty ? addressLines[0].trim() : '',
-        'state': addressLines.length > 1 && addressLines[1].contains(',')
-            ? addressLines[1].split(',')[1].trim()
-            : '',
-        'country': addressLines.length > 2 && addressLines[2].contains(',')
-            ? addressLines[2].split(',')[0].trim()
-            : '',
-        'zipcode': addressLines.length > 2
-            ? RegExp(r'\b\d{6}\b').firstMatch(addressLines[2])?.group(0) ?? ''
-            : '',
-        'phone': result['contact'] ?? '',
-        'addressId': result['addressId'] ?? '',
-        'name': result['name'] ?? '',
-        'email': result['email'] ?? '',
-      };
+        // Create formatted address map
+        final formattedAddress = {
+          'title': type,
+          'street': result.street ?? '',
+          'state': result.state ?? '',
+          'country': result.country ?? '',
+          'city': result.city ?? '',
+          'zipcode': result.zipcode ?? '',
+          'phone': result.phone ?? '',
+          'addressId': result.addressId ?? '',
+          'name': result.name ?? '',
+          'proprietor_name': result.proprietorName ?? '',
+          'email': result.email ?? '',
+          'type': result.type ?? '',
+          'vat': result.vat ?? '',
+        };
 
-      print("dgyfwvg" + formattedAddress.toString());
-      // Update the state using the existing updateAddress method
-      updateAddress(type, formattedAddress);
-      // Save the address ID in SharedPreferences based on the type (billing/shipping)
-      if (type == "Billing Address") {
-        await PreferencesHelper.saveString("billing_id", formattedAddress['addressId']);
-        print("billing id updated"+ formattedAddress['addressId']);
-      } else if (type == "Shipping Address") {
-        await PreferencesHelper.saveString("shipping_id", formattedAddress['addressId']);
-        print("shipping id updated"+ formattedAddress['addressId']);
+        debugPrint('Formatted Address: $formattedAddress');
+        debugPrint('Formatted Address type: $type');
 
+        // Update address in state
+        updateAddress(type, formattedAddress);
+
+        // Save address ID to SharedPreferences
+        if (type == "Billing Address") {
+          await PreferencesHelper.saveString("billing_id", formattedAddress['addressId'].toString());
+          debugPrint('Billing ID updated: ${formattedAddress['addressId']}');
+        } else if (type == "Shipping Address") {
+          await PreferencesHelper.saveString("shipping_id", formattedAddress['addressId'].toString());
+          debugPrint('Shipping ID updated: ${formattedAddress['addressId']}');
+        }
+      } else {
+        debugPrint('No address data returned');
       }
-
+    } catch (e) {
+      debugPrint('Error handling address edit: $e');
+      // You might want to show an error message to the user here
     }
   }
 
 // Update the _handleChangeAddress function to properly handle the address update:
-  Future<void> _handleChangeAddress(BuildContext context,
-      Map<String, dynamic> currentAddress, String type) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            SelectAddressScreen(currentAddress: currentAddress,type: type),
-      ),
-    );
-    print(("ewcd" + result.toString()));
+  Future<void> _handleChangeAddress(
+      BuildContext context,
+      Map<String, dynamic> currentAddress,
+      String type,
+      ) async {
+    try {
+      final PaymentAddressModel? result = await Navigator.push<PaymentAddressModel>(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SelectAddressScreen(
+            currentAddress: currentAddress,
+            type: type,
+          ),
+        ),
+      );
 
-    if (result != null && result is Map<String, dynamic>) {
-      // Create a properly formatted address map with all required fields
-      final addressLines = result['address']?.toString().split('\n') ?? [];
+      debugPrint('Selected Address Result: ${result.toString()}');
 
-      final formattedAddress = {
-        'title': type,
-        'street': addressLines.isNotEmpty ? addressLines[0].trim() : '',
-        'state': addressLines.length > 1 && addressLines[1].contains(',')
-            ? addressLines[1].split(',')[1].trim()
-            : '',
-        'country': addressLines.length > 2 && addressLines[2].contains(',')
-            ? addressLines[2].split(',')[0].trim()
-            : '',
-        'zipcode': addressLines.length > 2
-            ? RegExp(r'\b\d{6}\b').firstMatch(addressLines[2])?.group(0) ?? ''
-            : '',
-        'phone': result['contact'] ?? '',
-        'addressId': result['addressId'] ?? '',
-        'name': result['name'] ?? '',
-        'email': result['email'] ?? '',
-      };
+      if (result != null) {
+        // Create formatted address map using the model properties
+        final formattedAddress = {
+          'title': type,
+          'street': result.street ?? '',
+          'state': result.state ?? '',
+          'country': result.country ?? '',
+          'zipcode': result.zipcode ?? '',
+          'phone': result.phone ?? '',  // Changed from result['contact']
+          'addressId': result.addressId ?? '',
+          'name': result.name ?? '',
+          'email': result.email ?? '',
+        };
 
-      print("dgyfwvg" + formattedAddress.toString());
-      // Update the state using the existing updateAddress method
-      updateAddress(type, formattedAddress);
-      // Save the address ID in SharedPreferences based on the type (billing/shipping)
-      if (type == "Billing Address") {
-        await PreferencesHelper.saveString("billing_id", formattedAddress['addressId']);
-        print("billing id updated"+ formattedAddress['addressId']);
-      } else if (type == "Shipping Address") {
-        await PreferencesHelper.saveString("shipping_id", formattedAddress['addressId']);
-        print("shipping id updated"+ formattedAddress['addressId']);
+        debugPrint('Formatted Address: $formattedAddress');
 
+        // Update address in state
+        updateAddress(type, formattedAddress);
+
+        // Save address ID to SharedPreferences
+        if (type == "Billing Address") {
+          await PreferencesHelper.saveString("billing_id", formattedAddress['addressId'].toString());
+          debugPrint('Billing ID updated: ${formattedAddress['addressId']}');
+        } else if (type == "Shipping Address") {
+          await PreferencesHelper.saveString("shipping_id", formattedAddress['addressId'].toString());
+          debugPrint('Shipping ID updated: ${formattedAddress['addressId']}');
+        }
+      } else {
+        debugPrint('No address selected');
       }
-
+    } catch (e) {
+      debugPrint('Error handling address change: $e');
+      // You might want to show an error message to the user here
     }
   }
-
   Widget buildStepper() {
     return Row(
       children: [
@@ -346,7 +375,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
                           ? AppColors.whiteColor
                           : AppColors.tabtxt_color,
                       fontWeight: FontWeight.bold,
-                      fontFamily: MyFonts.font_Bold),
+                      fontFamily: MyFonts.font_regular),
                 ),
               ),
             ),
@@ -358,7 +387,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
                   color:
                       isActive ? AppColors.brightBlue : AppColors.tabtxt_color,
                   fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                  fontFamily: MyFonts.font_Bold),
+                  fontFamily: MyFonts.font_regular),
             ),
           ],
         ),
@@ -414,7 +443,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
                       fontSize: 24,
                       color: AppColors.black,
                       fontWeight: FontWeight.bold,
-                      fontFamily: MyFonts.font_Bold,
+                      fontFamily: MyFonts.font_regular,
                     ),
                   );
                 },
@@ -441,7 +470,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
                   fontSize: 16,
                   color: AppColors.whiteColor,
                   fontWeight: FontWeight.bold,
-                  fontFamily: MyFonts.font_Bold),
+                  fontFamily: MyFonts.font_regular),
             ),
           ),
         ],
@@ -507,7 +536,7 @@ class AddressCard extends StatelessWidget {
                         fontSize: 16,
                         color: AppColors.black,
                         fontWeight: FontWeight.w600,
-                        fontFamily: MyFonts.font_SemiBold),
+                        fontFamily: MyFonts.font_regular),
                   ),
                   const SizedBox(height: 8),
                   Text(
@@ -599,7 +628,7 @@ class AddressCard extends StatelessWidget {
                             fontSize: 14,
                             color: AppColors.black,
                             fontWeight: FontWeight.bold,
-                            fontFamily: MyFonts.font_Bold),
+                            fontFamily: MyFonts.font_regular),
                       ),
                     ],
                   ),
@@ -620,7 +649,7 @@ class AddressCard extends StatelessWidget {
                             fontSize: 14,
                             color: AppColors.black,
                             fontWeight: FontWeight.bold,
-                            fontFamily: MyFonts.font_Bold),
+                            fontFamily: MyFonts.font_regular),
                       ),
                     ],
                   ),

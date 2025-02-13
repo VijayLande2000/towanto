@@ -17,6 +17,7 @@ import '../../model/HomeModels/category_model.dart';
 import '../../model/HomeModels/home_page_model.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
+import '../../utils/network/networkService/app_url.dart';
 import '../../utils/routes/route_names.dart';
 import '../../viewModel/HomeViewModels/categories_list_viewModel.dart';
 import '../Orders/orders_screen.dart';
@@ -203,7 +204,7 @@ class _HomeGridState extends State<HomeGrid> {
           'Towanto',
           style: TextStyle(
             fontSize: 20,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
             // color: AppColors.black,
             fontWeight: FontWeight.w500,
           ),
@@ -373,7 +374,7 @@ class _HomeGridState extends State<HomeGrid> {
                 //       fontSize: 20,
                 //       fontWeight: FontWeight.w600,
                 //       color: AppColors.appBarTitleTextColor,
-                //       fontFamily: MyFonts.font_SemiBold,
+                //       fontFamily: MyFonts.font_regular,
                 //     ),
                 //   ),
                 // ),
@@ -451,7 +452,7 @@ class _CategoryCardState extends State<CategoryCard> {
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: AppColors.appBarTitleTextColor,
-                      fontFamily: MyFonts.font_SemiBold,
+                      fontFamily: MyFonts.font_regular,
                     ),
                   ),
                 ),
@@ -715,7 +716,7 @@ class DrawerItem extends StatelessWidget {
                 ? Colors.grey.shade800
                 : Colors.white, // Darker color for selected text
             fontSize: 16,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
             fontWeight: isSelected
                 ? FontWeight.bold
                 : FontWeight.normal, // Bold selected text
@@ -761,7 +762,7 @@ Widget buildDynamicCategoryLists(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
                 color: AppColors.appBarTitleTextColor,
-                fontFamily: MyFonts.font_SemiBold,
+                fontFamily: MyFonts.font_regular,
               ),
             ),
           ),
@@ -805,7 +806,7 @@ Widget buildDynamicCategoryLists(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: AppColors.whiteColor,
-                    fontFamily: MyFonts.font_Bold,
+                    fontFamily: MyFonts.font_regular,
                   ),
                 ),
               ),
@@ -879,7 +880,7 @@ Widget _buildHorizontalListView(
                       ),
                       child: Center(
                         child: Image.network(
-                          'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.id}&field=image_1920',
+                          '${AppUrl.baseurlauth}web/image?model=product.product&id=${product.id}&field=image_1920',
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) => Icon(
                             Icons.error,
@@ -898,25 +899,38 @@ Widget _buildHorizontalListView(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: AppColors.appBarTitleTextColor,
-                        fontFamily: MyFonts.font_SemiBold,
+                        fontFamily: MyFonts.font_regular,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        ...List.generate(
-                          5,
-                          (index) => Icon(
-                            Icons.star,
-                            size: 14,
-                            color: index < 4
-                                ? Colors.orange
-                                : Colors.grey.shade300,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
+                        ...List.generate(5, (index) {
+                          // Determine if the star should be filled, half-filled, or empty
+                          if (index < product.rating.floor()) {
+                            return Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 16,
+                            );
+                          } else if (index < product.rating && product.rating % 1 != 0) {
+                            return Icon(
+                              Icons.star_half,
+                              color: Colors.amber,
+                              size: 16,
+                            );
+                          } else {
+                            return Icon(
+                              Icons.star_border,
+                              color: Colors.amber,
+                              size: 16,
+                            );
+                          }
+                        }),
+                        SizedBox(width: 8),
+                        // Display the review count next to the stars
                         Text(
-                          '46',
+                          '(${product.ratingCount} reviews)',
                           style: TextStyle(
                             fontFamily: MyFonts.font_regular,
                             color: Colors.grey.shade600,
@@ -927,14 +941,15 @@ Widget _buildHorizontalListView(
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '₹${product.price}',
+                      (product.price != null && product.price > 0) ? '₹ ${product.price}' : "Price Locked",
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: AppColors.appBarTitleTextColor,
-                        fontFamily: MyFonts.font_SemiBold,
+                        fontFamily: MyFonts.font_regular,
                       ),
                     ),
+
                   ],
                 ),
               ),
@@ -1004,7 +1019,7 @@ Widget _buildHorizontalListView(
 //                       ),
 //                       child: Center(
 //                         child: Image.network(
-//                           'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.id}&field=image_1920',
+//                           '${AppUrl.baseurlauth}web/image?model=product.product&id=${product.id}&field=image_1920',
 //                           fit: BoxFit.contain,
 //                           errorBuilder: (context, error, stackTrace) => Icon(
 //                             Icons.error,
@@ -1024,7 +1039,7 @@ Widget _buildHorizontalListView(
 //                         fontSize: 14,
 //                         fontWeight: FontWeight.w500,
 //                         color: AppColors.appBarTitleTextColor,
-//                         fontFamily: MyFonts.font_SemiBold,
+//                         fontFamily: MyFonts.font_regular,
 //                       ),
 //                     ),
 //                     const SizedBox(height: 4),
@@ -1060,7 +1075,7 @@ Widget _buildHorizontalListView(
 //                         fontSize: 14,
 //                         fontWeight: FontWeight.w600,
 //                         color: AppColors.appBarTitleTextColor,
-//                         fontFamily: MyFonts.font_SemiBold,
+//                         fontFamily: MyFonts.font_regular,
 //                       ),
 //                     ),
 //                   ],
@@ -1131,7 +1146,7 @@ Widget _buildHorizontalListView(
 //                       ),
 //                       child: Center(
 //                         child: Image.network(
-//                           'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.id}&field=image_1920',
+//                           '${AppUrl.baseurlauth}web/image?model=product.product&id=${product.id}&field=image_1920',
 //                           fit: BoxFit.contain,
 //                           errorBuilder: (context, error, stackTrace) => Icon(
 //                             Icons.error,
@@ -1151,7 +1166,7 @@ Widget _buildHorizontalListView(
 //                         fontSize: 14,
 //                         fontWeight: FontWeight.w500,
 //                         color: AppColors.appBarTitleTextColor,
-//                         fontFamily: MyFonts.font_SemiBold,
+//                         fontFamily: MyFonts.font_regular,
 //                       ),
 //                     ),
 //                     const SizedBox(height: 4),
@@ -1187,7 +1202,7 @@ Widget _buildHorizontalListView(
 //                         fontSize: 14,
 //                         fontWeight: FontWeight.w600,
 //                         color: AppColors.appBarTitleTextColor,
-//                         fontFamily: MyFonts.font_SemiBold,
+//                         fontFamily: MyFonts.font_regular,
 //                       ),
 //                     ),
 //                   ],

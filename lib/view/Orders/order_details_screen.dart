@@ -4,6 +4,7 @@ import 'package:towanto/viewModel/OrdersViewModels/cancel_order_view_model.dart'
 import 'package:towanto/viewModel/OrdersViewModels/order_details_view_model.dart';
 
 import '../../utils/common_widgets/Utils.dart';
+import '../../utils/network/networkService/app_url.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 
@@ -145,7 +146,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               fontSize: 20,
               // color: AppColors.black,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.font_Bold),
+              fontFamily: MyFonts.font_regular),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back,  size: 20),
@@ -201,7 +202,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       fontSize: 20,
                       color: AppColors.black,
                       fontWeight: FontWeight.bold,
-                      fontFamily: MyFonts.font_Bold),
+                      fontFamily: MyFonts.font_regular),
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -215,7 +216,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         fontSize: 14,
                         color: AppColors.whiteColor,
                         fontWeight: FontWeight.w600,
-                        fontFamily: MyFonts.font_SemiBold),
+                        fontFamily: MyFonts.font_regular),
                   ),
                 ),
               ],
@@ -249,7 +250,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               fontSize: 16,
               color: AppColors.black,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.font_Bold,
+              fontFamily: MyFonts.font_regular,
             ),
           ),
         ),
@@ -284,7 +285,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Center(
-                                child: Image.network("https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${orderDetailsViewModel.orderDetails.orderLine?[index].productId}&field=image_1920"),
+                                child: Image.network("${AppUrl.baseurlauth}web/image?model=product.product&id=${orderDetailsViewModel.orderDetails.orderLine?[index].productId}&field=image_1920"),
                               ),
                             ),
                             SizedBox(height: 8),
@@ -294,7 +295,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 fontSize: 14,
                                 color: AppColors.black,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: MyFonts.font_Bold,
+                                fontFamily: MyFonts.font_regular,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -314,7 +315,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 fontSize: 14,
                                 color: AppColors.tabtxt_color,
                                 fontWeight: FontWeight.w700,
-                                fontFamily: MyFonts.font_Bold,
+                                fontFamily: MyFonts.font_regular,
                               ),
                             ),
                           ],
@@ -391,7 +392,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       fontSize: 16,
                       color: AppColors.black,
                       fontWeight: FontWeight.bold,
-                      fontFamily: MyFonts.font_Bold,
+                      fontFamily: MyFonts.font_regular,
                     ),
                   ),
                   Icon(
@@ -458,7 +459,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             fontSize: isTotal ? 16 : 14,
             color: isTotal ? AppColors.black : AppColors.tabtxt_color,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
           ),
         ),
         Text(
@@ -467,7 +468,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               fontSize: isTotal ? 16 : 14,
               color: isTotal ? AppColors.black : AppColors.tabtxt_color,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              fontFamily: MyFonts.font_Bold),
+              fontFamily: MyFonts.font_regular),
         ),
       ],
     );
@@ -650,7 +651,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     fontSize: 16,
                     color: AppColors.black,
                     fontWeight: FontWeight.w600,
-                    fontFamily: MyFonts.font_SemiBold
+                    fontFamily: MyFonts.font_regular
                 ),
               ),
             ],
@@ -806,7 +807,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         fontSize: 15,
                         color: AppColors.tabtxt_color,
                         fontWeight: FontWeight.w600,
-                        fontFamily: MyFonts.font_SemiBold
+                        fontFamily: MyFonts.font_regular
                     ),
                   ),
                 ],
@@ -823,7 +824,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     fontSize: 12,
                     color: Colors.orange[800],
                     fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.font_SemiBold,
+                    fontFamily: MyFonts.font_regular,
                   ),
                 ),
               ),

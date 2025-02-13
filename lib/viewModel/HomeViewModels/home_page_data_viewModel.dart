@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 import 'package:flutter/cupertino.dart';
 import 'package:towanto/model/HomeModels/home_page_model.dart';
 import '../../model/HomeModels/categories_list_details_model.dart';
+import '../../utils/network/networkService/app_url.dart';
 import '../../utils/repositories/HomeRepositories/home_page_data_repository.dart';
 
 class HomePageDataViewModel extends ChangeNotifier {
@@ -41,7 +42,7 @@ class HomePageDataViewModel extends ChangeNotifier {
       _cartCount = response.cartCount ?? 0;
       _wishlistCount = response.wishlistCount ?? 0;
       _sliderData = (response.sliderData ?? [])
-          .map((sliderItem) => 'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/$sliderItem')
+          .map((sliderItem) => '${AppUrl.baseurlauth}$sliderItem')
           .toList();
 
       // Clear existing categories map

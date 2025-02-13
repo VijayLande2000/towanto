@@ -44,7 +44,7 @@ class _AddressManagerState extends State<AddressManager> {
             fontSize: 20,
             // color:  AppColors.black,
             fontWeight: FontWeight.bold,
-            fontFamily: MyFonts.font_Bold
+            fontFamily: MyFonts.font_regular
         ),),
 
         leading: IconButton(
@@ -95,7 +95,7 @@ class _AddressManagerState extends State<AddressManager> {
                                           fontSize: 16,
                                           color:  AppColors.black,
                                           fontWeight: FontWeight.bold,
-                                          fontFamily: MyFonts.font_Bold
+                                          fontFamily: MyFonts.font_regular
                                       ),
                                     ),
                                   ],
@@ -116,7 +116,7 @@ class _AddressManagerState extends State<AddressManager> {
                                             fontSize: 14,
                                             color:  AppColors.black,
                                             fontWeight: FontWeight.w500,
-                                            fontFamily: MyFonts.font_Bold
+                                            fontFamily: MyFonts.font_regular
                                         ),
                                       ),
                                     ),
@@ -135,7 +135,7 @@ class _AddressManagerState extends State<AddressManager> {
                                           fontSize: 14,
                                           color:  AppColors.black,
                                           fontWeight: FontWeight.w500,
-                                          fontFamily: MyFonts.font_Bold
+                                          fontFamily: MyFonts.font_regular
                                       ),
                                     ),
                                   ],
@@ -155,8 +155,8 @@ class _AddressManagerState extends State<AddressManager> {
                                             MaterialPageRoute(
                                               builder: (context) => EditAddressScreen(
                                                 addressData: {
-                                                  'name': value.addresses[index].firmName,
-                                                  'company_name': value.addresses[index].proprietorName,
+                                                  'name': value.addresses[index].proprietorName,
+                                                  'firm_name': value.addresses[index].firmName,
                                                   'email': value.addresses[index].email,
                                                   'street': value.addresses[index].street,
                                                   'country': value.addresses[index].countryName,
@@ -200,7 +200,7 @@ class _AddressManagerState extends State<AddressManager> {
                                                 style: TextStyle(
                                                   color: AppColors.red,
                                                   fontWeight: FontWeight.w600,
-                                                  fontFamily: MyFonts.font_Bold,
+                                                  fontFamily: MyFonts.font_regular,
                                                 ),
                                                 overflow: TextOverflow.ellipsis, // Ensures text does not overflow
                                               ),
@@ -220,7 +220,7 @@ class _AddressManagerState extends State<AddressManager> {
                                                   style: TextStyle(
                                                     color: AppColors.red,
                                                     fontWeight: FontWeight.w600,
-                                                    fontFamily: MyFonts.font_Bold,
+                                                    fontFamily: MyFonts.font_regular,
                                                   ),
                                                   overflow: TextOverflow.ellipsis, // Ensures text does not overflow
                                                 ),
@@ -296,7 +296,7 @@ class _AddressManagerState extends State<AddressManager> {
                 fontSize: 16,
                 color:  AppColors.whiteColor,
                 fontWeight: FontWeight.bold,
-                fontFamily: MyFonts.font_Bold
+                fontFamily: MyFonts.font_regular
             ),
           ),
         ],

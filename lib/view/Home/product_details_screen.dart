@@ -4,6 +4,7 @@ import 'package:towanto/view/Cart/cart_screen.dart';
 import 'package:towanto/view/Enquiry/enquiry_screen.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
+import '../../utils/network/networkService/app_url.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/add_to_cart_viewModel.dart';
@@ -102,7 +103,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           'Product Details',
           style: TextStyle(
             fontSize: 18,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -142,7 +143,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: NetworkImage(
-                                    'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${productDetails.id}&field=image_1920'),
+                                    '${AppUrl.baseurlauth}web/image?model=product.product&id=${productDetails.id}&field=image_1920'),
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -154,7 +155,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           "${productDetails.displayName}",
                           style: TextStyle(
                             fontSize: 18,
-                            fontFamily: MyFonts.font_Bold,
+                            fontFamily: MyFonts.font_regular,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -237,7 +238,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 'Product Details:',
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontFamily: MyFonts.font_Bold,
+                                  fontFamily: MyFonts.font_regular,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -277,7 +278,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                   fontSize: 16,
                                   color: AppColors.black,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: MyFonts.font_Bold),
+                                  fontFamily: MyFonts.font_regular),
                             ),
                             IconButton(
                               icon: Icon(
@@ -302,7 +303,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 quantity.toString(),
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontFamily: MyFonts.font_Bold,
+                                  fontFamily: MyFonts.font_regular,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -319,7 +320,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
                         SizedBox(height: 10),
                         // Buy Now Button
-                        productDetails.productPrice == 0.0
+                        productDetails.lstPrice== 0.0
                             ? ElevatedButton(
                                 onPressed: () {
                                   Navigator.push(
@@ -339,14 +340,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     fontSize: 18,
                                     color: AppColors.whiteColor,
                                     fontWeight: FontWeight.bold,
-                                    fontFamily: MyFonts.font_Bold,
+                                    fontFamily: MyFonts.font_regular,
                                   ),
                                 ),
                               )
                             : SizedBox(), // Optionally, return an empty widget or another fallback widget when the condition is false
 
                         // Buy Now Button
-                        productDetails.productPrice != 0.0
+                        productDetails.lstPrice != 0.0
                             ? Container(
                                 width: double.infinity,
                                 height: 55,
@@ -412,7 +413,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 18,
-                                          fontFamily: MyFonts.font_Bold,
+                                          fontFamily: MyFonts.font_regular,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -488,7 +489,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     style: TextStyle(
                                         color: AppColors.black,
                                         fontSize: 16,
-                                        fontFamily: MyFonts.font_Bold,
+                                        fontFamily: MyFonts.font_regular,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(height: 4),
@@ -527,7 +528,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               label,
               style: TextStyle(
                   fontSize: 14,
-                  fontFamily: MyFonts.font_Bold,
+                  fontFamily: MyFonts.font_regular,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textbox_textcolor),
             ),

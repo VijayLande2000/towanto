@@ -10,9 +10,10 @@ import '../../network/networkService/network_service.dart';
 class ForgotPassowordRepository{
   final BaseApiServices _apiServices = NetworkApiService();
 
-  Future<ForgotModel> forgotPasswordApi(dynamic data, BuildContext context,String sessionId) async {
+  Future<ForgotModel> forgotPasswordApi(dynamic data, BuildContext context,
+      {String? sessionId}) async {
     try {
-      dynamic response = await _apiServices.postforgotApiResponse(AppUrl.forgotPasswordUrl, data, context,sessionId);
+      dynamic response = await _apiServices.postforgotApiResponse(AppUrl.forgotPasswordUrl, data, context,sessionId??"");
       return ForgotModel.fromJson(response);
     } catch (e,stactrace) {
       print("dfyusg" +stactrace.toString());

@@ -22,7 +22,7 @@ class AddAddressViewModel extends ChangeNotifier {
     try {
       this.context = context;
       setLoading(true);
-      developer.log('Starting login process with data: ${jsonEncode(data)}', name: 'AddAddressViewModel');
+      developer.log('Starting add address process with data: ${jsonEncode(data)}', name: 'AddAddressViewModel');
 
       final value = await _myRepo.addAddressListApiResponse(data, context, sessionId,from);
       developer.log('Account API response received: ${value.toString()}', name: 'AddAddressViewModel');
@@ -89,6 +89,13 @@ class AddAddressViewModel extends ChangeNotifier {
       'icon': Icons.business_center,
       'controller': TextEditingController(),
     },
+    {
+      'key': 'city',
+      'label': 'city',
+      'hint': 'Enter your city',
+      'icon': Icons.location_city,
+      'controller': TextEditingController(),
+    },
   ];
 
   // Errors map for validation messages
@@ -112,28 +119,19 @@ class AddAddressViewModel extends ChangeNotifier {
   }
 
   // Dynamic validation for country, state, and city
-  void validateLocationFields(dynamic selectedCountry, dynamic selectedState, dynamic selectedCity, BuildContext context) {
+  void validateLocationFields(dynamic selectedCountry, dynamic selectedState, BuildContext context) {
     if (selectedCountry == null || selectedCountry.isEmpty) {
-      Utils.flushBarErrorMessages("Country  or state or city cannot be empty", context);
+      Utils.flushBarErrorMessages("Country  or state cannot be empty", context);
       errors['country'] = "Country cannot be empty";
     } else {
       errors['country'] = null;
     }
-
     if (selectedState == null || selectedState.isEmpty) {
-      Utils.flushBarErrorMessages("Country  or state or city cannot be empty", context);
+      Utils.flushBarErrorMessages("Country  or state  cannot be empty", context);
       errors['state'] = "State cannot be empty";
     } else {
       errors['state'] = null;
     }
-
-    if (selectedCity == null || selectedCity.isEmpty) {
-      Utils.flushBarErrorMessages("Country  or state or city cannot be empty", context);
-      errors['city'] = "City cannot be empty";
-    } else {
-      errors['city'] = null;
-    }
-
     notifyListeners();
   }
 
@@ -152,7 +150,7 @@ class AddAddressViewModel extends ChangeNotifier {
     }
 
     // Validate country, state, and city dynamically
-    validateLocationFields(selectedCountry, selectedState, selectedCity, context);
+    validateLocationFields(selectedCountry, selectedState, context);
 
     // Check if all fields are valid
     if (errors.values.every((error) => error == null)) {
@@ -183,7 +181,12 @@ class AddAddressViewModel extends ChangeNotifier {
               .trim(),
           "country": selectedCountry,
           "state": selectedState,
-          "city": selectedCity,
+
+          "city": (formFields.firstWhere((field) => field['key'] == 'city')['controller']
+          as TextEditingController)
+              .text
+              .trim(),
+
           "phone": (formFields.firstWhere((field) => field['key'] == 'phone')['controller']
           as TextEditingController)
               .text

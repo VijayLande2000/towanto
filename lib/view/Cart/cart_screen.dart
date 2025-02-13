@@ -8,6 +8,7 @@ import 'package:towanto/viewModel/CartViewModels/delete_Cartitem_viewModel.dart'
 import '../../model/CartModels/cart_items_list_model.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
+import '../../utils/network/networkService/app_url.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/cart_list_view_model.dart';
@@ -109,12 +110,15 @@ class _CartScreenState extends State<CartScreen> {
               fontSize: 20,
               // color: AppColors.black,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.font_Bold
+              fontFamily: MyFonts.font_regular
           ),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, size: 20),
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomeGrid(),))
+          onPressed: () => {
+            Navigator.pop(context)
+            // Navigator.push(context, MaterialPageRoute(builder: (context) => HomeGrid(),))
+          }
         ),
       ),
       body: Consumer<CartListViewModel>(
@@ -141,7 +145,7 @@ class _CartScreenState extends State<CartScreen> {
                         "No items in your cart.",
                         style: TextStyle(
                           color: AppColors.black,
-                          fontFamily: MyFonts.font_Bold,
+                          fontFamily: MyFonts.font_regular,
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
                         )
@@ -188,7 +192,7 @@ class _CartScreenState extends State<CartScreen> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Image.network(
-                                  "https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=$productId&field=image_1920"
+                                  "${AppUrl.baseurlauth}web/image?model=product.product&id=$productId&field=image_1920"
                               )
                           ),
                           const SizedBox(width: 16),
@@ -202,7 +206,7 @@ class _CartScreenState extends State<CartScreen> {
                                       fontSize: 16,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.bold,
-                                      fontFamily: MyFonts.font_Bold
+                                      fontFamily: MyFonts.font_regular
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -212,7 +216,7 @@ class _CartScreenState extends State<CartScreen> {
                                       fontSize: 14,
                                       color: AppColors.black,
                                       fontWeight: FontWeight.bold,
-                                      fontFamily: MyFonts.font_Bold
+                                      fontFamily: MyFonts.font_regular
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -247,7 +251,7 @@ class _CartScreenState extends State<CartScreen> {
                                             fontSize: 16,
                                             color: AppColors.black,
                                             fontWeight: FontWeight.bold,
-                                            fontFamily: MyFonts.font_Bold,
+                                            fontFamily: MyFonts.font_regular,
                                           ),
                                         ),
                                       ),
@@ -329,7 +333,7 @@ Widget _buildPriceRow(String label, double amount, {bool isTotal = false}) {
               fontSize: 16,
               color: AppColors.black,
               fontWeight: isTotal ? FontWeight.w600 : FontWeight.w500,
-              fontFamily: MyFonts.font_Bold
+              fontFamily: MyFonts.font_regular
           ),
         ),
         Text(
@@ -338,7 +342,7 @@ Widget _buildPriceRow(String label, double amount, {bool isTotal = false}) {
               fontSize: 16,
               color: AppColors.black,
               fontWeight: isTotal ? FontWeight.w600 : FontWeight.normal,
-              fontFamily: MyFonts.font_Bold
+              fontFamily: MyFonts.font_regular
           ),
         ),
       ],

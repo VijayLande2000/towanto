@@ -51,6 +51,8 @@ class Products {
   dynamic? name;
   dynamic? listPrice;
   dynamic? description;
+  dynamic? rating;
+  dynamic? ratingCount;
 
   Products({this.id, this.name, this.listPrice, this.description});
 
@@ -59,6 +61,8 @@ class Products {
     name = json['name'];
     listPrice = json['list_price'];
     description = json['description'];
+    rating = json['rating'];
+    ratingCount = json['rating_count'];
   }
 
   Map<dynamic, dynamic> toJson() {
@@ -67,6 +71,8 @@ class Products {
     data['name'] = this.name;
     data['list_price'] = this.listPrice;
     data['description'] = this.description;
+    data['rating'] = this.rating;
+    data['rating_count'] = this.ratingCount;
     return data;
   }
 }

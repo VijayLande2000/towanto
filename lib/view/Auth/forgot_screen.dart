@@ -23,12 +23,9 @@ class ForgotPasswordScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<ForgotPasswordViewModel>(context);
-
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
-        // backgroundColor: AppColors.brightBlue,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.white),
@@ -37,48 +34,55 @@ class ForgotPasswordScreenContent extends StatelessWidget {
         title: const Text(
           'Forgot Password',
           style: TextStyle(
-            // color: AppColors.white,
             fontSize: 20,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
             fontWeight: FontWeight.w500,
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            const Text(
-              'Enter your email address to receive a password reset link',
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: MyFonts.font_Bold,
-                fontWeight: FontWeight.w500,
-                color: AppColors.black,
-              ),
+      body: Consumer<ForgotPasswordViewModel>(
+        builder: (context, provider, child) {
+          return Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                const Text(
+                  'Enter your email address to receive a password reset link',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: MyFonts.font_regular,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.black,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                CustomTextField(
+                  controller: provider.emailController,
+                  label: 'Email Address*',
+                  hint: 'Enter your email address',
+                  onChanged: provider.validateEmail,
+                  errorText: provider.emailError,
+                  prefixIcon: Icons.email_outlined,
+                ),
+                const SizedBox(height: 32),
+                provider.loading
+                    ?  Center(child: Utils.loadingIndicator(context))
+                    : Utils.createButton(
+                  text: "Send Email Reset Password",
+                  onClick: () {
+                    provider.sendPasswordResetEmail(context);
+                  },
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            CustomTextField(
-              controller: provider.emailController,
-              label: 'Email Address*',
-              hint: 'Enter your email address',
-              onChanged: provider.validateEmail,
-              errorText: provider.emailError,
-              prefixIcon: Icons.email_outlined,
-
-            ),
-            const SizedBox(height: 32),
-            Utils.  createButton(text: "Send Email Reset Password", onClick: (){
-              provider.sendPasswordResetEmail(context);
-
-            })
-        ],
-        ),
+          );
+        },
       ),
     );
   }
+
 }
 
 class CustomTextField extends StatelessWidget {
@@ -108,7 +112,7 @@ class CustomTextField extends StatelessWidget {
           label,
           style: const TextStyle(
             fontSize: 14,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
             fontWeight: FontWeight.w500,
             color: AppColors.black,
           ),
@@ -135,7 +139,7 @@ class CustomTextField extends StatelessWidget {
               hintStyle: TextStyle(
                 color: AppColors.grey.withOpacity(0.7),
                 fontSize: 14,
-                fontFamily: MyFonts.font_Bold,
+                fontFamily: MyFonts.font_regular,
               ),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,

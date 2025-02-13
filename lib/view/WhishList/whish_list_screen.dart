@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/viewModel/CartViewModels/add_to_cart_viewModel.dart';
@@ -8,6 +9,7 @@ import 'package:towanto/viewModel/WhishListViewModels/whishList_list_view_model.
 
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
+import '../../utils/network/networkService/app_url.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 
@@ -90,7 +92,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
               fontSize: 20,
               // color: AppColors.black,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.font_Bold),
+              fontFamily: MyFonts.font_regular),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, /*color: AppColors.black*/ size: 20),
@@ -118,7 +120,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         "No items in your wishlist",
                         style: TextStyle(
                           color: AppColors.black,
-                          fontFamily: MyFonts.font_Bold,
+                          fontFamily: MyFonts.font_regular,
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
                         )
@@ -190,7 +192,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                       bottomLeft: Radius.circular(12),
                                     )),
                                 child: Image.network(
-                                  "https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${item.productId[0]}&field=image_1920",
+                                  "${AppUrl.baseurlauth}web/image?model=product.product&id=${item.productId[0]}&field=image_1920",
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -208,7 +210,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                           fontSize: 16,
                                           color: AppColors.black,
                                           fontWeight: FontWeight.bold,
-                                          fontFamily: MyFonts.font_Bold),
+                                          fontFamily: MyFonts.font_regular),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -219,7 +221,16 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                           fontSize: 14,
                                           color: AppColors.lightBlue,
                                           fontWeight: FontWeight.bold,
-                                          fontFamily: MyFonts.font_Bold),
+                                          fontFamily: MyFonts.font_regular),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      '${DateFormat('yyyy-MM-dd HH:mm:ss').format( DateTime.parse(item.createDate.toString()))}',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: MyFonts.font_regular),
                                     ),
                                   ],
                                 ),
@@ -312,7 +323,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                       style: const TextStyle(
                                         color : Colors.white,
                                         fontSize: 14,
-                                        fontFamily: MyFonts.font_Bold,
+                                        fontFamily: MyFonts.font_regular,
                                         fontWeight: FontWeight.w500,
 
                                       ),
@@ -439,7 +450,7 @@ class WishlistCard extends StatelessWidget {
                             fontSize: 16,
                             color: AppColors.black,
                             fontWeight: FontWeight.bold,
-                            fontFamily: MyFonts.font_Bold),
+                            fontFamily: MyFonts.font_regular),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -450,7 +461,7 @@ class WishlistCard extends StatelessWidget {
                             fontSize: 14,
                             color: AppColors.lightBlue,
                             fontWeight: FontWeight.bold,
-                            fontFamily: MyFonts.font_Bold),
+                            fontFamily: MyFonts.font_regular),
                       ),
                     ],
                   ),

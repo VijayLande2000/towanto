@@ -51,7 +51,7 @@ class ForgotPasswordViewModel extends ChangeNotifier {
           }
         };
 
-        await _myRepo.forgotPasswordApi(jsonEncode(body), context,sessionId!);
+        await _myRepo.forgotPasswordApi(jsonEncode(body), context);
         // Show success message or navigate to login screen
         developer.log('Password reset email sent successfully', name: 'ForgotPasswordViewModel');
       } catch (e, stackTrace) {

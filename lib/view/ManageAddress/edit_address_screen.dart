@@ -55,6 +55,10 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
   String? selectedCountry;
   String? selectedState;
   String? selectedCity;
+  dynamic selectedCountryId;
+  dynamic selectedStateId;
+
+
 
   @override
   void initState() {
@@ -63,24 +67,26 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
     print("dbfhbvhv" + widget.addressData!['addressId'].toString());
 
     // Use Future.microtask to avoid calling Provider during build
-    Future.microtask(() {
+    Future.microtask(() async {
       if (widget.addressData != null) {
         widget.addressData?.forEach((key, value) {
           print("key = " + key);
           print("value = " + value.toString());
         });
-        final provider =
-            Provider.of<EditAddressViewModel>(context, listen: false);
-
+        final provider = Provider.of<EditAddressViewModel>(context, listen: false);
+        provider.stateMap.clear();
+        provider.countryMap.clear();
+       await provider.getCountries(context);
+        // selectedCountryId="104";
         // Pre-fill form fields
         provider.formFields.forEach((field) {
           switch (field['key']) {
             case 'firmName':
               field['controller'].text =
-                  widget.addressData!['company_name'].toString() ?? '';
-              print({widget.addressData!['company_name'].toString()});
+                  widget.addressData!['firm_name'].toString() ?? '';
+              print({widget.addressData!['firm_name'].toString()});
               break;
-            case 'proprietorName':
+            case 'proprietor_name':
               field['controller'].text = widget.addressData!['name'] != null
                   ? (widget.addressData!['name'] is String
                       ? widget.addressData!['name']
@@ -103,28 +109,44 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                           : '';
               break;
 
-              break;
-
-              break;
             case 'phone':
               field['controller'].text = widget.addressData!['phone'] ?? '';
               break;
-            case 'gstNumber':
+            case 'vat':
               field['controller'].text = widget.addressData!['vat'] ?? '';
+              break;
+              case 'city':
+              field['controller'].text = widget.addressData!['city'] ?? '';
               break;
           }
         });
         // Pre-fill location fields
-        setState(() {
-          print("the selected country :${selectedCountry}");
           selectedCountry = widget.addressData!['country'];
+          print("dsfdcds"+selectedCountry.toString());
+          selectedCountryId = provider.countryMap.keys.firstWhere(
+                (key) => provider.countryMap[key] == selectedCountry,
+            orElse: () => "",
+          );
+
+         await provider.getStates(context, selectedCountryId);
           selectedState = widget.addressData!['state'];
-          selectedCity = widget.addressData!['city'];
-          if (widget.addressData != null &&
-              options.contains(widget.addressData!['type'])) {
+          selectedStateId = provider.stateMap.keys.firstWhere(
+                (key) => provider.stateMap[key] == selectedState,
+            orElse: () => "",
+          );
+
+            // selectedStateId=selectedStateId;
+
+
+          print("the selected country :${selectedCountry}");
+          print("the selected country :${selectedCountryId}");
+          // selectedState = widget.addressData!['state'];
+          // selectedCity = widget.addressData!['city'];
+          if (widget.addressData != null && options.contains(widget.addressData!['type'])) {
             selectedOption = widget.addressData!['type'];
           }
-        });
+
+
         print("erh" + selectedOption.toString());
       }
     });
@@ -150,7 +172,7 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
             fontSize: 20,
             // color: AppColors.black,
             fontWeight: FontWeight.bold,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
           ),
         ),
         leading: IconButton(
@@ -158,16 +180,18 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
+      body: Consumer<EditAddressViewModel>(builder:
+          (BuildContext context, EditAddressViewModel value, Widget? child) {
+        if (value.loading) {
+          return Center(child: Utils.loadingIndicator(context));
+        } else {
+          return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 20),
-
                   // Form Fields
                   ...provider.formFields.map(
                     (field) => Padding(
@@ -183,83 +207,185 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                     ),
                   ),
 
+                  SizedBox(
+                    height: 12.0,
+                  ),
+
+                  // In your build method
+                  Utils.buildDropdownButtonFormField(
+                      value: selectedCountryId,
+                      items: value.countryMap,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedCountryId = newValue;
+                          // Since we're selecting a new country, clear dependent fields
+                          value.stateMap.clear();
+                          selectedState = null;
+                          selectedCountry=value.countryMap[newValue];
+
+                          print("Selected Country Name: ${value.countryMap[newValue]}"); // Print the country name
+                          print("Selected Country Name: $selectedCountry"); // Print the country name
+                        });
+
+                        // Get states using the country ID (key)
+                        if (newValue != null) {
+                          // newValue is already the key/ID since we set it as the value in DropdownMenuItem
+                          value.getStates(context, newValue);
+                        }
+                      },
+                      backgroundcolor: AppColors.whiteColor,
+                      hintText: 'Select Country',
+                      label: 'Country'
+                  ),
+                  SizedBox(
+                    height: 12.0,
+                  ),
+                  Utils.buildDropdownButtonFormField(
+                      value: selectedStateId,
+                      items: value.stateMap,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedStateId = newValue;
+                          selectedState=value.stateMap[newValue];
+                          print("Selected state Name: ${value.stateMap[newValue]}"); // Print the country name
+                          print("Selected state Name: $selectedState"); // Print the country name
+                        });
+
+                        // Get states using the country ID (key)
+                        if (newValue != null) {
+                          // newValue is already the key/ID since we set it as the value in DropdownMenuItem
+                          // value.getStates(context, newValue);
+                        }
+                      },
+                      backgroundcolor: AppColors.whiteColor,
+                      hintText: 'Select State',
+                      label: 'State'
+                  ),
+
+                  // // Country State City Picker
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     borderRadius: BorderRadius.circular(30),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.grey.withOpacity(0.1),
+                  //         spreadRadius: 1,
+                  //         blurRadius: 10,
+                  //         offset: const Offset(0, 4),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                  //   child: SizedBox(
+                  //     height: 180,
+                  //     child: Theme(
+                  //       data: Theme.of(context).copyWith(
+                  //         textTheme: Theme.of(context).textTheme.copyWith(
+                  //           titleMedium: const TextStyle(
+                  //             fontFamily: MyFonts.font_Bold,
+                  //             color: AppColors.cardcolor,
+                  //             fontSize: 14,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       child: Column(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //         children: [
+                  //           DropdownButtonFormField<String>(
+                  //             decoration: InputDecoration(
+                  //               border: InputBorder.none,
+                  //               contentPadding: EdgeInsets.zero,
+                  //             ),
+                  //             hint: Text('Choose Country',
+                  //               style: Theme.of(context).textTheme.titleMedium,
+                  //             ),
+                  //             value: "selectedCountryId",
+                  //             items: value.countryMap.entries.map((entry) {
+                  //               return DropdownMenuItem<String>(
+                  //                 value: entry.key,  // Using ID as value
+                  //                 child: Text(entry.value),  // Displaying name
+                  //               );
+                  //             }).toList(),
+                  //             onChanged: (String? id) {
+                  //               setState(() {
+                  //                 // selectedCountryId = id;
+                  //                 // selectedStateId = null; // Reset state when country changes
+                  //                 // selectedCityId = null; // Reset city when country changes
+                  //               });
+                  //             },
+                  //           ),
+                  //           // DropdownButtonFormField<String>(
+                  //           //   decoration: InputDecoration(
+                  //           //     border: InputBorder.none,
+                  //           //     contentPadding: EdgeInsets.zero,
+                  //           //   ),
+                  //           //   hint: Text('Choose State',
+                  //           //     style: Theme.of(context).textTheme.titleMedium,
+                  //           //   ),
+                  //           //   value: "selectedStateId",
+                  //           //   items: value.stateMap.entries.map((entry) {
+                  //           //     return DropdownMenuItem<String>(
+                  //           //       value: entry.key,
+                  //           //       child: Text(entry.value),
+                  //           //     );
+                  //           //   }).toList(),
+                  //           //   // onChanged: selectedCountryId == null ? null : (String? id) {
+                  //           //   //   setState(() {
+                  //           //   //     // selectedStateId = id;
+                  //           //   //     // selectedCityId = null; // Reset city when state changes
+                  //           //   //   });
+                  //           //   // },
+                  //           // ),
+                  //           // DropdownButtonFormField<String>(
+                  //           //   decoration: InputDecoration(
+                  //           //     border: InputBorder.none,
+                  //           //     contentPadding: EdgeInsets.zero,
+                  //           //   ),
+                  //           //   hint: Text('Choose City',
+                  //           //     style: Theme.of(context).textTheme.titleMedium,
+                  //           //   ),
+                  //           //   value: selectedCityId,
+                  //           //   items: value.cityMap.entries.map((entry) {
+                  //           //     return DropdownMenuItem<String>(
+                  //           //       value: entry.key,
+                  //           //       child: Text(entry.value),
+                  //           //     );
+                  //           //   }).toList(),
+                  //           //   onChanged: selectedStateId == null ? null : (String? id) {
+                  //           //     setState(() {
+                  //           //       selectedCityId = id;
+                  //           //     });
+                  //           //   },
+                  //           // ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+
+                  const SizedBox(height: 20),
                   CustomDropdownField(
                     label: 'Type',
                     items: options,
                     selectedValue: selectedOption,
                     // hint: 'Choose one',
-                    hint: widget.addressData!['type'] ?? '',
+                    hint: 'select type',
                     onChanged: (value) {
                       setState(() {
                         selectedOption = value;
                       });
                     },
                   ),
-                  SizedBox(
-                    height: 12.0,
-                  ),
-                  // Country State City Picker
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SizedBox(
-                      height: 180,
-                      child: Theme(
-                        data: Theme.of(context).copyWith(
-                          textTheme: Theme.of(context).textTheme.copyWith(
-                                titleMedium: const TextStyle(
-                                  fontFamily: MyFonts.font_Bold,
-                                  color: AppColors.cardcolor,
-                                  fontSize: 14,
-                                ),
-
-                              ),
-                        ),
-                        child: SelectState(
-
-                          onCountryChanged: (country,) {
-                            setState(() => selectedCountry = country);
-                            setState(() => selectedCountry = country);
-                            // print("lets check selected country ${selectedCountry}");
-                          },
-                          onStateChanged: (state) {
-                            setState(() => selectedState = state);
-                          },
-                          onCityChanged: (city) {
-                            setState(() => selectedCity = city);
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-
                   const SizedBox(height: 20),
-
                   Utils.createButton(
                     text: "Update Address",
                     onClick: () {
-                      // Extract the country name by removing the flag emoji
-                      String? cleanCountryName = selectedCountry?.split(" ").last;
-
                       print("sdced: ${widget.addressData!['addressId']}");
-                      print("lets check selected country: $cleanCountryName");
-
                       provider.submitAccountInfo(
                         context,
-                        cleanCountryName, // Pass only the country name
+                        selectedCountry,
                         selectedState,
-                        selectedCity,
                         widget.addressData!['addressId'].toString(),
                         widget.from,
                         selectedOption ?? "",
@@ -269,10 +395,9 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                 ],
               ),
             ),
-          ),
-          if (provider.loading) Utils.loadingIndicator(context),
-        ],
-      ),
+          );
+        }
+      }),
     );
   }
 }
@@ -303,7 +428,7 @@ class CustomDropdownField extends StatelessWidget {
           label,
           style: const TextStyle(
             fontSize: 14,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
             fontWeight: FontWeight.w500,
             color: AppColors.black,
           ),
@@ -334,9 +459,9 @@ class CustomDropdownField extends StatelessWidget {
               hint: Text(
                 hint ?? "Select",
                 style: TextStyle(
-                  color: AppColors.grey.withOpacity(0.7),
+                  color: AppColors.black,
                   fontSize: 14,
-                  fontFamily: MyFonts.font_Bold,
+                  fontFamily: MyFonts.font_regular,
                 ),
               ),
               isExpanded: true,
@@ -352,6 +477,7 @@ class CustomDropdownField extends StatelessWidget {
                     item,
                     style: const TextStyle(
                       fontSize: 14,
+                      color: AppColors.black,
                       fontFamily: MyFonts.font_regular,
                     ),
                   ),

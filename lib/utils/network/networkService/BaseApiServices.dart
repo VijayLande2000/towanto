@@ -1,13 +1,19 @@
 
 import 'package:flutter/material.dart';
+
+import '../../../model/Address_Models/payment_address_model.dart';
 abstract class BaseApiServices {
   Future<dynamic> postApiResponse(String url, dynamic data, BuildContext context);
   Future<dynamic> postSignUpApiResponse(String url, dynamic data, BuildContext context);
   Future<dynamic> getCategoriesListApiResponse(String url, String categoryId, BuildContext context,dynamic sessionId);
   Future<dynamic> getHomePageDataApiResponse(String url, String categoryIds,BuildContext context);
   Future<dynamic> getProductDetailsApiResponse(String url, String categoryId, BuildContext context);
+  Future<dynamic> getAllCountriesApiResponse(String url,BuildContext context,String SessionId);
+  Future<dynamic> getAllStatesDetailsApiResponse(String url, dynamic countryId, BuildContext context,String SessionId);
   Future<dynamic> postAddToCartApiResponse(String url, dynamic data, BuildContext context,String SessionId);
   Future<dynamic> getCartListApiResponse(String url, String categoryId, BuildContext context,String SessionId);
+  Future<dynamic> getFiltersListApiResponse(String url,BuildContext context,String sessionId);
+
   Future<dynamic> getOrdersListApiResponse(String url, String partnerId, BuildContext context,String sessionId);
 
 
@@ -37,7 +43,7 @@ abstract class BaseApiServices {
 
   Future<dynamic> removeAddressListApiResponse(String url, dynamic data, BuildContext context,String sessionId);
   Future<dynamic> addAddressListApiResponse(String url, dynamic data, BuildContext context,String sessionId,dynamic from);
-  Future<dynamic> editAddressListApiResponse(String url, dynamic data, BuildContext context,String sessionId,String navigateTo,dynamic formData);
+  Future<dynamic> editAddressListApiResponse(String url, dynamic data, BuildContext context,String sessionId,String navigateTo,PaymentAddressModel formData);
   Future<dynamic> postOrderDetailsApiResponse(String url, dynamic data, BuildContext context,String sessionId);
   Future<dynamic> postCancelOrderApiResponse(String url, dynamic data, BuildContext context,String sessionId);
   Future<dynamic> postCreateOrderApiResponse(String url, dynamic data, BuildContext context,String sessionId);

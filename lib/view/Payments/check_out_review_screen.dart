@@ -5,6 +5,7 @@ import 'package:towanto/view/Payments/order_confirmation_screen.dart';
 import 'package:towanto/viewModel/CartViewModels/check_out_review_view_model.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
+import '../../utils/network/networkService/app_url.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/OrdersViewModels/create_order_view_model.dart';
@@ -134,7 +135,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
               fontSize: 16,
               color: AppColors.black,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.font_Bold,
+              fontFamily: MyFonts.font_regular,
             ),
           ),
         ),
@@ -167,7 +168,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
                         ),
                         child: Center(
                           child: Image.network(
-                            "https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${orderLine.productId}&field=image_1920",
+                            "${AppUrl.baseurlauth}web/image?model=product.product&id=${orderLine.productId}&field=image_1920",
                           ),
                         ),
                       ),
@@ -178,7 +179,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
                           fontSize: 14,
                           color: AppColors.black,
                           fontWeight: FontWeight.bold,
-                          fontFamily: MyFonts.font_Bold,
+                          fontFamily: MyFonts.font_regular,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -198,7 +199,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
                           fontSize: 14,
                           color: AppColors.tabtxt_color,
                           fontWeight: FontWeight.w700,
-                          fontFamily: MyFonts.font_Bold,
+                          fontFamily: MyFonts.font_regular,
                         ),
                       ),
                     ],
@@ -400,7 +401,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
                       fontSize: 16,
                       color: AppColors.black,
                       fontWeight: FontWeight.bold,
-                      fontFamily: MyFonts.font_Bold,
+                      fontFamily: MyFonts.font_regular,
                     ),
                   ),
                   Icon(
@@ -438,7 +439,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
             fontSize: isTotal ? 16 : 14,
             color: isTotal ? AppColors.black : AppColors.tabtxt_color,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
           ),
         ),
         Text(
@@ -447,7 +448,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
               fontSize: isTotal ? 16 : 14,
               color: isTotal ? AppColors.black : AppColors.tabtxt_color,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              fontFamily: MyFonts.font_Bold),
+              fontFamily: MyFonts.font_regular),
         ),
       ],
     );
@@ -477,7 +478,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
                     fontSize: 16,
                     color: AppColors.black,
                     fontWeight: FontWeight.w600,
-                    fontFamily: MyFonts.font_SemiBold
+                    fontFamily: MyFonts.font_regular
                 ),
               ),
             ],
@@ -633,7 +634,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
                         fontSize: 15,
                         color: AppColors.tabtxt_color,
                         fontWeight: FontWeight.w600,
-                        fontFamily: MyFonts.font_SemiBold
+                        fontFamily: MyFonts.font_regular
                     ),
                   ),
                 ],
@@ -650,7 +651,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
                     fontSize: 12,
                     color: Colors.orange[800],
                     fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.font_SemiBold,
+                    fontFamily: MyFonts.font_regular,
                   ),
                 ),
               ),

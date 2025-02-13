@@ -9,6 +9,7 @@ import 'package:towanto/viewModel/AuthViewModels/sign_up_viewModel.dart';
 import '../../utils/common_widgets/Utils.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
+import '../../viewModel/Address_ViewModels/edit_address_view_model.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -40,6 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _proprietorNameTouched = false;
   bool _emailTouched = false;
   bool _addressTouched = false;
+  bool _cityTouched = false;
   bool _phoneTouched = false;
   bool _gstNumberTouched = false;
   bool _passwordTouched = false;
@@ -112,8 +114,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return null;
   }
 
+
+  Future<void> getCountries() async {
+    final provider = Provider.of<EditAddressViewModel>(context, listen: false);
+     provider.stateMap.clear();
+    provider.countryMap.clear();
+    await provider.getCountries(context);
+    setState(() {
+    });
+  }
+  
+  
+  dynamic selectedCountryId;
+  dynamic selectedStateId;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getCountries();
+    });
+
+
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    final editAddressViewModel = Provider.of<EditAddressViewModel>(context, listen: false);
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
@@ -128,7 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           style: TextStyle(
             // color: AppColors.white,
             fontSize: 20,
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -243,48 +270,109 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onChanged: (value) => setState(() => _addressTouched = true),
                     ),
                     const SizedBox(height: 20),
-
-                    // Country State Picker
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: SizedBox(
-                        height: 180, // Increase or adjust height as needed
-                        child: Theme(
-                          data: Theme.of(context).copyWith(
-                            textTheme: Theme.of(context).textTheme.copyWith(
-                              titleMedium: const TextStyle(
-                                fontFamily: MyFonts.font_Bold,
-                                color: AppColors.cardcolor,
-                                fontSize: 14, // Adjusted font color
-                              ),
-                            ),
-                          ),
-                          child: SelectState(
-                            onCountryChanged: (country) {
-                              setState(() => selectedCountry = country);
-                            },
-                            onStateChanged: (state) {
-                              setState(() => selectedState = state);
-                            },
-                            onCityChanged: (city) {
-                              setState(() => selectedCity = city);
-                            },
-                          ),
-                        ),
-                      ),
+                    _buildInputField(
+                      controller: _cityController,
+                      hint: 'city',
+                      prefixIcon: Icons.location_city,
+                      maxLines: 1,
+                      validator: (value) => (_cityTouched || _submitAttempted) &&
+                          (value == null || value.isEmpty)
+                          ? 'Please enter city'
+                          : null,
+                      onChanged: (value) => setState(() => _cityTouched = true),
                     ),
+                    const SizedBox(height: 20),
+                    Utils.buildDropdownButtonFormField(
+                        value: selectedCountryId,
+                        items: editAddressViewModel.countryMap,
+                        onChanged: (String? newValue) async {
+                          setState(() {
+                            selectedCountryId = newValue;
+                            // Since we're selecting a new country, clear dependent fields
+                            editAddressViewModel.stateMap.clear();
+                            selectedState = null;
+                            selectedCountry=editAddressViewModel.countryMap[newValue];
+
+                            print("Selected Country Name: ${editAddressViewModel.countryMap[newValue]}"); // Print the country name
+                            print("Selected Country Name: $selectedCountry"); // Print the country name
+                          });
+
+                          // Get states using the country ID (key)
+                          if (newValue != null) {
+                            // newValue is already the key/ID since we set it as the value in DropdownMenuItem
+                            await editAddressViewModel.getStates(context, newValue);
+                            setState(() {});
+                          }
+                        },
+                        backgroundcolor: AppColors.whiteColor,
+                        hintText: 'Select Country',
+                        label: 'Country'
+                    ),
+                    SizedBox(
+                      height: 12.0,
+                    ),
+                    Utils.buildDropdownButtonFormField(
+                        value: selectedStateId,
+                        items: editAddressViewModel.stateMap,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedStateId = newValue;
+                            selectedState=editAddressViewModel.stateMap[newValue];
+                            print("Selected state Name: ${editAddressViewModel.stateMap[newValue]}"); // Print the country name
+                            print("Selected state Name: $selectedState"); // Print the country name
+                          });
+
+                          // Get states using the country ID (key)
+                          if (newValue != null) {
+                            // newValue is already the key/ID since we set it as the value in DropdownMenuItem
+                            // value.getStates(context, newValue);
+                          }
+                        },
+                        backgroundcolor: AppColors.whiteColor,
+                        hintText: 'Select State',
+                        label: 'State'
+                    ),
+                    // Country State Picker
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     borderRadius: BorderRadius.circular(30),
+                    //     boxShadow: [
+                    //       BoxShadow(
+                    //         color: Colors.grey.withOpacity(0.1),
+                    //         spreadRadius: 1,
+                    //         blurRadius: 10,
+                    //         offset: const Offset(0, 4),
+                    //       ),
+                    //     ],
+                    //   ),
+                    //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //   child: SizedBox(
+                    //     height: 180, // Increase or adjust height as needed
+                    //     child: Theme(
+                    //       data: Theme.of(context).copyWith(
+                    //         textTheme: Theme.of(context).textTheme.copyWith(
+                    //           titleMedium: const TextStyle(
+                    //             fontFamily: MyFonts.font_Bold,
+                    //             color: AppColors.cardcolor,
+                    //             fontSize: 14, // Adjusted font color
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       child: SelectState(
+                    //         onCountryChanged: (country) {
+                    //           setState(() => selectedCountry = country);
+                    //         },
+                    //         onStateChanged: (state) {
+                    //           setState(() => selectedState = state);
+                    //         },
+                    //         onCityChanged: (city) {
+                    //           setState(() => selectedCity = city);
+                    //         },
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(height: 20),
 
                     _buildInputField(
@@ -322,7 +410,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         label: Text(
                           gstFileName ?? 'Upload GST Document',
                           style: TextStyle(
-                              fontFamily: MyFonts.font_Bold,
+                              fontFamily: MyFonts.font_regular,
                               color: AppColors.cardcolor),
                         ),
                         onPressed: _pickGSTFile,
@@ -346,7 +434,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         'I accept the terms and conditions',
                         style: TextStyle(
                             fontSize: 14,
-                            fontFamily: MyFonts.font_Bold,
+                            fontFamily: MyFonts.font_regular,
                             color: AppColors.cardcolor),
                       ),
                       controlAffinity: ListTileControlAffinity.leading,
@@ -365,7 +453,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           ),
-          if(Provider.of<SignUpViewModel>(context).loading)
+          if(Provider.of<SignUpViewModel>(context).loading || Provider.of<EditAddressViewModel>(context).loading)
             Utils.loadingIndicator(context),
         ],
       )
@@ -422,7 +510,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 hintStyle: TextStyle(
                     color: AppColors.grey,
                     fontSize: 16,
-                    fontFamily: MyFonts.font_Bold),
+                    fontFamily: MyFonts.font_regular),
                 prefixIcon: Icon(
                   prefixIcon,
                   color: AppColors.cardcolor,
@@ -498,7 +586,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         style: const TextStyle(
                           color: Colors.red,
                           fontSize: 12,
-                          fontFamily: MyFonts.font_Bold,
+                          fontFamily: MyFonts.font_regular,
                         ),
                       )
                     : const SizedBox.shrink();
@@ -531,8 +619,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return;
     }
 
-    if (selectedCountry == null || selectedState == null || selectedCity == null) {
-      Utils.flushBarErrorMessages('Please select country,state and city', context);
+    if (selectedCountry == null || selectedState == null) {
+      Utils.flushBarErrorMessages('Please select country,and state', context);
       return;
     }
 
@@ -552,10 +640,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "email": _emailController.text,
           "password": _passwordController.text,
           "phone": _phoneController.text,
-          "company": _proprietorNameController.text,
+          "firm_name": _proprietorNameController.text,
           "gst": _gstNumberController.text,
           "address": _addressController.text,
-          "city": selectedCity,
+          "city": _cityController.text,
           "state": selectedState,
           "country": selectedCountry,
         }
@@ -568,7 +656,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           _phoneController.text.isNotEmpty &&
           _addressController.text.isNotEmpty &&
           _gstNumberController.text.isNotEmpty &&
-          selectedCity != null &&
+          _cityController.text.isNotEmpty &&
           selectedState != null &&
           selectedCountry != null) {
         var jsonBody = jsonEncode(body);

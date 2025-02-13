@@ -11,6 +11,7 @@ import 'package:towanto/view/Orders/orders_screen.dart';
 import 'package:towanto/view/Payments/check_out_flow.dart';
 import 'package:towanto/view/Payments/checkout_address_screen.dart';
 
+import '../../../model/Address_Models/payment_address_model.dart';
 import '../../../view/Payments/order_confirmation_screen.dart';
 import '../../../viewModel/Address_ViewModels/get_Address_list_view_model.dart';
 import '../../common_widgets/PreferencesHelper.dart';
@@ -622,7 +623,7 @@ print("bhjug"+headers.toString());
 
   @override
   Future editAddressListApiResponse(String url, data, BuildContext context,
-      String sessionId,String navigateTo,dynamic formData) async {
+      String sessionId,String navigateTo,PaymentAddressModel formData) async {
     try {
       print("fvb " + sessionId);
       var headers = {
@@ -838,6 +839,11 @@ print("bhjug"+headers.toString());
             Utils.flushBarSuccessMessages("Email Sent Successfully", context));
         Navigator.pushReplacementNamed(context, RoutesName.login);
       }
+      else if (response.statusCode == 404) {
+        Future.delayed(Duration(seconds: 0), () =>
+            Utils.flushBarErrorMessages("Email Not Found", context));
+      }
+
       responseJson = returnResponse(response);
     } on SocketException {
       Utils.flushBarErrorMessages("No Internet Connection", context);
@@ -978,13 +984,90 @@ print("bhjug"+headers.toString());
       print("DeactivateAccount sstatusCode =" + response.statusCode.toString());
       if (response.statusCode == 200) {
         Future.delayed(Duration(seconds: 0), () =>
-            Utils.flushBarSuccessMessages("Account DeActivated successfully!", context));
+            Utils.flushBarSuccessMessages("Account Deleted successfully!", context));
         PreferencesHelper.clearSharedPreferences();
         Navigator.pushNamed(context, RoutesName.login);
       }
      else if (response.statusCode == 400) {
         Future.delayed(Duration(seconds: 0), () =>
             Utils.flushBarErrorMessages("Invalid Credentials please Try Again", context));
+      }
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
+
+  @override
+  Future getAllCountriesApiResponse(String url,BuildContext context,dynamic sessionId) async {
+    try {
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+
+      };
+      print("countries lUrl response =" + url);
+
+      Response response = await http.get(
+        Uri.parse(url), headers: headers,
+      ).timeout(const Duration(seconds: 60));
+      print("getAllCountriesApiResponse response =" + response.body);
+      print("getAllCountriesApiResponse statusCode =" + response.statusCode.toString());
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
+
+  @override
+  Future getAllStatesDetailsApiResponse(String url, dynamic countryId, BuildContext context,dynamic sessionId) async {
+    try {
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+
+      };
+      String finalUrl = '$url?country_id=$countryId';
+      print("getAllStatesDetailsApiResponse response url =" + finalUrl);
+
+      Response response = await http.get(
+        Uri.parse(finalUrl), headers: headers,
+      ).timeout(const Duration(seconds: 60));
+      print("getAllStatesDetailsApiResponse response =" + response.body);
+      print("getAllStatesDetailsApiResponse statusCode =" + response.statusCode.toString());
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
+
+  @override
+  Future getFiltersListApiResponse(String url, BuildContext context, String sessionId) async {
+    try {
+      print("fvb " + sessionId);
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+      };
+
+      print("url :" + url.toString());
+      print("header :" + headers.toString());
+
+      Response response = await http.get(
+        Uri.parse(url), headers: headers,
+      ).timeout(const Duration(seconds: 60));
+
+      print("filter list response =" + response.body);
+      print("filter List statusCode =" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        // Future.delayed(Duration(seconds:0),() =>Utils.flushBarSuccessMessages("Product added to cart successfully",context));
+        // Navigator.pushReplacementNamed(context, RoutesName.cart);
       }
       responseJson = returnResponse(response);
     } on SocketException {

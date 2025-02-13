@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:towanto/utils/repositories/AddressRepositories/add_address_repository.dart';
 import 'package:towanto/utils/repositories/ProfileRepositories/update_account_repository.dart';
 import 'dart:developer' as developer;
+import '../../model/Address_Models/get_all_countrys_model.dart';
+import '../../model/Address_Models/payment_address_model.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
 import '../../utils/repositories/AddressRepositories/edit_address_repository.dart';
+import '../../utils/repositories/AddressRepositories/get_countries_list_repository.dart';
+import '../../utils/repositories/AddressRepositories/get_states_list_repository.dart';
 
 class EditAddressViewModel extends ChangeNotifier {
   final _myRepo = EditAddressRepository();
@@ -15,18 +19,23 @@ class EditAddressViewModel extends ChangeNotifier {
 
   setLoading(bool value) {
     _loading = value;
-    developer.log('Loading state changed to: $_loading', name: 'EditAddressViewModel');
+    developer.log('Loading state changed to: $_loading',
+        name: 'EditAddressViewModel');
     notifyListeners();
   }
 
-  Future<void> editAddressPostApi(dynamic data, BuildContext context, String sessionId,String navigateTo,dynamic formData) async {
+  Future<void> editAddressPostApi(dynamic data, BuildContext context,
+      String sessionId, String navigateTo, PaymentAddressModel formData) async {
     try {
       this.context = context;
       setLoading(true);
-      developer.log('Starting login process with data: ${jsonEncode(data)}', name: 'EditAddressViewModel');
+      developer.log('Starting edit process with data: ${jsonEncode(data)}',
+          name: 'EditAddressViewModel');
 
-      final value = await _myRepo.editAddressListApiResponse(data, context, sessionId,navigateTo,formData);
-      developer.log('Account API response received: ${value.toString()}', name: 'EditAddressViewModel');
+      final value = await _myRepo.editAddressListApiResponse(
+          data, context, sessionId, navigateTo, formData);
+      developer.log('Account API response received: ${value.toString()}',
+          name: 'EditAddressViewModel');
     } catch (e, stackTrace) {
       developer.log(
         'Error during account process',
@@ -49,7 +58,7 @@ class EditAddressViewModel extends ChangeNotifier {
       'controller': TextEditingController(),
     },
     {
-      'key': 'proprietorName',
+      'key': 'proprietor_name',
       'label': 'Proprietor Name',
       'hint': 'Enter proprietor name',
       'icon': Icons.person,
@@ -84,12 +93,20 @@ class EditAddressViewModel extends ChangeNotifier {
       'controller': TextEditingController(),
     },
     {
-      'key': 'gstNumber',
+      'key': 'vat',
       'label': 'GST Number',
       'hint': 'Enter your GST Number',
       'icon': Icons.business_center,
       'controller': TextEditingController(),
     },
+    {
+      'key': 'city',
+      'label': 'city',
+      'hint': 'Enter your city Name',
+      'icon': Icons.location_city,
+      'controller': TextEditingController(),
+    },
+
   ];
 
   // Errors map for validation messages
@@ -97,12 +114,15 @@ class EditAddressViewModel extends ChangeNotifier {
 
   // Validation for each field
   void validateField(String key) {
-    final controller = formFields.firstWhere((field) => field['key'] == key)['controller'] as TextEditingController;
+    final controller =
+        formFields.firstWhere((field) => field['key'] == key)['controller']
+            as TextEditingController;
     final value = controller.text.trim();
 
     if (value.isEmpty) {
       errors[key] = "This field cannot be empty";
-    } else if (key == 'email' && !RegExp(r"^[^@]+@[^@]+\.[^@]+").hasMatch(value)) {
+    } else if (key == 'email' &&
+        !RegExp(r"^[^@]+@[^@]+\.[^@]+").hasMatch(value)) {
       errors[key] = "Enter a valid email address";
     } else if (key == 'phone' && value.length < 10) {
       errors[key] = "Enter a valid phone number";
@@ -113,47 +133,41 @@ class EditAddressViewModel extends ChangeNotifier {
   }
 
   // Dynamic validation for country, state, and city
-  void validateLocationFields(dynamic selectedCountry, dynamic selectedState, dynamic selectedCity, BuildContext context) {
+  void validateLocationFields(
+      dynamic selectedCountry, dynamic selectedState, BuildContext context) {
     if (selectedCountry == null || selectedCountry.isEmpty) {
-      Utils.flushBarErrorMessages("Country  or state or city cannot be empty", context);
+      Utils.flushBarErrorMessages(
+          "Country  or state  cannot be empty", context);
       errors['country'] = "Country cannot be empty";
     } else {
       errors['country'] = null;
     }
 
     if (selectedState == null || selectedState.isEmpty) {
-      Utils.flushBarErrorMessages("Country  or state or city cannot be empty", context);
+      Utils.flushBarErrorMessages("Country  or state cannot be empty", context);
       errors['state'] = "State cannot be empty";
     } else {
       errors['state'] = null;
     }
-
-    if (selectedCity == null || selectedCity.isEmpty) {
-      Utils.flushBarErrorMessages("Country  or state or city cannot be empty", context);
-      errors['city'] = "City cannot be empty";
-    } else {
-      errors['city'] = null;
-    }
-
     notifyListeners();
   }
 
   // Submit method with dynamic country, state, and city validation
   Future<void> submitAccountInfo(
-      BuildContext context,
-      dynamic selectedCountry,
-      dynamic selectedState,
-      dynamic selectedCity,
-      dynamic addressId, dynamic navigateTo,
-      String type,
-      ) async {
+    BuildContext context,
+    dynamic selectedCountry,
+    dynamic selectedState,
+    dynamic addressId,
+    dynamic navigateTo,
+    String type,
+  ) async {
     // Validate all fields
     for (final field in formFields) {
       validateField(field['key']);
     }
-   print("FYUDG"+navigateTo.toString());
+    print("FYUDG" + navigateTo.toString());
     // Validate country, state, and city dynamically
-    validateLocationFields(selectedCountry, selectedState, selectedCity, context);
+    validateLocationFields(selectedCountry, selectedState, context);
 
     // Check if all fields are valid
     if (errors.values.every((error) => error == null)) {
@@ -163,63 +177,211 @@ class EditAddressViewModel extends ChangeNotifier {
       // Construct the body as per the required format
       var body = {
         "params": {
-          "address_id": int.tryParse(addressId), // Convert the addressId to an integer
-          "name": (formFields.firstWhere((field) => field['key'] == 'firmName')['controller']
-          as TextEditingController)
+          "address_id":
+              int.tryParse(addressId), // Convert the addressId to an integer
+          "name": (formFields.firstWhere(
+                      (field) => field['key'] == 'firmName')['controller']
+                  as TextEditingController)
               .text
               .trim(),
-          "firm_name": (formFields.firstWhere((field) => field['key'] == 'proprietorName')['controller']
-          as TextEditingController)
+          "firm_name": (formFields.firstWhere((field) =>
+                      field['key'] == 'proprietor_name')['controller']
+                  as TextEditingController)
               .text
               .trim(),
-          "email": (formFields.firstWhere((field) => field['key'] == 'email')['controller']
-          as TextEditingController)
+          "email": (formFields.firstWhere(
+                      (field) => field['key'] == 'email')['controller']
+                  as TextEditingController)
               .text
               .trim(),
-          "phone": (formFields.firstWhere((field) => field['key'] == 'phone')['controller']
-          as TextEditingController)
+          "phone": (formFields.firstWhere(
+                      (field) => field['key'] == 'phone')['controller']
+                  as TextEditingController)
               .text
               .trim(),
-          "street": (formFields.firstWhere((field) => field['key'] == 'address')['controller']
-          as TextEditingController)
+          "street": (formFields.firstWhere(
+                      (field) => field['key'] == 'address')['controller']
+                  as TextEditingController)
               .text
               .trim(),
-          "city": selectedCity, // Ensure you are passing the correct value for city
-          "zipcode": (formFields.firstWhere((field) => field['key'] == 'zipCode')['controller']
-          as TextEditingController)
+          "city": (formFields.firstWhere(
+                      (field) => field['key'] == 'city')['controller']
+                  as TextEditingController)
+              .text
+              .trim(), // Ensure you are passing the correct value for city
+          "zipcode": (formFields.firstWhere(
+                      (field) => field['key'] == 'zipCode')['controller']
+                  as TextEditingController)
               .text
               .trim(),
           "type": type, // Change to "delivery" if needed dynamically
-          "country": selectedCountry, // Ensure you are passing the correct value for country
-          "state": selectedState, // Ensure you are passing the correct value for state
-          "vat": (formFields.firstWhere((field) => field['key'] == 'gstNumber')['controller']
-          as TextEditingController)
+          "country":
+              selectedCountry, // Ensure you are passing the correct value for country
+          "state":
+              selectedState, // Ensure you are passing the correct value for state
+          "vat": (formFields.firstWhere(
+                      (field) => field['key'] == 'vat')['controller']
+                  as TextEditingController)
               .text
               .trim(),
         }
       };
 
       try {
-        final formData = {
-          'address': '${(formFields.firstWhere((field) => field['key'] == 'address')['controller'] as TextEditingController).text}, '
-              '${selectedCity ?? ''}\n'
-              '${selectedState ?? ''}, ${selectedCountry ?? ''}\n'
-              '${(formFields.firstWhere((field) => field['key'] == 'zipCode')['controller'] as TextEditingController).text}',
-          'contact': (formFields.firstWhere((field) => field['key'] == 'phone')['controller'] as TextEditingController)
-              .text
-              .trim(),
-          'name': (formFields.firstWhere((field) => field['key'] == 'firmName')['controller'] as TextEditingController)
-              .text
-              .trim(),
-          'email': (formFields.firstWhere((field) => field['key'] == 'email')['controller'] as TextEditingController)
-              .text
-              .trim(),
-          'addressId': addressId ?? '', // Include addressId if available
-        };
-        await editAddressPostApi(jsonEncode(body), context, sessionId!,navigateTo,formData);
+        PaymentAddressModel formData =
+          PaymentAddressModel(
+            addressId: int.tryParse(addressId) ??
+                0, // Convert addressId to integer, default to 0 if null
+            name: (formFields.firstWhere((field) => field['key'] == 'firmName',
+                    orElse: () => {
+                          'controller': TextEditingController()
+                        })['controller'] as TextEditingController)
+                .text
+                .trim(),
+            proprietorName: (formFields.firstWhere(
+                    (field) => field['key'] == 'proprietor_name',
+                    orElse: () => {
+                          'controller': TextEditingController()
+                        })['controller'] as TextEditingController)
+                .text
+                .trim(),
+            email: (formFields.firstWhere((field) => field['key'] == 'email',
+                    orElse: () => {
+                          'controller': TextEditingController()
+                        })['controller'] as TextEditingController)
+                .text
+                .trim(),
+            phone: (formFields.firstWhere((field) => field['key'] == 'phone',
+                    orElse: () => {
+                          'controller': TextEditingController()
+                        })['controller'] as TextEditingController)
+                .text
+                .trim(),
+            street: (formFields.firstWhere((field) => field['key'] == 'address',
+                    orElse: () => {
+                          'controller': TextEditingController()
+                        })['controller'] as TextEditingController)
+                .text
+                .trim(),
+            city: (formFields.firstWhere((field) => field['key'] == 'city',
+                    orElse: () => {
+                          'controller': TextEditingController()
+                        })['controller'] as TextEditingController)
+                .text
+                .trim(),
+            zipcode: (formFields.firstWhere(
+                    (field) => field['key'] == 'zipCode',
+                    orElse: () => {
+                          'controller': TextEditingController()
+                        })['controller'] as TextEditingController)
+                .text
+                .trim(),
+            type: type ?? "delivery", // Default to "delivery" if null
+            country: selectedCountry ?? '',
+            state: selectedState ?? '',
+            vat: (formFields.firstWhere((field) => field['key'] == 'vat',
+                    orElse: () => {
+                          'controller': TextEditingController()
+                        })['controller'] as TextEditingController)
+                .text
+                .trim(),
+          );
+
+
+        await editAddressPostApi(
+            jsonEncode(body), context, sessionId!, navigateTo, formData);
       } finally {
         setLoading(false);
       }
+    }
+  }
+
+  final _countriesRepo = GetCountriesRepository();
+  final _statesRepo = GetAllStatesRepository();
+// Maps to store country and state data
+  Map<String, String> countryMap = {}; // id : name
+  Map<String, String> stateMap = {}; // id : name
+
+// edit_address_view_model.dart
+  Future<void> getCountries(BuildContext context) async {
+    try {
+      _loading = true;
+      notifyListeners();
+
+      final sessionId = await PreferencesHelper.getString("session_id");
+      final response = await _countriesRepo.getCountriesListApiResponse(context,
+          sessionId: sessionId);
+
+      countryMap.clear();
+
+      // Map the countries to the countryMap
+      for (var country in response.countries) {
+        countryMap[country.id.toString()] = country.name;
+      }
+
+      developer.log('Loaded countries: ${countryMap.length}',
+          name: 'EditAddressViewModel');
+    } catch (e) {
+      developer.log('Error fetching countries: $e',
+          name: 'EditAddressViewModel');
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> getCountriesforSignUp(BuildContext context) async {
+    try {
+      _loading = true;
+      notifyListeners();
+
+      final response =
+          await _countriesRepo.getCountriesListApiResponse(context);
+
+      countryMap.clear();
+
+      // Map the countries to the countryMap
+      for (var country in response.countries) {
+        countryMap[country.id.toString()] = country.name;
+      }
+
+      developer.log('Loaded countries: ${countryMap.length}',
+          name: 'EditAddressViewModel');
+    } catch (e) {
+      developer.log('Error fetching countries: $e',
+          name: 'EditAddressViewModel');
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
+  }
+
+// In your ViewModel
+// In ViewModel
+  Future<void> getStates(BuildContext context, String countryId) async {
+    try {
+      // _loading = true;
+      notifyListeners();
+
+      final sessionId = await PreferencesHelper.getString("session_id");
+      final response = await _statesRepo.getAllStatesListApiResponse(
+          countryId, context,
+          sessionId: sessionId);
+
+      stateMap.clear();
+
+      // Map the states to stateMap
+      for (var state in response.states) {
+        stateMap[state.id.toString()] = state.name;
+      }
+
+      developer.log('Loaded states: ${stateMap.length}',
+          name: 'EditAddressViewModel');
+    } catch (e) {
+      developer.log('Error fetching states: $e', name: 'EditAddressViewModel');
+    } finally {
+      // _loading = false;
+      notifyListeners();
     }
   }
 }

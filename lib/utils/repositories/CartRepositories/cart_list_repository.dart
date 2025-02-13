@@ -41,8 +41,9 @@ class CartListRepository {
 
       // Return empty list if no valid response
       return [];
-    } catch (e) {
+    } catch (e,stackrace) {
       print('Error in getCartListApi: $e');
+      print('Error in getCartListApi: $stackrace');
       // Handle any errors and return empty list
       return [];
     }

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:towanto/view/Home/product_details_screen.dart';
 import 'package:towanto/viewModel/HomeViewModels/get_search_product_list_view_model.dart';
 import '../../utils/common_widgets/Utils.dart';
+import '../../utils/network/networkService/app_url.dart';
 import '../../utils/resources/colors.dart';
 import '../../model/HomeModels/search_product_model.dart';
 import '../../utils/resources/fonts.dart';
@@ -56,7 +57,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
               fontSize: 18,
               color: AppColors.grey,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.font_Bold,
+              fontFamily: MyFonts.font_regular,
             ),
           ),
           const SizedBox(height: 8),
@@ -66,7 +67,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
               fontSize: 14,
               color: AppColors.grey,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.font_Bold,
+              fontFamily: MyFonts.font_regular,
             ),
           ),
         ],
@@ -87,7 +88,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
               fontSize: 18,
               color: AppColors.grey,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.font_Bold,
+              fontFamily: MyFonts.font_regular,
             ),
           ),
           const SizedBox(height: 8),
@@ -97,7 +98,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
               fontSize: 14,
               color: AppColors.grey,
               fontWeight: FontWeight.bold,
-              fontFamily: MyFonts.font_Bold,
+              fontFamily: MyFonts.font_regular,
             ),
           ),
         ],
@@ -153,7 +154,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4),
                         child: Image.network(
-                          'https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${product.id}&field=image_1920' ??
+                          '${AppUrl.baseurlauth}web/image?model=product.product&id=${product.id}&field=image_1920' ??
                               '',
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) => Icon(
@@ -178,7 +179,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                         fontSize: 14,
                         color: AppColors.black,
                         fontWeight: FontWeight.bold,
-                        fontFamily: MyFonts.font_Bold,
+                        fontFamily: MyFonts.font_regular,
                       ),
                     ),
                   ),
@@ -190,29 +191,57 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(
-                        '₹${product.listPrice ?? 0}',
+                        (product.listPrice == null || product.listPrice == 0 || product.listPrice == 0.0)
+                            ? 'Price Locked'
+                            : '₹ ${product.listPrice}',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           color: AppColors.black,
                           fontWeight: FontWeight.w500,
-                          fontFamily: MyFonts.font_Bold,
+                          fontFamily: MyFonts.font_regular,
                         ),
                       ),
-                      if (product.listPrice != null &&
-                          product.listPrice != product.listPrice) ...[
-                        const SizedBox(width: 4),
-                        Text(
-                          '₹${product.listPrice}',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: MyFonts.font_Bold,
-                          ),
-                        ),
+
                       ],
+                  ),
+                  SizedBox(height: 2,),
+                  Row(
+                    children: [
+                      ...List.generate(5, (index) {
+                        // Determine if the star should be filled, half-filled, or empty
+                        if (index < product.rating.floor()) {
+                          return Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                            size: 16,
+                          );
+                        } else if (index < product.rating && product.rating % 1 != 0) {
+                          return Icon(
+                            Icons.star_half,
+                            color: Colors.amber,
+                            size: 16,
+                          );
+                        } else {
+                          return Icon(
+                            Icons.star_border,
+                            color: Colors.amber,
+                            size: 16,
+                          );
+                        }
+                      }),
+                      SizedBox(width: 8),
+                      // Display the review count next to the stars
+                      Text(
+                        '(${product.ratingCount} reviews)',
+                        style: TextStyle(
+                          fontFamily: MyFonts.font_regular,
+                          color: Colors.grey.shade600,
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
+
                   // const SizedBox(height: 4),
                   // product.description != false && product.description != null
                   //     ? Text(
@@ -246,7 +275,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
         title: const Text(
           'Search Products',
           style: TextStyle(
-            fontFamily: MyFonts.font_Bold,
+            fontFamily: MyFonts.font_regular,
             // color: AppColors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,

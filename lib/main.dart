@@ -22,6 +22,7 @@ import 'package:towanto/viewModel/CartViewModels/delete_Cartitem_viewModel.dart'
 import 'package:towanto/viewModel/CartViewModels/updateCart_viewModel.dart';
 import 'package:towanto/viewModel/EnquireyViewModel/enquirey_view_model.dart';
 import 'package:towanto/viewModel/HomeViewModels/categories_list_viewModel.dart';
+import 'package:towanto/viewModel/HomeViewModels/filter_list_view_model.dart';
 import 'package:towanto/viewModel/HomeViewModels/get_search_product_list_view_model.dart';
 import 'package:towanto/viewModel/HomeViewModels/home_page_data_viewModel.dart';
 import 'package:towanto/viewModel/HomeViewModels/product_details_viewModel.dart';
@@ -83,6 +84,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CreateOrderViewModel()),
         ChangeNotifierProvider(create: (_) => PaymentConfirmationViewModel()),
         ChangeNotifierProvider(create: (_) => DeactivateAccountViewModel()),
+        ChangeNotifierProvider(create: (_) => FilterListViewModel()),
       ],
       child: MaterialApp(
         title: 'Towanto',
@@ -90,7 +92,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          appBarTheme: AppBarTheme(backgroundColor: AppColors.brightBlue , titleTextStyle: TextStyle(color: AppColors.white,fontFamily: MyFonts.font_Bold
+          appBarTheme: AppBarTheme(backgroundColor: AppColors.brightBlue , titleTextStyle: TextStyle(color: AppColors.white,fontFamily: MyFonts.font_regular,fontWeight: FontWeight.bold
           ),iconTheme: IconThemeData(color: AppColors.white))
         ),
         initialRoute: RoutesName.splash,

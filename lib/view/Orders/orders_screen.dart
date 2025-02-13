@@ -7,6 +7,7 @@ import 'package:towanto/viewModel/OrdersViewModels/orders_list_view_model.dart';
 
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
+import '../../utils/network/networkService/app_url.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import 'order_details_screen.dart';
@@ -86,7 +87,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
             fontSize: 20,
             // color:  AppColors.black,
             fontWeight: FontWeight.bold,
-            fontFamily: MyFonts.font_Bold
+            fontFamily: MyFonts.font_regular
         ),
         ),
 
@@ -116,7 +117,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
                       "No orders",
                       style: TextStyle(
                         color: AppColors.black,
-                        fontFamily: MyFonts.font_Bold,
+                        fontFamily: MyFonts.font_regular,
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                       )
@@ -170,7 +171,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
                                   ? ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: Image.network(
-                                        "https://towanto-ecommerce-mainbranch-16118324.dev.odoo.com/web/image?model=product.product&id=${order.id}&field=image_1920",
+                                        "${AppUrl.baseurlauth}web/image?model=product.product&id=${order.id}&field=image_1920",
                                         fit: BoxFit.cover,
                                       ),
                                     )
@@ -197,7 +198,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
                                                 fontSize: 18,
                                                 color:  AppColors.tabtxt_color,
                                                 fontWeight: FontWeight.w600,
-                                                fontFamily: MyFonts.font_SemiBold
+                                                fontFamily: MyFonts.font_regular
                                             ),
                                           ),
                                         ],
@@ -230,7 +231,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
                                         fontSize: 16,
                                         color:  AppColors.tabtxt_color,
                                         fontWeight: FontWeight.w500,
-                                        fontFamily: MyFonts.font_Light
+                                        fontFamily: MyFonts.font_regular
                                     ),
                                   ),
                                   const SizedBox(height: 4),
@@ -239,7 +240,7 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
                                     style: TextStyle(
                                         fontSize: 14,
                                         color:  AppColors.tabtxt_color,
-                                        fontWeight: FontWeight.w500,
+                                        fontWeight: FontWeight.w300,
                                         fontFamily: MyFonts.font_regular
                                     ),
                                   ),

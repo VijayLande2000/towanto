@@ -62,7 +62,7 @@ class _CustomPopupDialogState extends State<CustomPopupDialog> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                fontFamily: MyFonts.font_Bold,
+                fontFamily: MyFonts.font_regular,
               ),
             ),
             const SizedBox(height: 20),
@@ -90,7 +90,7 @@ class _CustomPopupDialogState extends State<CustomPopupDialog> {
                         hintStyle: TextStyle(
                           color: AppColors.grey.withOpacity(0.7),
                           fontSize: 14,
-                          fontFamily: MyFonts.font_Bold,
+                          fontFamily: MyFonts.font_regular,
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -136,7 +136,7 @@ class _CustomPopupDialogState extends State<CustomPopupDialog> {
                         hintStyle: TextStyle(
                           color: AppColors.grey.withOpacity(0.7),
                           fontSize: 14,
-                          fontFamily: MyFonts.font_Bold,
+                          fontFamily: MyFonts.font_regular,
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
@@ -174,7 +174,7 @@ class _CustomPopupDialogState extends State<CustomPopupDialog> {
                     style: TextStyle(
                       color: AppColors.grey,
                       fontSize: 16,
-                      fontFamily: MyFonts.font_Bold,
+                      fontFamily: MyFonts.font_regular,
                     ),
                   ),
                 ),
@@ -202,7 +202,7 @@ class _CustomPopupDialogState extends State<CustomPopupDialog> {
                               'Confirm',
                               style: TextStyle(
                                 fontSize: 16,
-                                fontFamily: MyFonts.font_Bold,
+                                fontFamily: MyFonts.font_regular,
                                 color: AppColors.whiteColor,
                               ),
                             ),
@@ -284,7 +284,7 @@ class GradientButton extends StatelessWidget {
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
-                fontFamily: MyFonts.font_Bold,
+                fontFamily: MyFonts.font_regular,
                 fontWeight: FontWeight.w600,
               ),
             ),

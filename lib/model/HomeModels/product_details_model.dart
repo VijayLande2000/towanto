@@ -552,8 +552,12 @@ class ProductDetailsModel {
       showForecastedQtyStatusButton: json['show_forecasted_qty_status_button'],
       validEan: json['valid_ean'],
       lotPropertiesDefinition: List<dynamic>.from(json['lot_properties_definition']),
-      variantBomIds: List<dynamic>.from(json['variant_bom_ids']),
-      bomLineIds: List<dynamic>.from(json['bom_line_ids']),
+      variantBomIds: json['variant_bom_ids'] != null
+          ? List<dynamic>.from(json['variant_bom_ids'])
+          : [],
+      bomLineIds: json['bom_line_ids'] != null
+          ? List<dynamic>.from(json['bom_line_ids'])
+          : [],
       bomCount: json['bom_count'],
       usedInBomCount: json['used_in_bom_count'],
     mrpProductQty: double.tryParse(json['mrp_product_qty'].toString()) ?? 0.0,
@@ -633,7 +637,9 @@ class ProductDetailsModel {
       hasAvailableRouteIds: json['has_available_route_ids'],
       routeIds: List<dynamic>.from(json['route_ids']),
       routeFromCategIds: List<dynamic>.from(json['route_from_categ_ids']),
-      bomIds: List<dynamic>.from(json['bom_ids']),
+      bomIds: json['bom_ids'] != null
+          ? List<dynamic>.from(json['bom_ids'])
+          : [],
       useExpirationDate: json['use_expiration_date'],
       expirationTime: json['expiration_time'],
       useTime: json['use_time'],
