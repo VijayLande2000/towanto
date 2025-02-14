@@ -74,15 +74,19 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
 
   Future<void> fetchCategories() async {
     // Obtain the instance of CategoriesListViewModel
-    final categoriesListViewModel = Provider.of<CategoriesListViewModel>(context, listen: false);
-    await categoriesListViewModel.categoriesListViewModelApi(widget.category.id.toString(), context);
-    final filterlistApiViewModel = Provider.of<FilterListViewModel>(context, listen: false);
+    final categoriesListViewModel =
+        Provider.of<CategoriesListViewModel>(context, listen: false);
+    await categoriesListViewModel.categoriesListViewModelApi(
+        widget.category.id.toString(), context);
+    final filterlistApiViewModel =
+        Provider.of<FilterListViewModel>(context, listen: false);
     await filterlistApiViewModel.getFilterList(context);
   }
 
   Future<void> fetchSubCategories(dynamic categoryId) async {
     // Obtain the instance of CategoriesListViewModel
-    final categoriesListViewModel = Provider.of<CategoriesListViewModel>(context, listen: false);
+    final categoriesListViewModel =
+        Provider.of<CategoriesListViewModel>(context, listen: false);
 
     print("fnvklnf" + widget.category.id.toString());
     print("fnvklnf" + categoryId.toString());
@@ -93,22 +97,16 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     }
   }
 
-
   Future<void> fetchInitialSubCategories(dynamic categoryId) async {
     // Obtain the instance of CategoriesListViewModel
     final categoriesListViewModel =
-    Provider.of<CategoriesListViewModel>(context, listen: false);
+        Provider.of<CategoriesListViewModel>(context, listen: false);
     print("fnvklnf" + widget.category.id.toString());
     print("fnvklnf" + categoryId.toString());
-      await categoriesListViewModel.subCategoriesListViewModelApi(
-          categoryId.toString(), context);
-      // await _fetchSubCartItems();
+    await categoriesListViewModel.subCategoriesListViewModelApi(
+        categoryId.toString(), context);
+    // await _fetchSubCartItems();
   }
-
-
-
-
-
 
   String? selectedCategoryId;
   List<String> navigationStack = [];
@@ -118,7 +116,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
 
   List<NavigationLevelSelection> levelSelections = [];
 
-  Future<void> _handleCategorySelect(BuildContext context, String category) async {
+  Future<void> _handleCategorySelect(
+      BuildContext context, String category) async {
     print("--- Starting Category Selection ---");
 
     // Fetch the category ID, handling the possibility of a null return
@@ -129,7 +128,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     }
 
     // Get current navigation level
-    String currentLevel = navigationStack.isEmpty ? "root" : navigationStack.last;
+    String currentLevel =
+        navigationStack.isEmpty ? "root" : navigationStack.last;
 
     // Check if state changes are necessary before calling setState
     bool isCategoryChanged = selectedCategoryId != categoryId;
@@ -139,11 +139,14 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         selectedCategoryId = categoryId;
 
         // Update or add selection for the current level
-        int existingIndex = levelSelections.indexWhere((selection) => selection.level == currentLevel);
+        int existingIndex = levelSelections
+            .indexWhere((selection) => selection.level == currentLevel);
         if (existingIndex != -1) {
-          levelSelections[existingIndex] = NavigationLevelSelection(currentLevel, category, categoryId);
+          levelSelections[existingIndex] =
+              NavigationLevelSelection(currentLevel, category, categoryId);
         } else {
-          levelSelections.add(NavigationLevelSelection(currentLevel, category, categoryId));
+          levelSelections.add(
+              NavigationLevelSelection(currentLevel, category, categoryId));
         }
       });
     }
@@ -163,7 +166,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         await fetchSubCategories(categoryId);
         print("Successfully fetched subcategories");
       }
-
     } catch (e) {
       print("Error fetching subcategories: $e");
     } finally {
@@ -173,7 +175,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
 
     // Check for subcategories
     if (_hasSubcategories(context, category)) {
-      Map<String, dynamic>? subcategories = _getSubcategories(context, category);
+      Map<String, dynamic>? subcategories =
+          _getSubcategories(context, category);
       if (subcategories == null) {
         print("No subcategories found");
         return;
@@ -187,7 +190,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
 
       // Handle single subcategory case without redundant calls
       if (subcategories.length == 1) {
-        String? nextCategoryId = _getCategoryId(context, subcategories.keys.first);
+        String? nextCategoryId =
+            _getCategoryId(context, subcategories.keys.first);
 
         // Ensure no repeated calls for the same subcategory
         if (nextCategoryId != null && !_isCategoryLoading(nextCategoryId)) {
@@ -196,7 +200,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       }
     }
   }
-
 
 // Helper methods to manage loading state
   final Set<String> _loadingCategories = {};
@@ -212,10 +215,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
   void _markCategoryAsLoaded(String categoryId) {
     _loadingCategories.remove(categoryId);
   }
-
-
-
-
 
   void _handleBack() async {
     print("--- Starting Back Navigation ---");
@@ -233,14 +232,15 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       navigationStack.removeLast();
 
       // If we're going back to root, clear all selections
-      if (navigationStack.length==1) {
+      if (navigationStack.length == 1) {
         levelSelections.clear();
         selectedCategoryId = null;
 
         // Make API call with widget.category.id
         try {
           final categoryId = widget.category.id.toString();
-          fetchInitialSubCategories(categoryId); // Assuming this is your API call method
+          fetchInitialSubCategories(
+              categoryId); // Assuming this is your API call method
           print("Making root level API call with category ID: $categoryId");
         } catch (e) {
           print("Error making root level API call: $e");
@@ -250,7 +250,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         String previousLevel = navigationStack.last;
         NavigationLevelSelection? previousSelection = levelSelections
             .firstWhere((selection) => selection.level == previousLevel,
-            orElse: () => NavigationLevelSelection("", "", ""));
+                orElse: () => NavigationLevelSelection("", "", ""));
 
         if (previousSelection.level.isNotEmpty) {
           selectedCategoryId = previousSelection.selectedId;
@@ -270,29 +270,30 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     });
   }
 
-
   Widget _buildCategoryChip(BuildContext context, String category) {
     final hasSubcategories = _hasSubcategories(context, category);
     final categoryId = _getCategoryId(context, category);
 
     // Get current navigation level
-    String currentLevel = navigationStack.isEmpty ? "root" : navigationStack.last;
+    String currentLevel =
+        navigationStack.isEmpty ? "root" : navigationStack.last;
 
     // Check if this category is selected in current level
-    bool isSelected = levelSelections
-        .any((selection) => selection.level == currentLevel &&
+    bool isSelected = levelSelections.any((selection) =>
+        selection.level == currentLevel &&
         selection.selectedCategory == category);
 
     return Container(
       margin: const EdgeInsets.only(right: 8.0),
       child: Material(
-        color: isSelected ? Color(0xFFFFD814): AppColors.brightBlue,
+        color: isSelected ? Color(0xFFFFD814) : AppColors.brightBlue,
         borderRadius: BorderRadius.circular(4),
         child: InkWell(
           borderRadius: BorderRadius.circular(4),
           onTap: () => _handleCategorySelect(context, category),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -302,7 +303,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                     color: AppColors.whiteColor,
                     fontFamily: MyFonts.font_regular,
                     fontSize: 14,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight:
+                        isSelected ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
                 if (hasSubcategories)
@@ -321,7 +323,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       ),
     );
   }
-
 
 // Helper Methods with null safety
   Map<String, dynamic>? _getSubcategories(
@@ -518,13 +519,12 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         final filterViewModel =
-        Provider.of<FilterListViewModel>(context, listen: false);
+            Provider.of<FilterListViewModel>(context, listen: false);
         filterViewModel.clearSelections(); // Clear selections
         return true; // Allow popping the screen
       },
@@ -549,10 +549,10 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
               onPressed: () {
                 // Clear selections in ViewModel as well
                 final filterViewModel =
-                Provider.of<FilterListViewModel>(context, listen: false);
+                    Provider.of<FilterListViewModel>(context, listen: false);
                 filterViewModel.clearSelections();
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => HomeGrid()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomeGrid()));
               },
             );
           }),
@@ -582,7 +582,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                 if (result != null) {
                   print('Applied filters: $result');
                   loadFilterProducts();
-
                 }
               },
             )
@@ -602,32 +601,35 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                   builder: (context) {
                     if (categoriesViewModel.subCategoryLoading) {
                       return Container(
-                        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
+                        margin: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.3),
                         child: Utils.loadingIndicator(context),
                       );
                     }
 
-                    if (categoriesViewModel.responseList?.products?.isEmpty ?? true) {
+                    if (categoriesViewModel.responseList?.products?.isEmpty ??
+                        true) {
                       return Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          height: MediaQuery.of(context).size.height * 0.6,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              LottieBuilder.asset("assets/lottie/empty_products.json"),
-                              Text(
-                                "No Products Available1",
-                                style: TextStyle(
-                                  color: AppColors.black,
-                                  fontFamily: MyFonts.font_regular,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center, // Centers content vertically
+                          crossAxisAlignment: CrossAxisAlignment.center, // Centers content horizontally
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
+                              child: LottieBuilder.asset("assets/lottie/empty_products.json"),
+                            ),
+                            const SizedBox(height: 16), // Adds some spacing between animation and text
+                            Text(
+                              "No Products Available",
+                              style: TextStyle(
+                                color: AppColors.black,
+                                fontFamily: MyFonts.font_regular,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       );
                     }
@@ -636,15 +638,18 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: GridView.builder(
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisSpacing: 12.0,
                             crossAxisSpacing: 12.0,
                             childAspectRatio: 0.65,
                           ),
-                          itemCount: categoriesViewModel.responseList!.products.length,
+                          itemCount:
+                              categoriesViewModel.responseList!.products.length,
                           itemBuilder: (context, index) {
-                            final product = categoriesViewModel.responseList!.products[index];
+                            final product = categoriesViewModel
+                                .responseList!.products[index];
                             bool alreadyAddedToCart = false;
 
                             return Card(
@@ -668,7 +673,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         flex: 4,
@@ -676,13 +682,16 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                           width: double.infinity,
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.circular(4),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
                                           ),
                                           child: Center(
                                             child: Image.network(
                                               '${AppUrl.baseurlauth}web/image?model=product.product&id=${product.id}&field=image_1920',
                                               fit: BoxFit.fitHeight,
-                                              errorBuilder: (context, error, stackTrace) => Icon(
+                                              errorBuilder: (context, error,
+                                                      stackTrace) =>
+                                                  Icon(
                                                 Icons.error,
                                                 size: 48,
                                                 color: Colors.grey.shade400,
@@ -692,63 +701,32 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                         ),
                                       ),
                                       const SizedBox(height: 8),
-                                      SizedBox(
-                                        height: 40,
-                                        child: Text(
-                                          product.name,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: MyFonts.font_regular,
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                      Text(
+                                        product.name,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontFamily: MyFonts.font_regular,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
                                       const SizedBox(height: 4),
-                                      Row(
-                                        children: [
-                                          ...List.generate(5, (index) {
-                                            // Determine if the star should be filled, half-filled, or empty
-                                            if (index < product.ratingAvg.floor()) {
-                                              return Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
-                                                size: 16,
-                                              );
-                                            } else if (index < product.ratingAvg && product.ratingAvg % 1 != 0) {
-                                              return Icon(
-                                                Icons.star_half,
-                                                color: Colors.amber,
-                                                size: 16,
-                                              );
-                                            } else {
-                                              return Icon(
-                                                Icons.star_border,
-                                                color: Colors.amber,
-                                                size: 16,
-                                              );
-                                            }
-                                          }),
-                                          SizedBox(width: 8),
-                                          // Display the review count next to the stars
-                                          Text(
-                                            '${product.ratingCount} reviews',
-                                            style: TextStyle(
-                                              fontFamily: MyFonts.font_regular,
-                                              color: Colors.grey.shade600,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                      buildRatingRow(product.ratingAvg,
+                                          product.ratingCount),
                                       const SizedBox(height: 8),
                                       Row(
-                                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.baseline,
                                         textBaseline: TextBaseline.alphabetic,
                                         children: [
                                           Text(
-                                            (product.lstPrice == null || product.lstPrice == 0 || product.lstPrice == 0.0 || product.lstPrice.toString().isEmpty)
+                                            (product.lstPrice == null ||
+                                                    product.lstPrice == 0 ||
+                                                    product.lstPrice == 0.0 ||
+                                                    product.lstPrice
+                                                        .toString()
+                                                        .isEmpty)
                                                 ? 'Price Locked'
                                                 : '₹${product.lstPrice}',
                                             style: const TextStyle(
@@ -774,9 +752,12 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                       const SizedBox(height: 8),
                                       // Replace the ValueListenableBuilder section with:
                                       Consumer<AddToCartViewModel>(
-                                        builder: (context, cartViewModel, child) {
-                                          bool isInCart = cartViewModel.isInCart(product.id!);
-                                          bool isLoading = cartViewModel.isLoading(product.id!);
+                                        builder:
+                                            (context, cartViewModel, child) {
+                                          bool isInCart = cartViewModel
+                                              .isInCart(product.id!);
+                                          bool isLoading = cartViewModel
+                                              .isLoading(product.id!);
 
                                           return SizedBox(
                                             width: double.infinity,
@@ -785,45 +766,54 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                               onPressed: isLoading
                                                   ? null
                                                   : () async {
-                                                if (!(isInCart || alreadyAddedToCart)) {
-                                                  cartViewModel.toggleCartStatus(
-                                                    partnerId,
-                                                    product.id!,
-                                                    1,
-                                                    context,
-                                                  );
-                                                }
-                                              },
+                                                      if (!(isInCart ||
+                                                          alreadyAddedToCart)) {
+                                                        cartViewModel
+                                                            .toggleCartStatus(
+                                                          partnerId,
+                                                          product.id!,
+                                                          1,
+                                                          context,
+                                                        );
+                                                      }
+                                                    },
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor: isInCart || alreadyAddedToCart
+                                                backgroundColor: isInCart ||
+                                                        alreadyAddedToCart
                                                     ? Colors.grey[300]
                                                     : const Color(0xFFFFD814),
                                                 foregroundColor: Colors.black87,
                                                 elevation: 0,
                                                 padding: EdgeInsets.zero,
                                                 shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(20),
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
                                                 ),
                                               ),
                                               child: isLoading
                                                   ? const SizedBox(
-                                                width: 20,
-                                                height: 20,
-                                                child: CircularProgressIndicator(
-                                                  strokeWidth: 2,
-                                                  color: AppColors.brightBlue,
-                                                ),
-                                              )
+                                                      width: 20,
+                                                      height: 20,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        color: AppColors
+                                                            .brightBlue,
+                                                      ),
+                                                    )
                                                   : Text(
-                                                alreadyAddedToCart || isInCart
-                                                    ? 'Added to Cart'
-                                                    : 'Add to Cart',
-                                                style: const TextStyle(
-                                                  fontSize: 13,
-                                                  fontFamily: MyFonts.font_regular,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
+                                                      alreadyAddedToCart ||
+                                                              isInCart
+                                                          ? 'Added to Cart'
+                                                          : 'Add to Cart',
+                                                      style: const TextStyle(
+                                                        fontSize: 13,
+                                                        fontFamily: MyFonts
+                                                            .font_regular,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
                                             ),
                                           );
                                         },
@@ -898,6 +888,59 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       ),
     );
   }
+
+  Widget buildRatingRow(double ratingAvg, int ratingCount) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final reviewText = ratingCount <= 1 ? 'review)' : 'reviews)';
+
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Star rating (not flexible to preserve stars)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(5, (index) {
+                if (index < ratingAvg.floor()) {
+                  return const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                    size: 14,
+                  );
+                } else if (index < ratingAvg && ratingAvg % 1 != 0) {
+                  return const Icon(
+                    Icons.star_half,
+                    color: Colors.amber,
+                    size: 14,
+                  );
+                } else {
+                  return const Icon(
+                    Icons.star_border,
+                    color: Colors.amber,
+                    size: 14,
+                  );
+                }
+              }),
+            ),
+            const SizedBox(width: 4),
+            // Review count in a flexible container
+            Flexible(
+              child: Text(
+                '($ratingCount $reviewText',
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: TextStyle(
+                  fontFamily: MyFonts.font_regular,
+                  color: Colors.grey.shade600,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class CategorySelection {
@@ -906,6 +949,7 @@ class CategorySelection {
 
   CategorySelection(this.category, this.id);
 }
+
 class NavigationLevelSelection {
   final String level;
   final String selectedCategory;

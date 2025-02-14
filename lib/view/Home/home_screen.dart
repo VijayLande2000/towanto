@@ -405,6 +405,7 @@ class _CategoryCardState extends State<CategoryCard> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: AppColors.backgroundcolormenu,
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -416,6 +417,7 @@ class _CategoryCardState extends State<CategoryCard> {
           );
         },
         child: Container(
+
           decoration: BoxDecoration(
             color: widget.category.backgroundColor,
             borderRadius: BorderRadius.circular(12),
@@ -817,151 +819,174 @@ Widget buildDynamicCategoryLists(
     }).toList(),
   );
 }
-
 Widget _buildHorizontalListView(
     HomePageDataViewModel viewModel, int categoryId) {
-  // Get the categories for the specified ID
   final categories = viewModel.getCategoriesById(categoryId);
 
-  // Calculate the total number of products
   int totalProductCount = 0;
   categories.forEach((category) {
     totalProductCount += category.products.length;
   });
 
-  return ListView.builder(
-    scrollDirection: Axis.horizontal,
-    itemCount: totalProductCount,
-    itemBuilder: (context, index) {
-      // Calculate which category and which product to access
-      int productIndex = 0;
-      Category? currentCategory;
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      // Calculate card height accounting for padding
+      final cardHeight = constraints.maxHeight - 16;
 
-      for (var category in categories) {
-        if (index < productIndex + category.products.length) {
-          // currentCategory = category;
-          final product = category.products[index - productIndex];
-          final screenHeight = MediaQuery.of(context).size.height;
+      return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: totalProductCount,
+        padding: const EdgeInsets.symmetric(horizontal: 8,),
+        itemBuilder: (context, index) {
+          int productIndex = 0;
 
-          return Card(
-            color: AppColors.white,
-            elevation: 2,
-            margin: const EdgeInsets.symmetric(horizontal: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-              side: BorderSide(color: Colors.grey.shade200),
-            ),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProductDetailsPage(
-                      categoryId: product.id.toString(),
+          for (var category in categories) {
+            if (index < productIndex + category.products.length) {
+              final product = category.products[index - productIndex];
+              final screenWidth = MediaQuery.of(context).size.width;
+
+              return Container(
+                height: MediaQuery.of(context).size.height*1,
+                width: screenWidth * 0.45,
+                margin: const EdgeInsets.symmetric(horizontal: 6),
+                child: Card(
+                  color: AppColors.white,
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(color: Colors.grey.shade200),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetailsPage(
+                            categoryId: product.id.toString(),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(6), // Reduced padding
+                      child: LayoutBuilder(
+                        builder: (context, cardConstraints) {
+                          final contentHeight = cardConstraints.maxHeight;
+                          final imageHeight = contentHeight * 0.55; // Slightly reduced
+                          final nameHeight = contentHeight * 0.15;
+                          final ratingPriceHeight = contentHeight * 0.25;
+
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Image container
+                              SizedBox(
+                                height: imageHeight,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Center(
+                                    child: Image.network(
+                                      '${AppUrl.baseurlauth}web/image?model=product.product&id=${product.id}&field=image_1920',
+                                      fit: BoxFit.contain,
+                                      errorBuilder: (context, error, stackTrace) => Icon(
+                                        Icons.error,
+                                        size: 32,
+                                        color: Colors.grey.shade400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 4), // Reduced spacing
+                              // Product name
+                              Text(
+                                product.name ?? 'Unknown Product',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.appBarTitleTextColor,
+                                  fontFamily: MyFonts.font_regular,
+                                ),
+                              ),
+                              // Rating and price
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      ...List.generate(5, (index) {
+                                        if (index < product.rating.floor()) {
+                                          return const Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                            size: 14,
+                                          );
+                                        } else if (index < product.rating && product.rating % 1 != 0) {
+                                          return const Icon(
+                                            Icons.star_half,
+                                            color: Colors.amber,
+                                            size: 14,
+                                          );
+                                        } else {
+                                          return const Icon(
+                                            Icons.star_border,
+                                            color: Colors.amber,
+                                            size: 14,
+                                          );
+                                        }
+                                      }),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        '(${product.ratingCount})',
+                                        style: TextStyle(
+                                          fontFamily: MyFonts.font_regular,
+                                          color: Colors.grey.shade600,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    (product.price != null && product.price > 0)
+                                        ? '₹ ${product.price}'
+                                        : "Price Locked",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.appBarTitleTextColor,
+                                      fontFamily: MyFonts.font_regular,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ),
-                );
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                padding: const EdgeInsets.only(left: 12, right: 12, top: 12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: categoryId == 4
-                          ? screenHeight * 0.17
-                          : screenHeight * 0.15,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Center(
-                        child: Image.network(
-                          '${AppUrl.baseurlauth}web/image?model=product.product&id=${product.id}&field=image_1920',
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) => Icon(
-                            Icons.error,
-                            size: 48,
-                            color: Colors.grey.shade400,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      product.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.appBarTitleTextColor,
-                        fontFamily: MyFonts.font_regular,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        ...List.generate(5, (index) {
-                          // Determine if the star should be filled, half-filled, or empty
-                          if (index < product.rating.floor()) {
-                            return Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                              size: 16,
-                            );
-                          } else if (index < product.rating && product.rating % 1 != 0) {
-                            return Icon(
-                              Icons.star_half,
-                              color: Colors.amber,
-                              size: 16,
-                            );
-                          } else {
-                            return Icon(
-                              Icons.star_border,
-                              color: Colors.amber,
-                              size: 16,
-                            );
-                          }
-                        }),
-                        SizedBox(width: 8),
-                        // Display the review count next to the stars
-                        Text(
-                          '(${product.ratingCount} reviews)',
-                          style: TextStyle(
-                            fontFamily: MyFonts.font_regular,
-                            color: Colors.grey.shade600,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      (product.price != null && product.price > 0) ? '₹ ${product.price}' : "Price Locked",
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.appBarTitleTextColor,
-                        fontFamily: MyFonts.font_regular,
-                      ),
-                    ),
-
-                  ],
                 ),
-              ),
-            ),
-          );
-        }
-        productIndex += category.products.length;
-      }
-      return const SizedBox.shrink();
+              );
+            }
+            productIndex += category.products.length;
+          }
+          return const SizedBox.shrink();
+        },
+      );
     },
   );
 }
+
+
+
+
 
 // Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
 //   // Calculate the total number of products across all categories

@@ -141,7 +141,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
         ),
         SizedBox(height: 8),
         Container(
-          height: 180,
+          height:MediaQuery.of(context).size.height*0.22,
           child: orderLines?.isNotEmpty == true
               ? ListView.builder(
             scrollDirection: Axis.horizontal,

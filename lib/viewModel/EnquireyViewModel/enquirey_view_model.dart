@@ -130,11 +130,15 @@ class EnquiryViewModel extends ChangeNotifier {
       errors[key] = "$key cannot be empty";
     } else if (key == 'mobile' && value.length < 10) {
       errors[key] = "Enter a valid mobile number";
-    } else if (key == 'email' && !RegExp(r"^[^@]+@[^@]+\.[^@]+").hasMatch(value)) {
+    }
+    else if (key == 'email' && !RegExp(
+        r"^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+    ).hasMatch(value)) {
       errors[key] = "Enter a valid email address";
     } else {
       errors[key] = null;
     }
+
     notifyListeners();
   }
 

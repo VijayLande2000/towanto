@@ -138,210 +138,211 @@ class _WishlistScreenState extends State<WishlistScreen> {
           return Column(
             children: [
               Expanded(
-                  child: ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                itemCount: whishListItems.length,
-                itemBuilder: (context, index) {
-                  final item = whishListItems[index];
-                  return Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 10,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Dismissible(
-                        key: Key(item.productId.toString()),
-                        direction: DismissDirection.endToStart,
-                        background: Container(
-                          color: Colors.red.shade100,
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 20),
-                          child: Icon(
-                            Icons.delete_outline,
-                            color: Colors.red.shade700,
-                            size: 28,
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  itemCount: whishListItems.length,
+                  itemBuilder: (context, index) {
+                    final item = whishListItems[index];
+                    return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: const Offset(0, 2),
                           ),
-
-                        ),
-                        onDismissed: (_) => () {},
-                        child: Row(
-                          children: [
-                            // Product Image
-                            InkWell(
-                              onTap:(){
-                        // print("the image path: ${item.productId[0]}");
-                      },
-                              child: Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                    color: Colors.grey.shade100,
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(12),
-                                      bottomLeft: Radius.circular(12),
-                                    )),
-                                child: Image.network(
-                                  "${AppUrl.baseurlauth}web/image?model=product.product&id=${item.productId[0]}&field=image_1920",
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Dismissible(
+                          key: Key(item.productId.toString()),
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            color: Colors.red.shade100,
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.only(right: 20),
+                            child: Icon(
+                              Icons.delete_outline,
+                              color: Colors.red.shade700,
+                              size: 28,
                             ),
-                            // Product Details
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item.productId.toString(),
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: MyFonts.font_regular),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      '\$${item.price.toStringAsFixed(2)}',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.lightBlue,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: MyFonts.font_regular),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      '${DateFormat('yyyy-MM-dd HH:mm:ss').format( DateTime.parse(item.createDate.toString()))}',
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: AppColors.grey,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: MyFonts.font_regular),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            //
-                            //
-                            // Action Buttons
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                _loadingMap[item.id.toString()] == true
-                                    ? Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: SizedBox(
-                                          height: 24,
-                                          width: 24,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          color: Colors.red,
+                          ),
+                          onDismissed: (_) => () {},
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.center, // Changed to center
+                                children: [
+                                  // Product Image with fixed size and centered content
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width*0.22,
+                                      height: MediaQuery.of(context).size.height*0.1,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.whiteColor,
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(12),
+                                          bottomLeft: Radius.circular(12),
                                         ),
                                       ),
-                                    )
-                                    : IconButton(
-                                        onPressed: () {
-                                          _removeItem(item.id.toString());
-                                        },
-                                        icon: Icon(
-                                          Icons.delete_outline,
-                                          color: AppColors.red,
+                                      child: Center( // Added Center widget
+                                        child: Image.network(
+                                          "${AppUrl.baseurlauth}web/image?model=product.product&id=${item.productId[0]}&field=image_1920",
+                                          fit: BoxFit.contain, // Changed to contain for better centering
+                                          width: 80, // Slightly smaller than container
+                                          height: 80, // Slightly smaller than container
                                         ),
                                       ),
-                                Consumer<AddToCartViewModel>(
-                                    builder: (context, viewModel, child) {
-                                  bool isInCart = viewModel.isInCart(item.id);
-
-                                  // if (viewModel.isLoading(item.id)) {
-                                  //   return Center(
-                                  //       child: SizedBox(
-                                  //           height: 16,
-                                  //           width: 16,
-                                  //           child: CircularProgressIndicator()));
-                                  // }
-                                  return ElevatedButton(
-                                    onPressed: () {
-                                      if(isInCart||item.isInCart){
-                                         Utils.flushBarErrorMessages("Already added in cart", context);
-                                      }
-                                      else{
-                                        viewModel.toggleCartStatus(partnerId!, item.productId[0], 1, context);
-                                        _removeItem(item.id.toString());
-                                      }
-
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor:AppColors.brightBlue,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 8,
-                                      ),
                                     ),
-                                    child: viewModel.isLoading(item.id)
-                                        ? Row(
-                                            children: [
-                                              Text(
-                                                "Adding... ",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                  height: 8,
-                                                  width: 8,
-                                                child: CircularProgressIndicator(
-                                                  strokeWidth: 2,
-                                                  color: Colors.red,
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : Text(
-                                            isInCart||item.isInCart
-                                                ? 'Added to Cart'
-                                                : 'Add to Cart',
-                                      style: const TextStyle(
-                                        color : Colors.white,
-                                        fontSize: 14,
-                                        fontFamily: MyFonts.font_regular,
-                                        fontWeight: FontWeight.w500,
-
-                                      ),
+                                  ),
+                                  // Rest of the code remains the same...
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            item.productId.toString(),
+                                            style: TextStyle(
+                                              fontSize: MediaQuery.of(context).textScaleFactor * 14,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: MyFonts.font_regular,
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                  );
-                                }),
-                              ],
-                            ),
-
-                            const SizedBox(width: 12),
-                          ],
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            '\$${item.price.toStringAsFixed(2)}',
+                                            style: TextStyle(
+                                              fontSize: MediaQuery.of(context).textScaleFactor * 12,
+                                              color: AppColors.lightBlue,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: MyFonts.font_regular,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            DateFormat('yyyy-MM-dd').format(DateTime.parse(item.createDate.toString())),
+                                            style: TextStyle(
+                                              fontSize: MediaQuery.of(context).textScaleFactor * 11,
+                                              color: AppColors.grey,
+                                              fontFamily: MyFonts.font_regular,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 100,
+                                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        if (_loadingMap[item.id.toString()] == true)
+                                          const SizedBox(
+                                            height: 24,
+                                            width: 24,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              color: Colors.red,
+                                            ),
+                                          )
+                                        else
+                                          IconButton(
+                                            onPressed: () => _removeItem(item.id.toString()),
+                                            icon: Icon(
+                                              Icons.delete_outline,
+                                              color: AppColors.red,
+                                              size: 24,
+                                            ),
+                                            padding: EdgeInsets.zero,
+                                            constraints: const BoxConstraints(),
+                                          ),
+                                        const SizedBox(height: 4),
+                                        Consumer<AddToCartViewModel>(
+                                          builder: (context, viewModel, child) {
+                                            bool isInCart = viewModel.isInCart(item.id);
+                                            return SizedBox(
+                                              width: 90,
+                                              height: 32,
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  if (isInCart || item.isInCart) {
+                                                    Utils.flushBarErrorMessages("Already added in cart", context);
+                                                  } else {
+                                                    viewModel.toggleCartStatus(partnerId!, item.productId[0], 1, context);
+                                                    _removeItem(item.id.toString());
+                                                  }
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: AppColors.brightBlue,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(8),
+                                                  ),
+                                                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                                                ),
+                                                child: viewModel.isLoading(item.id)
+                                                    ? Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      "Adding",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: MediaQuery.of(context).textScaleFactor * 11,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 4),
+                                                    const SizedBox(
+                                                      height: 8,
+                                                      width: 8,
+                                                      child: CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                                    : FittedBox(
+                                                  fit: BoxFit.scaleDown,
+                                                  child: Text(
+                                                    isInCart || item.isInCart ? 'In Cart' : 'Add to Cart',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: MediaQuery.of(context).textScaleFactor * 11,
+                                                      fontFamily: MyFonts.font_regular,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              )),
-              // ),
+                    );
+                  },
+                ),
+              ),
             ],
           );
         },

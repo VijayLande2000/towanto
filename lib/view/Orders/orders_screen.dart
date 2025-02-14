@@ -187,43 +187,44 @@ class _OrdersListScreenState extends State<OrdersListScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Order ID: ${order.id}',
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color:  AppColors.tabtxt_color,
-                                                fontWeight: FontWeight.w600,
-                                                fontFamily: MyFonts.font_regular
-                                            ),
-                                          ),
-                                        ],
+                                      Text(
+                                        'Order ID: ${order.id}',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: AppColors.tabtxt_color,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: MyFonts.font_regular,
+                                        ),
                                       ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                          vertical: 6,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color:AppColors.lightBlue,
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
-                                        child: Text(
-                                          order.state.toString(),
-                                          style: TextStyle(
+                                      Flexible( // Wrap the entire Container
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 6,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.lightBlue,
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                          child: Text(
+                                            order.state.toString(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            softWrap: false,
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color:  AppColors.whiteColor,
+                                              color: AppColors.whiteColor,
                                               fontWeight: FontWeight.normal,
-                                              fontFamily: MyFonts.font_regular
+                                              fontFamily: MyFonts.font_regular,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
+
                                   const SizedBox(height: 4),
                                   Text(
                                     '₹${NumberFormat('#,##,##0.00').format(order.amountTotal)}',

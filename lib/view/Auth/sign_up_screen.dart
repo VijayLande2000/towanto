@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/viewModel/AuthViewModels/sign_up_viewModel.dart';
 
@@ -251,6 +252,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hint: 'Phone Number',
                       prefixIcon: Icons.phone_outlined,
                       keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly, // Only allow numbers
+                        LengthLimitingTextInputFormatter(15),  // Restrict to max 15 digits
+                      ],
                       validator: (value) => (_phoneTouched || _submitAttempted) &&
                           (value == null || value.length < 10)
                           ? 'Please enter valid phone number'
@@ -272,7 +277,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 20),
                     _buildInputField(
                       controller: _cityController,
-                      hint: 'city',
+                      hint: 'City',
                       prefixIcon: Icons.location_city,
                       maxLines: 1,
                       validator: (value) => (_cityTouched || _submitAttempted) &&
@@ -439,7 +444,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       controlAffinity: ListTileControlAffinity.leading,
                       contentPadding: EdgeInsets.zero,
-                      activeColor: AppColors.primaryGreen,
+                      activeColor: AppColors.brightBlue,
                     ),
                     const SizedBox(height: 30),
 
@@ -460,6 +465,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+
   Widget _buildInputField({
     required TextEditingController controller,
     required String hint,
@@ -469,14 +475,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
     String? Function(String?)? validator,
     Function(String)? onChanged,
     int maxLines = 1,
+    List<TextInputFormatter>? inputFormatters,
   }) {
+    // Create specific input formatters for phone numbers
+    final List<TextInputFormatter> phoneFormatters = [
+      FilteringTextInputFormatter.digitsOnly,
+      LengthLimitingTextInputFormatter(15),  // Maximum 15 digits
+    ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: maxLines == 1
-              ? 56
-              : 88, // Fixed height for single/multi line fields
+          // Remove fixed height to allow content to expand naturally
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -494,13 +505,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
               controller: controller,
               obscureText: isPassword
                   ? (hint == 'Password'
-                      ? !_passwordVisible
-                      : !_confirmPasswordVisible)
+                  ? !_passwordVisible
+                  : !_confirmPasswordVisible)
                   : false,
               keyboardType: keyboardType,
               maxLines: maxLines,
-              validator: (_) => null,
-              onChanged: onChanged,
+              // Apply input formatters based on field type
+              inputFormatters: hint.toLowerCase().contains('phone')
+                  ? phoneFormatters
+                  : inputFormatters,
+              validator: (value) {
+                if (validator != null) {
+                  return validator(value);
+                }
+                // Add phone number specific validation
+                if (hint.toLowerCase().contains('phone')) {
+                  if (value == null || value.isEmpty) {
+                    return 'Phone number is required';
+                  }
+                  if (value.length < 10) {
+                    return 'Phone number must be at least 10 digits';
+                  }
+                  if (value.length > 15) {
+                    return 'Phone number cannot exceed 15 digits';
+                  }
+                }
+                return null;
+              },
+              onChanged: (value) {
+                if (onChanged != null) {
+                  onChanged(value);
+                }
+                // Update touched state
+                if (controller == _phoneController) {
+                  setState(() {
+                    _phoneTouched = true;
+                  });
+                }
+                // Add other touched states as needed
+              },
               style: const TextStyle(
                 fontSize: 16,
                 color: Colors.black87,
@@ -508,9 +551,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               decoration: InputDecoration(
                 hintText: hint,
                 hintStyle: TextStyle(
-                    color: AppColors.grey,
-                    fontSize: 16,
-                    fontFamily: MyFonts.font_regular),
+                  color: AppColors.grey,
+                  fontSize: 16,
+                  fontFamily: MyFonts.font_regular,
+                ),
                 prefixIcon: Icon(
                   prefixIcon,
                   color: AppColors.cardcolor,
@@ -518,41 +562,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 suffixIcon: isPassword
                     ? IconButton(
-                        icon: Icon(
-                          hint == 'Password'
-                              ? (_passwordVisible
-                                  ? Icons.visibility_off
-                                  : Icons.visibility)
-                              : (_confirmPasswordVisible
-                                  ? Icons.visibility_off
-                                  : Icons.visibility),
-                          color: AppColors.cardcolor,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            if (hint == 'Password') {
-                              _passwordVisible = !_passwordVisible;
-                            } else {
-                              _confirmPasswordVisible =
-                                  !_confirmPasswordVisible;
-                            }
-                          });
-                        },
-                      )
+                  icon: Icon(
+                    hint == 'Password'
+                        ? (_passwordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility)
+                        : (_confirmPasswordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility),
+                    color: AppColors.cardcolor,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      if (hint == 'Password') {
+                        _passwordVisible = !_passwordVisible;
+                      } else {
+                        _confirmPasswordVisible = !_confirmPasswordVisible;
+                      }
+                    });
+                  },
+                )
                     : null,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide.none,
                 ),
-                errorStyle:
-                    const TextStyle(height: 0, color: Colors.transparent),
+                errorStyle: const TextStyle(
+                  height: 1.5,  // Increased height for better error visibility
+                  color: Colors.red,
+                  fontSize: 12,
+                ),
                 filled: true,
                 fillColor: Colors.white,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 16,
                 ),
-                isDense: true, // Makes the field more compact
+                isDense: true,
               ),
             ),
           ),
@@ -564,40 +610,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
               builder: (context) {
                 final String? error = validator(controller.text);
                 return error != null &&
-                        (_submitAttempted ||
-                            controller == _firstNameController &&
-                                _firstNameTouched ||
-                            controller == _lastNameController &&
-                                _lastNameTouched ||
-                            controller == _proprietorNameController &&
-                                _proprietorNameTouched ||
-                            controller == _emailController && _emailTouched ||
-                            controller == _passwordController &&
-                                _passwordTouched ||
-                            controller == _confirmPasswordController &&
-                                _confirmPasswordTouched ||
-                            controller == _phoneController && _phoneTouched ||
-                            controller == _addressController &&
-                                _addressTouched ||
-                            controller == _gstNumberController &&
-                                _gstNumberTouched)
+                    (_submitAttempted ||
+                        (controller == _phoneController && _phoneTouched) ||
+                        // Other touched conditions...)
+                        false)
                     ? Text(
-                        error,
-                        style: const TextStyle(
-                          color: Colors.red,
-                          fontSize: 12,
-                          fontFamily: MyFonts.font_regular,
-                        ),
-                      )
+                  error,
+                  style: const TextStyle(
+                    color: Colors.red,
+                    fontSize: 12,
+                    fontFamily: MyFonts.font_regular,
+                  ),
+                )
                     : const SizedBox.shrink();
               },
             ),
           ),
-        SizedBox(height: validator != null ? 12 : 20), // Adjusted spacing
+        SizedBox(height: validator != null ? 12 : 20),
       ],
     );
   }
-
   Future<void> _pickGSTFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -613,16 +645,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> _handleSubmit() async {
     setState(() => _submitAttempted = true);
+    if (selectedCountry == null ) {
+      Utils.flushBarErrorMessages('Please select country', context);
+      return;
+    }
+    if (selectedState == null ) {
+      Utils.flushBarErrorMessages('Please select state', context);
+      return;
+    }
 
     if (!termsAccepted) {
       Utils.flushBarErrorMessages('Please accept the terms and conditions', context);
       return;
     }
 
-    if (selectedCountry == null || selectedState == null) {
-      Utils.flushBarErrorMessages('Please select country,and state', context);
-      return;
-    }
 
     if (gstFileName == null) {
         Utils.flushBarErrorMessages('Please upload GST document', context);

@@ -289,6 +289,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
             color: AppColors.black,
             fontSize: 14,
             fontFamily: MyFonts.font_regular,
+            fontWeight: FontWeight.normal
           ),
         ),
         value: selectedFilters[section]!.contains(item.value),

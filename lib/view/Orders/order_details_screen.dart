@@ -256,7 +256,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         ),
         SizedBox(height: 8),
         Container(
-          height: 180,
+          height:MediaQuery.of(context).size.height*0.22,
           child: orderDetailsViewModel.orderDetails.orderLine?.isNotEmpty ==
                   true
               ? ListView.builder(

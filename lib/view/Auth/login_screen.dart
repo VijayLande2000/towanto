@@ -1,6 +1,7 @@
 
 // screens/login_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/utils/resources/fonts.dart';
 import 'package:towanto/utils/routes/route_names.dart';
@@ -177,6 +178,7 @@ class LoginForm extends StatelessWidget {
   }
 }
 
+
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
@@ -187,7 +189,9 @@ class CustomTextField extends StatelessWidget {
   final bool? isPasswordVisible;
   final VoidCallback? onVisibilityToggle;
   final IconData prefixIcon;
-
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
+  final int maxLines;
 
   const CustomTextField({
     Key? key,
@@ -200,10 +204,22 @@ class CustomTextField extends StatelessWidget {
     this.isPasswordVisible,
     this.onVisibilityToggle,
     required this.prefixIcon,
+    this.keyboardType,
+    this.validator,
+    this.maxLines = 1,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bool isPhoneField = _isPhoneNumberField(label, hint);
+    final actualKeyboardType = keyboardType ?? _determineKeyboardType(label, hint);
+
+    // Phone number specific input formatters
+    final List<TextInputFormatter> phoneFormatters = [
+      FilteringTextInputFormatter.digitsOnly,
+      LengthLimitingTextInputFormatter(15),  // Maximum 15 digits
+    ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -230,18 +246,44 @@ class CustomTextField extends StatelessWidget {
               ),
             ],
           ),
-          // decoration: BoxDecoration(
-          //
-          //   border: Border.all(
-          //     color: errorText != null ? AppColors.errorRed : AppColors.grey.withOpacity(0.3),
-          //     width: 1,
-          //   ),
-          //   borderRadius: BorderRadius.circular(12),
-          // ),
-          child: TextField(
+          child: TextFormField(
             controller: controller,
             obscureText: isPassword && !(isPasswordVisible ?? false),
-            onChanged: onChanged,
+            keyboardType: actualKeyboardType,
+            maxLines: maxLines,
+            inputFormatters: isPhoneField ? phoneFormatters : null,
+            onChanged: (value) {
+              if (isPhoneField) {
+                // Additional phone number validation
+                if (value.length <= 15) {
+                  onChanged(value);
+                }
+              } else {
+                onChanged(value);
+              }
+            },
+            validator: (value) {
+              if (validator != null) {
+                return validator!(value);
+              }
+              if (isPhoneField) {
+                if (value == null || value.isEmpty) {
+                  return 'Phone number is required';
+                }
+                if (value.length < 10) {
+                  return 'Phone number must be at least 10 digits';
+                }
+                if (value.length > 15) {
+                  return 'Phone number cannot exceed 15 digits';
+                }
+              }
+              return null;
+            },
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.black87,
+              fontFamily: MyFonts.font_regular,
+            ),
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: TextStyle(
@@ -271,6 +313,12 @@ class CustomTextField extends StatelessWidget {
                 onPressed: onVisibilityToggle,
               )
                   : null,
+              errorStyle: const TextStyle(
+                height: 1.5,
+                color: Colors.red,
+                fontSize: 12,
+                fontFamily: MyFonts.font_regular,
+              ),
             ),
           ),
         ),
@@ -278,8 +326,8 @@ class CustomTextField extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Text(
-              errorText!,
-              style: TextStyle(
+              _capitalizeEachWord(errorText!),
+              style: const TextStyle(
                 color: AppColors.errorRed,
                 fontSize: 12,
                 fontFamily: MyFonts.font_regular,
@@ -288,5 +336,28 @@ class CustomTextField extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  bool _isPhoneNumberField(String label, String hint) {
+    List<String> phoneKeywords = ["phone", "mobile", "contact", "number", "Mobile*"];
+    return phoneKeywords.any((word) =>
+    label.toLowerCase().contains(word.toLowerCase()) ||
+        hint.toLowerCase().contains(word.toLowerCase())
+    );
+  }
+
+  TextInputType _determineKeyboardType(String label, String hint) {
+    if (_isPhoneNumberField(label, hint)) {
+      return TextInputType.phone;
+    }
+    return TextInputType.text;
+  }
+
+  String _capitalizeEachWord(String text) {
+    return text
+        .split(' ')
+        .map((word) =>
+    word.isNotEmpty ? '${word[0].toUpperCase()}${word.substring(1)}' : '')
+        .join(' ');
   }
 }

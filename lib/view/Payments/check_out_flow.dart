@@ -438,7 +438,7 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
   }
   Widget buildBottomSection() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16), // Reduced padding
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -452,62 +452,81 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
           ),
         ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Row(
             children: [
-              const Text(
-                'Amount to be paid',
-                style: TextStyle(
-                    fontSize: 16,
-                    color: AppColors.grey,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.font_regular),
-              ),
-              const SizedBox(height: 4),
-              Consumer<CartListViewModel>(
-                builder: (context, viewModel, child) {
-                  return Text(
-                    '₹ ${viewModel.totalAmount.toStringAsFixed(2)}', // Formats the amount to two decimal places
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: AppColors.black,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: MyFonts.font_regular,
+              // Price section with flexible width
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Amount to be paid',
+                      style: TextStyle(
+                        fontSize: 14, // Slightly reduced
+                        color: AppColors.grey,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: MyFonts.font_regular,
+                      ),
                     ),
-                  );
-                },
+                    const SizedBox(height: 4),
+                    Consumer<CartListViewModel>(
+                      builder: (context, viewModel, child) {
+                        return Text(
+                          '₹ ${viewModel.totalAmount.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 20, // Slightly reduced
+                            color: AppColors.black,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: MyFonts.font_regular,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12), // Space between price and button
+              // Button with flexible width
+              Expanded(
+                flex: 2,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _moveToNextStep();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    backgroundColor: AppColors.brightBlue,
+                    shadowColor: Colors.green.withOpacity(0.3),
+                    elevation: 5,
+                  ),
+                  child: const FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      'Proceed',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppColors.whiteColor,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: MyFonts.font_regular,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ],
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _moveToNextStep();
-            },
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 32,
-                vertical: 14,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              backgroundColor: AppColors.brightBlue,
-              shadowColor: Colors.green.withOpacity(0.3),
-              elevation: 5,
-            ),
-            child: const Text(
-              'Proceed',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: AppColors.whiteColor,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: MyFonts.font_regular),
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

@@ -553,21 +553,28 @@ class AddressCard extends StatelessWidget {
                       Text(
                         'Contact: ',
                         style: TextStyle(
-                            fontSize: 15,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: MyFonts.font_regular),
+                          fontSize: 15,
+                          color: AppColors.black,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: MyFonts.font_regular,
+                        ),
                       ),
-                      Text(
-                        ' $contact',
-                        style: TextStyle(
+                      Expanded(
+                        child: Text(
+                          contact,
+                          style: TextStyle(
                             fontSize: 14,
                             color: AppColors.grey,
                             fontWeight: FontWeight.w500,
-                            fontFamily: MyFonts.font_regular),
+                            fontFamily: MyFonts.font_regular,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1, // Ensures it stays within one line
+                        ),
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 4),
                   Row(
                     children: [

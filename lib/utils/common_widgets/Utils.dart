@@ -19,8 +19,6 @@ class Utils {
           colors: [
             AppColors.brightBlue,
             AppColors.lightBlue,
-            // Color(0xFF00875A),
-            // Color(0xFF36B37E),
           ],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
@@ -45,14 +43,20 @@ class Utils {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min, // Prevents unnecessary stretching
           children: [
-            Text(
-              text,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontFamily: MyFonts.font_regular,
-                fontWeight: FontWeight.w600,
+            Flexible(
+              child: Text(
+                text,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontFamily: MyFonts.font_regular,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             const SizedBox(width: 8),
@@ -75,7 +79,15 @@ class Utils {
         forwardAnimationCurve: Curves.decelerate,
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         padding: const EdgeInsets.all(15),
-        message: message,
+        messageText: Text(
+          message ?? '',
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600, // Bold text
+            color: AppColors.whiteColor, // White color
+            fontFamily: MyFonts.font_regular, // Custom font if needed
+          ),
+        ),
         borderRadius: BorderRadius.circular(5),
         flushbarPosition: FlushbarPosition.TOP,
         duration: const Duration(seconds: 3),
@@ -99,7 +111,15 @@ class Utils {
         forwardAnimationCurve: Curves.decelerate,
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         padding: const EdgeInsets.all(15),
-        message: message,
+        messageText: Text(
+          message ?? '',
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600, // Bold text
+            color: AppColors.whiteColor, // White color
+            fontFamily: MyFonts.font_regular, // Custom font if needed
+          ),
+        ),
         borderRadius: BorderRadius.circular(5),
         flushbarPosition: FlushbarPosition.BOTTOM,
         duration: const Duration(seconds: 3),
@@ -147,10 +167,12 @@ class Utils {
     required Color backgroundcolor,
     String hintText = '',
   }) {
-    bool isEmpty = items.isEmpty;
-
-    // Ensure value is null if it doesn't exist in the items map
     String? selectedValue = items.containsKey(value) ? value : null;
+
+    // Debug prints
+    print('Current items in dropdown: $items');
+    print('Selected value: $selectedValue');
+    print('Is items empty: ${items.isEmpty}');
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +188,7 @@ class Utils {
         ),
         const SizedBox(height: 4),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 16),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(30),
@@ -183,60 +205,80 @@ class Utils {
               width: 1,
             ),
           ),
-          child: DropdownButtonFormField<String>(
-            value: isEmpty ? null : selectedValue, // Ensure valid selection
-            items: isEmpty
-                ? null // No items, show only the hint
-                : items.entries.map((MapEntry<String, String> entry) {
-              return DropdownMenuItem<String>(
-                value: entry.key,
-                child: Text(
-                  entry.value,
-                  style: TextStyle(
-                    color: AppColors.black,
-                    fontSize: 14,
-                    fontFamily: MyFonts.font_regular,
-                    fontWeight: FontWeight.w400,
-                    height: 13.93 / 14.0,
+          child: items.isEmpty
+              ? TextField(
+                  enabled: false,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    hintText: "No States Available",
+                    hintStyle: TextStyle(
+                      color: AppColors.grey,
+                      fontSize: 14,
+                      fontFamily: MyFonts.font_regular,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(top: 3),
+                  child: DropdownButtonFormField<String>(
+                    value: selectedValue,
+                    items: items.entries.map((MapEntry<String, String> entry) {
+                      print(
+                          'Creating dropdown item: ${entry.key} - ${entry.value}');
+                      return DropdownMenuItem<String>(
+                        value: entry.key,
+                        child: Text(
+                          entry.value,
+                          style: TextStyle(
+                            color: AppColors.black,
+                            fontSize: 14,
+                            fontFamily: MyFonts.font_regular,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (newValue) {
+                      print('Dropdown value changed to: $newValue');
+                      onChanged(newValue);
+                    },
+                    style: TextStyle(
+                      color: AppColors.black,
+                      fontSize: 12,
+                      fontFamily: MyFonts.font_regular,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    icon: Align(
+                      alignment: Alignment.center,
+                      child: const Icon(
+                        Icons.arrow_drop_down,
+                        color: AppColors.grey,
+                      ),
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
+                      hintText: hintText,
+                      hintStyle: TextStyle(
+                        color: AppColors.grey,
+                        fontSize: 14,
+                        fontFamily: MyFonts.font_regular,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    isExpanded: true,
+                    alignment: Alignment.center,
+                    dropdownColor: Colors.white,
                   ),
                 ),
-              );
-            }).toList(),
-            onChanged: isEmpty ? null : onChanged, // Disable dropdown if empty
-            style: TextStyle(
-              color: AppColors.black,
-              fontSize: 14,
-              fontFamily: MyFonts.font_regular,
-              fontWeight: FontWeight.w400,
-              height: 13.93 / 14.0,
-            ),
-            icon: Padding(
-              padding: EdgeInsets.only(bottom: 24.0),
-              child: const Icon(
-                Icons.arrow_drop_down,
-                color: AppColors.grey,
-              ),
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: isEmpty ? "No options available" : hintText,
-              hintStyle: TextStyle(
-                color: AppColors.grey,
-                fontSize: 14,
-                fontFamily: MyFonts.font_regular,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            isExpanded: true,
-          ),
         ),
       ],
     );
   }
-
-
-
-
 
 // Add other utility methods here
 }
