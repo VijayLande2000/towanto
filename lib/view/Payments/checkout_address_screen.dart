@@ -38,11 +38,11 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
         // Iterate through the addresses
         for (var element in provider.addresses) {
           // Check for invoice address and add only the first one
-          if (element.type == "invoice" && billingAddress.isEmpty) {
+          if (element.type == "billing" && billingAddress.isEmpty) {
             billingAddress = {
               'title': 'Billing Address',
               'city': element.city ?? '',
-              'proprietor_name': element.proprietorName ?? '',
+              'firm_name': element.proprietorName ?? '',
               'street': element.street ?? '',
               'state': element.stateName ?? '',
               'country': element.countryName ?? '',
@@ -51,16 +51,16 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
               'addressId': element.id?.toString() ?? '',
               'name': element.firmName?.toString() ?? '',
               'email': element.email?.toString() ?? '',
-              'vat': element.vat?.toString() ?? '',
+              // 'vat': element.vat?.toString() ?? '',
               'type': element.type?.toString() ?? '',
             };
           }
           // Check for delivery address and add only the first one
-          else if (element.type == "delivery" && shippingAddress.isEmpty) {
+          else if (element.type == "shipping" && shippingAddress.isEmpty) {
             shippingAddress = {
               'title': 'Shipping Address',
               'city': element.city ?? '',
-              'proprietor_name': element.proprietorName ?? '',
+              'firm_name': element.proprietorName ?? '',
               'street': element.street ?? '',
               'state': element.stateName ?? '',
               'country': element.countryName ?? '',
@@ -69,7 +69,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
               'addressId': element.id?.toString() ?? '',
               'name': element.firmName?.toString() ?? '',
               'email': element.email?.toString() ?? '',
-              'vat': element.vat?.toString() ?? '',
+              // 'vat': element.vat?.toString() ?? '',
               'type': element.type?.toString() ?? '',
             };
           }
@@ -244,7 +244,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
         debugPrint('Type: ${result.type}');
         debugPrint('Country: ${result.country}');
         debugPrint('State: ${result.state}');
-        debugPrint('VAT: ${result.vat}');
+        // debugPrint('VAT: ${result.vat}');
 
         // Create formatted address map
         final formattedAddress = {
@@ -260,7 +260,7 @@ class CheckoutAddressScreenState extends State<CheckoutAddressScreen>with Automa
           'proprietor_name': result.proprietorName ?? '',
           'email': result.email ?? '',
           'type': result.type ?? '',
-          'vat': result.vat ?? '',
+          // 'vat': result.vat ?? '',
         };
 
         debugPrint('Formatted Address: $formattedAddress');

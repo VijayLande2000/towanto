@@ -48,7 +48,7 @@ class AddAddressViewModel extends ChangeNotifier {
       'controller': TextEditingController(),
     },
     {
-      'key': 'proprietorName',
+      'key': 'name',
       'label': 'Proprietor Name',
       'hint': 'Enter proprietor name',
       'icon': Icons.person,
@@ -82,13 +82,13 @@ class AddAddressViewModel extends ChangeNotifier {
       'icon': Icons.phone,
       'controller': TextEditingController(),
     },
-    {
-      'key': 'gstNumber',
-      'label': 'GST Number',
-      'hint': 'Enter your GST Number',
-      'icon': Icons.business_center,
-      'controller': TextEditingController(),
-    },
+    // {
+    //   'key': 'gstNumber',
+    //   'label': 'GST Number',
+    //   'hint': 'Enter your GST Number',
+    //   'icon': Icons.business_center,
+    //   'controller': TextEditingController(),
+    // },
     {
       'key': 'city',
       'label': 'city',
@@ -191,10 +191,10 @@ class AddAddressViewModel extends ChangeNotifier {
           as TextEditingController)
               .text
               .trim(),
-          "vat": (formFields.firstWhere((field) => field['key'] == 'gstNumber')['controller']
-          as TextEditingController)
-              .text
-              .trim(),
+          // "vat": (formFields.firstWhere((field) => field['key'] == 'gstNumber')['controller']
+          // as TextEditingController)
+          //     .text
+          //     .trim(),
           "zipcode": (formFields.firstWhere((field) => field['key'] == 'zipCode')['controller']
           as TextEditingController)
               .text

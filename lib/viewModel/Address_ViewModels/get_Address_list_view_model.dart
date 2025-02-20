@@ -27,10 +27,24 @@ class GetAddressViewModel extends ChangeNotifier {
       addresses.clear();
       developer.log('Starting getAddressViewModel process with data: ${jsonEncode(data)}', name: 'getAddressViewModel');
 
+// Print the full data object
+      print("Data: $data");
+
       final value = await _myRepo.getAddressListApiResponse(data, context, sessionId);
+
+// Print the full API response
+      print("API Response: $value");
+
       if (value.result?.addresses != null) {
         addresses.addAll(value.result!.addresses!); // Safely add addresses
+
+        // Print each address separately
+        for (var i = 0; i < value.result!.addresses!.length; i++) {
+          var address = value.result!.addresses![i];
+          print("Address $i -> Country: ${address.countryName}, State: ${address.stateName}");
+        }
       }
+
       developer.log('Account API response received: ${value.toString()}', name: 'getAddressViewModel');
       developer.log('Account API response received: ${addresses.length}', name: 'getAddressViewModel');
     } catch (e, stackTrace) {

@@ -47,7 +47,7 @@ class Address {
     required this.type,
     required this.countryName,
     required this.stateName,
-    required this.vat,
+    // required this.vat,
   });
 
   final int? id;
@@ -61,22 +61,22 @@ class Address {
   final String? type;
   final String? countryName;
   final String? stateName;
-  final String? vat;
+  // final String? vat;
 
   factory Address.fromJson(Map<String, dynamic> json){
     return Address(
       id: json["id"],
       firmName: json["firm_name"],
-      proprietorName: json["proprietor_name"],
+      proprietorName: json["name"],
       email: json["email"],
       phone: json["phone"],
       street: json["street"],
       city: json["city"],
       zipcode: json["zipcode"],
       type: json["type"].toString(),
-      countryName: json["country_name"],
-      stateName: json["state_name"],
-      vat: json["vat"],
+      countryName: json["country"],
+      stateName: json["state"],
+      // vat: json["vat"],
     );
   }
 

@@ -10,7 +10,7 @@ class PaymentAddressModel {
   final String type;
   final String country;
   final String state;
-  final String vat;
+  // final String vat;
 
   PaymentAddressModel({
     required this.addressId,
@@ -24,6 +24,6 @@ class PaymentAddressModel {
     required this.type,
     required this.country,
     required this.state,
-    required this.vat,
+    // required this.vat,
   });
 }

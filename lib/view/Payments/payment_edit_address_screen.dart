@@ -72,10 +72,10 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
         // Pre-fill form fields
         provider.formFields.forEach((field) {
           switch (field['key']) {
-            case 'firmName':
+            case 'name':
               field['controller'].text = widget.addressData!['name'] ?? '';
               break;
-            case 'proprietor_name':
+            case 'firmName':
               field['controller'].text =
                   widget.addressData!['proprietor_name'] ?? '';
               break;
@@ -91,9 +91,9 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
             case 'phone':
               field['controller'].text = widget.addressData!['phone'] ?? '';
               break;
-            case 'vat':
-              field['controller'].text = widget.addressData!['vat'] ?? '';
-              break;
+            // case 'vat':
+            //   field['controller'].text = widget.addressData!['vat'] ?? '';
+            //   break;
               case 'city':
               field['controller'].text = widget.addressData!['city'] ?? '';
               break;
@@ -130,8 +130,8 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
   String? selectedOption;
 
   final List<String> options = [
-    'invoice',
-    'delivery',
+    'billing',
+    'shipping',
   ];
 
   @override

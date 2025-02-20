@@ -9,7 +9,6 @@ import '../../utils/repositories/ProfileRepositories/logged_in_user_info_reposit
 class AccountInfoViewModel extends ChangeNotifier {
   final _myRepo = UpdateAccountRepository();
   final  fetchRepo=LoggedInUserInfoRepository(); // Repository for fetching account information
-
   late BuildContext context;
   bool _loading = false;
   bool get loading => _loading;
@@ -37,12 +36,12 @@ class AccountInfoViewModel extends ChangeNotifier {
       // Define a mapping between API response keys and form field keys
       apiToFormFieldMapping = {
         'name': 'name',
-        'username': 'email',
+        'email': 'email',
         'zipcode': 'zipCode',
         'phone': 'phone',
         'vat': 'gstNumber',
         'street': 'address',
-        'street2': 'address2',
+        // 'street2': 'address2',
         'city': 'city',
         'country': 'country',
         'state': 'state',

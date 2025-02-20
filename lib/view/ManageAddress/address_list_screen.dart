@@ -23,7 +23,6 @@ class _AddressManagerState extends State<AddressManager> {
 
   @override
   void initState() {
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final provider = Provider.of<GetAddressViewModel>(context,listen: false);
       provider.getAddressList(context);
@@ -69,6 +68,8 @@ class _AddressManagerState extends State<AddressManager> {
                       if (index == value.addresses.length) {
                         return _addNewAddressButton();
                       }
+                      print("Country: ${value.addresses[index].countryName}, State: ${value.addresses[index].stateName}");
+
                       // Otherwise return address card
                       return Padding(
                         key: ValueKey(value.addresses[index].id), // Assign a unique key for each item
@@ -163,7 +164,7 @@ class _AddressManagerState extends State<AddressManager> {
                                                   'state': value.addresses[index].stateName,
                                                   'city': value.addresses[index].city,
                                                   'phone': value.addresses[index].phone,
-                                                  'vat':  value.addresses[index].vat,
+                                                  // 'vat':  value.addresses[index].vat,
                                                   'zipcode': value.addresses[index].zipcode,
                                                   'addressId':value.addresses[index].id,
                                                   'type':value.addresses[index].type

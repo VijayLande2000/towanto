@@ -9,15 +9,15 @@ class LoggedInUserInfoModel {
     jsonrpc = json['jsonrpc'];
     id = json['id'];
     result =
-    json['result'] != null ? new Result.fromJson(json['result']) : null;
+    json['result'] != null ? Result.fromJson(json['result']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['jsonrpc'] = this.jsonrpc;
-    data['id'] = this.id;
-    if (this.result != null) {
-      data['result'] = this.result!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['jsonrpc'] = jsonrpc;
+    data['id'] = id;
+    if (result != null) {
+      data['result'] = result!.toJson();
     }
     return data;
   }
@@ -25,6 +25,7 @@ class LoggedInUserInfoModel {
 
 class Result {
   dynamic? name;
+  dynamic? email; // Added email field
   dynamic? username;
   dynamic? zipcode;
   dynamic? phone;
@@ -36,21 +37,24 @@ class Result {
   dynamic? state;
   dynamic? firmName;
 
-  Result(
-      {this.name,
-        this.username,
-        this.zipcode,
-        this.phone,
-        this.vat,
-        this.street,
-        this.street2,
-        this.city,
-        this.country,
-        this.state,
-        this.firmName});
+  Result({
+    this.name,
+    this.email, // Added email
+    this.username,
+    this.zipcode,
+    this.phone,
+    this.vat,
+    this.street,
+    this.street2,
+    this.city,
+    this.country,
+    this.state,
+    this.firmName,
+  });
 
   Result.fromJson(Map<dynamic, dynamic> json) {
     name = json['name'];
+    email = json['email']; // Added email
     username = json['username'];
     zipcode = json['zipcode'];
     phone = json['phone'];
@@ -64,18 +68,19 @@ class Result {
   }
 
   Map<dynamic, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['username'] = this.username;
-    data['zipcode'] = this.zipcode;
-    data['phone'] = this.phone;
-    data['vat'] = this.vat;
-    data['street'] = this.street;
-    data['street2'] = this.street2;
-    data['city'] = this.city;
-    data['country'] = this.country;
-    data['state'] = this.state;
-    data['firm_name'] = this.firmName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['email'] = email; // Added email
+    data['username'] = username;
+    data['zipcode'] = zipcode;
+    data['phone'] = phone;
+    data['vat'] = vat;
+    data['street'] = street;
+    data['street2'] = street2;
+    data['city'] = city;
+    data['country'] = country;
+    data['state'] = state;
+    data['firm_name'] = firmName;
     return data;
   }
 }

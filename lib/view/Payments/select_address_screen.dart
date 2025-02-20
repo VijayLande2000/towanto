@@ -32,7 +32,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
         setState(() {
           print("ewgyucd"+widget.type.toString());
             for (var address in provider.addresses) {
-              if (widget.type == "Billing Address" && address.type == "invoice") {
+              if (widget.type == "Billing Address" && address.type == "billing") {
                 _savedAddresses.add(PaymentAddressModel(
                   addressId: address.id!,
                   name: address.firmName,
@@ -43,12 +43,12 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                   city: address.city!,
                   zipcode: address.zipcode,
                   type: address.type!,
-                  country: address.countryName!,
-                  state: address.stateName!,
-                  vat: address.vat!,
+                  country: address.countryName?? "",
+                  state: address.stateName?? "",
+                  // vat: address.vat ?? "",
                 ));
               }
-              else if (widget.type == "Shipping Address" && address.type == "delivery")
+              else if (widget.type == "Shipping Address" && address.type == "shipping")
                 {
                   _savedAddresses.add(PaymentAddressModel(
                     addressId: address.id!,
@@ -60,9 +60,9 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                     city: address.city!,
                     zipcode: address.zipcode,
                     type: address.type!,
-                    country: address.countryName!,
-                    state: address.stateName!,
-                    vat: address.vat!,
+                    country: address.countryName?? "",
+                    state: address.stateName?? "",
+                    // vat: address.vat ?? "",
                   ));
                 }
           }

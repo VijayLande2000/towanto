@@ -58,7 +58,7 @@ class EditAddressViewModel extends ChangeNotifier {
       'controller': TextEditingController(),
     },
     {
-      'key': 'proprietor_name',
+      'key': 'name',
       'label': 'Proprietor Name',
       'hint': 'Enter proprietor name',
       'icon': Icons.person,
@@ -92,13 +92,13 @@ class EditAddressViewModel extends ChangeNotifier {
       'icon': Icons.phone,
       'controller': TextEditingController(),
     },
-    {
-      'key': 'vat',
-      'label': 'GST Number',
-      'hint': 'Enter your GST Number',
-      'icon': Icons.business_center,
-      'controller': TextEditingController(),
-    },
+    // {
+    //   'key': 'vat',
+    //   'label': 'GST Number',
+    //   'hint': 'Enter your GST Number',
+    //   'icon': Icons.business_center,
+    //   'controller': TextEditingController(),
+    // },
     {
       'key': 'city',
       'label': 'city',
@@ -179,13 +179,13 @@ class EditAddressViewModel extends ChangeNotifier {
         "params": {
           "address_id":
               int.tryParse(addressId), // Convert the addressId to an integer
-          "name": (formFields.firstWhere(
+          "firm_name": (formFields.firstWhere(
                       (field) => field['key'] == 'firmName')['controller']
                   as TextEditingController)
               .text
               .trim(),
-          "firm_name": (formFields.firstWhere((field) =>
-                      field['key'] == 'proprietor_name')['controller']
+          "name": (formFields.firstWhere((field) =>
+                      field['key'] == 'name')['controller']
                   as TextEditingController)
               .text
               .trim(),
@@ -219,11 +219,11 @@ class EditAddressViewModel extends ChangeNotifier {
               selectedCountry, // Ensure you are passing the correct value for country
           "state":
               selectedState, // Ensure you are passing the correct value for state
-          "vat": (formFields.firstWhere(
-                      (field) => field['key'] == 'vat')['controller']
-                  as TextEditingController)
-              .text
-              .trim(),
+          // "vat": (formFields.firstWhere(
+          //             (field) => field['key'] == 'vat')['controller']
+          //         as TextEditingController)
+          //     .text
+          //     .trim(),
         }
       };
 
@@ -232,14 +232,14 @@ class EditAddressViewModel extends ChangeNotifier {
           PaymentAddressModel(
             addressId: int.tryParse(addressId) ??
                 0, // Convert addressId to integer, default to 0 if null
-            name: (formFields.firstWhere((field) => field['key'] == 'firmName',
+            name: (formFields.firstWhere((field) => field['key'] == 'name',
                     orElse: () => {
                           'controller': TextEditingController()
                         })['controller'] as TextEditingController)
                 .text
                 .trim(),
             proprietorName: (formFields.firstWhere(
-                    (field) => field['key'] == 'proprietor_name',
+                    (field) => field['key'] == 'firmName',
                     orElse: () => {
                           'controller': TextEditingController()
                         })['controller'] as TextEditingController)
@@ -279,12 +279,12 @@ class EditAddressViewModel extends ChangeNotifier {
             type: type ?? "delivery", // Default to "delivery" if null
             country: selectedCountry ?? '',
             state: selectedState ?? '',
-            vat: (formFields.firstWhere((field) => field['key'] == 'vat',
-                    orElse: () => {
-                          'controller': TextEditingController()
-                        })['controller'] as TextEditingController)
-                .text
-                .trim(),
+            // vat: (formFields.firstWhere((field) => field['key'] == 'vat',
+            //         orElse: () => {
+            //               'controller': TextEditingController()
+            //             })['controller'] as TextEditingController)
+            //     .text
+            //     .trim(),
           );
 
 

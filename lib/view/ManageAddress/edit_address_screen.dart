@@ -86,12 +86,15 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
                   widget.addressData!['firm_name'].toString() ?? '';
               print({widget.addressData!['firm_name'].toString()});
               break;
-            case 'proprietor_name':
-              field['controller'].text = widget.addressData!['name'] != null
-                  ? (widget.addressData!['name'] is String
-                      ? widget.addressData!['name']
-                      : '')
-                  : '';
+            // case 'proprietor_name':
+            //   field['controller'].text = widget.addressData!['name'] != null
+            //       ? (widget.addressData!['name'] is String
+            //           ? widget.addressData!['name']
+            //           : '')
+            //       : '';
+            //   break;
+            case 'name':
+              field['controller'].text = widget.addressData!['name'] ?? '';
               break;
 
             case 'email':
@@ -112,9 +115,9 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
             case 'phone':
               field['controller'].text = widget.addressData!['phone'] ?? '';
               break;
-            case 'vat':
-              field['controller'].text = widget.addressData!['vat'] ?? '';
-              break;
+            // case 'vat':
+            //   field['controller'].text = widget.addressData!['vat'] ?? '';
+            //   break;
               case 'city':
               field['controller'].text = widget.addressData!['city'] ?? '';
               break;
@@ -156,7 +159,7 @@ class _EditAddressScreenContentState extends State<EditAddressScreenContent> {
 
   final List<String> options = [
     'billing',
-    'delivery',
+    'shipping',
   ];
 
   @override

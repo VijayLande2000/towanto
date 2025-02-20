@@ -677,7 +677,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           "password": _passwordController.text,
           "phone": _phoneController.text,
           "firm_name": _proprietorNameController.text,
-          "gst": _gstNumberController.text,
+          "vat": _gstNumberController.text,
           "address": _addressController.text,
           "city": _cityController.text,
           "state": selectedState,
