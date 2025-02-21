@@ -769,7 +769,7 @@ Widget buildDynamicCategoryLists(
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.3,
+            height: MediaQuery.of(context).size.height * 0.35,
             width: double.maxFinite,
             child: _buildHorizontalListView(viewModel, categoryId),
           ),

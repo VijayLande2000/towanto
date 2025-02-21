@@ -170,7 +170,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                   // Product Name
                   const SizedBox(height: 8),
                   SizedBox(
-                    height: 40,
+                    // height: 40,
                     child: Text(
                       product.name ?? '',
                       maxLines: 2,
@@ -231,14 +231,18 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                       }),
                       SizedBox(width: 8),
                       // Display the review count next to the stars
-                      Text(
-                        '(${product.ratingCount} reviews)',
-                        style: TextStyle(
-                          fontFamily: MyFonts.font_regular,
-                          color: Colors.grey.shade600,
-                          fontSize: 12,
+                      Flexible(
+                        child: Text(
+                          '(${product.ratingCount} reviews)',
+                          style: TextStyle(
+                            fontFamily: MyFonts.font_regular,
+                            color: Colors.grey.shade600,
+                            fontSize: 12,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
+                      )
+
                     ],
                   ),
 

@@ -256,7 +256,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         ),
         SizedBox(height: 8),
         Container(
-          height:MediaQuery.of(context).size.height*0.22,
+          height:MediaQuery.of(context).size.height*0.25,
           child: orderDetailsViewModel.orderDetails.orderLine?.isNotEmpty ==
                   true
               ? ListView.builder(
@@ -796,21 +796,27 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Icon(Icons.local_shipping_outlined,
-                      size: 20, color: Colors.grey[600]),
-                  SizedBox(width: 8),
-                  Text(
-                    method,
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: AppColors.tabtxt_color,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: MyFonts.font_regular
+              Expanded(
+                child: Row(
+                  children: [
+                    Icon(Icons.local_shipping_outlined,
+                        size: 20, color: Colors.grey[600]),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        method,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: AppColors.tabtxt_color,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: MyFonts.font_regular,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -830,6 +836,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               ),
             ],
           ),
+
           SizedBox(height: 8),
           Padding(
             padding: EdgeInsets.only(left: 28),

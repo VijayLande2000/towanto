@@ -52,6 +52,7 @@ abstract class BaseApiServices {
 
 
   Future<dynamic> paymentConfirmationApiResponse(String url, dynamic partnerId, BuildContext context,String sessionId);
+  Future<dynamic> postFilterProductsApiResponse(String url, dynamic data, BuildContext context,String SessionId);
 
 // Future<dynamic> getGetApiResponse(String url);
 

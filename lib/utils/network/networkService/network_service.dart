@@ -1076,4 +1076,36 @@ print("bhjug"+headers.toString());
     return responseJson;
   }
 
+  @override
+  Future postFilterProductsApiResponse(String url, data, BuildContext context, String SessionId) async {
+    // TODO: implement postFilterProductsApiResponse
+    try {
+      print("fvb " + SessionId);
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$SessionId'
+      };
+      print("url :" + url);
+      print("url :" + headers.toString());
+      Response response = await post(
+          Uri.parse(url), body: data, headers: headers).timeout(
+          const Duration(seconds: 60));
+      print("data :" + data.toString());
+
+      print("post filter products response =" + response.body);
+      print("postFilter statusCode =" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        Future.delayed(Duration(seconds: 0), () =>
+            Utils.flushBarSuccessMessages(
+                "Filter Applied successfully", context));
+        // Navigator.pushReplacementNamed(context, RoutesName.cart);
+      }
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
+
 }

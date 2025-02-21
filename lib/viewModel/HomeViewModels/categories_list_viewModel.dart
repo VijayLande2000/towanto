@@ -202,4 +202,141 @@ class CategoriesListViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> filterCategoriesListViewModelApi(dynamic data, BuildContext context) async {
+    try {
+      responseData = null;
+      categoryTree.clear(); // Reset tree before updating
+      this.context = context;
+      final sessionId = await PreferencesHelper.getString("session_id");
+
+      setLoading(true);
+      // developer.log(
+      //     'Starting CategoriesListViewModel process with data: ${jsonEncode(
+      //         categoryId)}', name: 'CategoriesListViewModel');
+
+      final value = await _myRepo.getFilterCategoryListApi(jsonEncode(data), context,sessionId);
+      responseData=value;
+//model = repose
+      //notifiy providres
+      //set loaidn faslse
+
+      //   for (var category in value.categories) {
+      //     categories.add(category.displayName??"");
+      // // Accessing subcategories
+      //
+      // for (var subcategory in category.subcategories) {
+      // print("Subcategory Name: ${subcategory.name}");
+      // print("Subcategory Display Name: ${subcategory.displayName}");
+      // }
+      //
+      //
+      // print("Category: ${category.id}");
+      //     print("Subcategories: ${category.subcategories}");
+      //   }
+
+
+
+
+      for (var category in value.categories) {
+        String categoryName = category.displayName ?? "Unknown";
+        String categoryId = category.id?.toString() ?? "Unknown"; // Convert int to String
+        categoryTree[categoryName] = {
+          'id': categoryId,
+          'subcategories': buildCategoryTree(category.subcategories)
+        };
+      }
+
+      // developer.log('Category Tree: ${jsonEncode(categoryTree)}', name: 'CategoriesListViewModel');
+      developer.log(
+          'CategoriesListViewModel API response received: ${responseData.toString()}',
+          name: 'CategoriesListViewModel');
+      //
+      // if (value != null && value.result != null) {
+      //   await PreferencesHelper.saveString("login", value.result.username);
+      //   developer.log('Username saved: ${value.result.username}', name: 'CategoriesListViewModel');
+      //
+      //   final savedUsername = await PreferencesHelper.getString("login");
+      //   developer.log('Retrieved saved username: $savedUsername', name: 'LoginViewModel');
+      // } else {
+      //   developer.log('Login API response or result was null', name: 'LoginViewModel', error: 'Null Response');
+      // }
+
+    } catch (e, stackTrace) {
+      developer.log(
+          'Error during CategoriesListViewModel process',
+          name: 'CategoriesListViewModel',
+          error: e.toString(),
+          stackTrace: stackTrace
+      );
+      // You might want to show an error message to the user here
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  Future<void> filterSubCategoriesListViewModelApi(dynamic data, BuildContext context) async {
+    try {
+      this.context = context;
+
+      final sessionId = await PreferencesHelper.getString("session_id");
+
+      setSubCategoryLoading(true);
+      developer.log(
+          'Starting CategoriesListViewModel process with data: ${jsonEncode(
+              data)}', name: 'CategoriesListViewModel');
+
+      final value = await _myRepo.getFilterCategoryListApi(data, context,sessionId);
+      responseData=value;
+      //   for (var category in value.categories) {
+      //     categories.add(category.displayName??"");
+      // // Accessing subcategories
+      //
+      // for (var subcategory in category.subcategories) {
+      // print("Subcategory Name: ${subcategory.name}");
+      // print("Subcategory Display Name: ${subcategory.displayName}");
+      // }
+      //
+      //
+      // print("Category: ${category.id}");
+      //     print("Subcategories: ${category.subcategories}");
+      //   }
+
+      // categoryTree.clear(); // Reset tree before updating
+      //
+      // for (var category in value.categories) {
+      //   String categoryName = category.displayName ?? "Unknown";
+      //   String categoryId = category.id?.toString() ?? "Unknown"; // Convert int to String
+      //   categoryTree[categoryName] = {
+      //     'id': categoryId,
+      //     'subcategories': buildCategoryTree(category.subcategories)
+      //   };
+      // }
+      //
+      // developer.log('Category Tree: ${jsonEncode(categoryTree)}', name: 'CategoriesListViewModel');
+      developer.log(
+          'CategoriesListViewModel API response received: ${responseData.toString()}',
+          name: 'CategoriesListViewModel');
+      //
+      // if (value != null && value.result != null) {
+      //   await PreferencesHelper.saveString("login", value.result.username);
+      //   developer.log('Username saved: ${value.result.username}', name: 'CategoriesListViewModel');
+      //
+      //   final savedUsername = await PreferencesHelper.getString("login");
+      //   developer.log('Retrieved saved username: $savedUsername', name: 'LoginViewModel');
+      // } else {
+      //   developer.log('Login API response or result was null', name: 'LoginViewModel', error: 'Null Response');
+      // }
+
+    } catch (e, stackTrace) {
+      developer.log(
+          'Error during CategoriesListViewModel process',
+          name: 'CategoriesListViewModel',
+          error: e.toString(),
+          stackTrace: stackTrace
+      );
+      // You might want to show an error message to the user here
+    } finally {
+      setSubCategoryLoading(false);
+    }
+  }
 }

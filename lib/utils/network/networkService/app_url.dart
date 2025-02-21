@@ -41,6 +41,7 @@ class AppUrl {
   static late String getAllCountries;
   static late String getAllStates;
   static late String getAllFilters;
+  static late String getFilterProducts;
 
 
   // Method to set the URLs based on the environment key
@@ -92,6 +93,7 @@ class AppUrl {
     getAllCountries = baseurlauth +"get_country";
     getAllStates = baseurlauth +"get_states";
     getAllFilters = baseurlauth +"api/get_filters";
+    getFilterProducts = baseurlauth + "api/filter_products";
     //we need to give here end point of the api
   }
 
