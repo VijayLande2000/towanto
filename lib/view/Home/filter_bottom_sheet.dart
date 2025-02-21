@@ -268,8 +268,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
     selectedFilters[section] ??= {};
 
     return Container(
-      height: 45,
-      margin: EdgeInsets.symmetric(vertical: 2),
+      // height: 45,
+      margin: EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
         color: selectedFilters[section]!.contains(item.value)
             ? AppColors.lightBlue.withOpacity(0.1)

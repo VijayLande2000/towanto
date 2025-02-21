@@ -72,13 +72,16 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
         // Pre-fill form fields
         provider.formFields.forEach((field) {
           switch (field['key']) {
+            case 'firmName':
+              field['controller'].text = widget.addressData!['firm_name'] ?? '';
+              break;
             case 'name':
               field['controller'].text = widget.addressData!['name'] ?? '';
               break;
-            case 'firmName':
-              field['controller'].text =
-                  widget.addressData!['proprietor_name'] ?? '';
-              break;
+            // case 'name':
+            //   field['controller'].text =
+            //       widget.addressData!['proprietor_name'] ?? '';
+            //   break;
             case 'email':
               field['controller'].text = widget.addressData!['email'] ?? '';
               break;

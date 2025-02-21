@@ -1,26 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:towanto/model/HomeModels/categories_list_details_model.dart';
-import 'package:towanto/model/HomeModels/home_page_model.dart';
-
+import '../../../model/HomeModels/filters_list_model.dart';
 import '../../../model/HomeModels/get_all_brands_model.dart';
 import '../../network/networkService/BaseApiServices.dart';
 import '../../network/networkService/app_url.dart';
 import '../../network/networkService/network_service.dart';
 
-class HomePageDataRepository {
+class BrandsListRepository {
   final BaseApiServices _apiServices = NetworkApiService();
 
-  Future<HomeDataModel> getHomePagedataApi(String categoryIds, BuildContext context) async {
-    try {
-      dynamic response = await _apiServices.getHomePageDataApiResponse(AppUrl.getHomePagedataurl, categoryIds, context);
-      return HomeDataModel.fromJson(response);
-    } catch (e, stactrace) {
-      print("dfyusg" + stactrace.toString());
-      print("dfyusg" + e.toString());
-
-      rethrow;
-    }
-  }
+  // Fetch the brand list from the API
   Future<GetAllBrandsModel?> getAllBrandsListApi(BuildContext context, dynamic sessionId) async {
     try {
       // Make the API call to get the response
@@ -39,6 +27,4 @@ class HomePageDataRepository {
       return null;
     }
   }
-
-
 }
