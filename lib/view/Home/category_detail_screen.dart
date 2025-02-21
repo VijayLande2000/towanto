@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -509,13 +511,28 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
   }
 
   Future<void> loadFilterProducts() async {
+    final CategoryListViewModel =
+    Provider.of<CategoriesListViewModel>(context, listen: false);
+    final body =
+      {
+        "params":
+        {
+          "brand": ["Shiva agro Seeds Pvt ltd"],
+          // "category":["Seeds / Vegetables Seeds / Carrot" , "Seeds / Vegetables Seeds / Kakri"],
+          // "min_price":100,
+          // "max_price":150,
+          "variety":"PBW-154"
+        }
+
+    };
+
     if (levelSelections.isNotEmpty) {
       print("Last Selected Product ID: ${levelSelections.last.selectedId}");
-      await fetchInitialSubCategories(levelSelections.last.selectedId);
+      await CategoryListViewModel.filterCategoriesListViewModelApi(body, context);
     } else {
       print("No Product Selected.");
       print("Category Id " + widget.category.id.toString());
-      await fetchInitialSubCategories(widget.category.id);
+      await CategoryListViewModel.filterCategoriesListViewModelApi(body, context);
     }
   }
 
@@ -720,21 +737,24 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                             CrossAxisAlignment.baseline,
                                         textBaseline: TextBaseline.alphabetic,
                                         children: [
-                                          Text(
-                                            (product.lstPrice == null ||
-                                                    product.lstPrice == 0 ||
-                                                    product.lstPrice == 0.0 ||
-                                                    product.lstPrice
-                                                        .toString()
-                                                        .isEmpty)
-                                                ? 'Price Locked'
-                                                : '₹${product.lstPrice}',
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              fontFamily: MyFonts.font_regular,
-                                              fontWeight: FontWeight.w500,
+                                          Flexible(
+                                            child: Text(
+                                              (product.lstPrice == null ||
+                                                  product.lstPrice == 0 ||
+                                                  product.lstPrice == 0.0 ||
+                                                  product.lstPrice.toString().isEmpty)
+                                                  ? 'Price Locked'
+                                                  : '₹${product.lstPrice}',
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontFamily: MyFonts.font_regular,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
                                             ),
-                                          ),
+                                          )
+
                                           // if (product.lstPrice != null && product.lstPrice! > 0 && product.baseUnitPrice != null && product.baseUnitPrice! > 0) ...[
                                           //   const SizedBox(width: 4),
                                           //   Text(

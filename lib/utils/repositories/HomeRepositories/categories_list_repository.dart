@@ -23,4 +23,21 @@ class CategoriesListRepository {
       rethrow;
     }
   }
+
+
+  Future<CategoriesListDetailsModel> getFilterCategoryListApi(dynamic data, BuildContext context,dynamic sessionId) async {
+    try {
+      dynamic response = await _apiServices.postFilterProductsApiResponse(
+          AppUrl.getFilterProducts, data, context,sessionId);
+      // Assuming response is a List
+      return CategoriesListDetailsModel.fromJson(response);
+
+      // return CategoriesListDetailsModel.fromJson(response);
+    } catch (e, stactrace) {
+      print("dfyusg" + stactrace.toString());
+      print("dfyusg" + e.toString());
+
+      rethrow;
+    }
+  }
 }

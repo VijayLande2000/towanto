@@ -141,7 +141,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
         ),
         SizedBox(height: 8),
         Container(
-          height:MediaQuery.of(context).size.height*0.22,
+          height:MediaQuery.of(context).size.height*0.25,
           child: orderLines?.isNotEmpty == true
               ? ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -484,21 +484,26 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
             ],
           ),
           SizedBox(height: 12),
-        email.isEmpty?SizedBox.shrink():  Row(
+          email.isEmpty ? SizedBox.shrink() : Row(
             children: [
               Icon(Icons.email_outlined, size: 20, color: Colors.grey[600]),
               SizedBox(width: 8),
-              Text(
-                email,
-                style: TextStyle(
+              Expanded( // Prevents overflow
+                child: Text(
+                  email,
+                  style: TextStyle(
                     fontSize: 12,
                     color: AppColors.tabtxt_color,
                     fontWeight: FontWeight.w500,
-                    fontFamily: MyFonts.font_regular
+                    fontFamily: MyFonts.font_regular,
+                  ),
+                  overflow: TextOverflow.ellipsis, // Shows "..." when text is too long
+                  maxLines: 1, // Keeps text in a single line
                 ),
               ),
             ],
           ),
+
           SizedBox(height: 8),
           Row(
             children: [
@@ -623,21 +628,28 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Icon(Icons.local_shipping_outlined,
-                      size: 20, color: Colors.grey[600]),
-                  SizedBox(width: 8),
-                  Text(
-                    method,
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: AppColors.tabtxt_color,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: MyFonts.font_regular
+              Expanded( // Wrap this Row inside Expanded to prevent overflow
+                child: Row(
+                  children: [
+                    Icon(Icons.local_shipping_outlined,
+                        size: 20, color: Colors.grey[600]),
+                    SizedBox(width: 8),
+                    Expanded( // Prevents text from overflowing
+                      child: Text(
+                        method,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: AppColors.tabtxt_color,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: MyFonts.font_regular,
+                        ),
+                        overflow: TextOverflow.ellipsis, // Adds "..." if text is too long
+                        maxLines: 1,
+                        softWrap: false,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -657,6 +669,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
               ),
             ],
           ),
+
           SizedBox(height: 8),
           Padding(
             padding: EdgeInsets.only(left: 28),
