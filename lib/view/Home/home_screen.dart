@@ -23,6 +23,7 @@ import '../../viewModel/HomeViewModels/categories_list_viewModel.dart';
 import '../Orders/orders_screen.dart';
 import '../WhishList/whish_list_screen.dart';
 import 'category_detail_screen.dart';
+import 'getBrandsList.dart';
 
 //checking the git track
 class HomeGrid extends StatefulWidget {
@@ -263,7 +264,7 @@ class _HomeGridState extends State<HomeGrid> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CartScreen(),
+                        builder: (context) => BrandProductsList(),
                       ),
                     );
                   },

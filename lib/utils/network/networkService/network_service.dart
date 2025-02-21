@@ -1108,4 +1108,37 @@ print("bhjug"+headers.toString());
     return responseJson;
   }
 
+  @override
+  Future getBrandsByIDApiResponse(String url, int id, BuildContext context, String sessionId) async {
+    // TODO: implement getBrandsByIDApiResponse
+    try {
+      print("fvb " + sessionId);
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+      };
+
+      print("url :" + url.toString());
+
+      String finalUrl = '$url?brand_id=$id';
+      print("final url :" + finalUrl.toString());
+
+      Response response = await http.get(
+        Uri.parse(finalUrl), headers: headers,
+      ).timeout(const Duration(seconds: 60));
+
+      print("brands list list response =" + response.body);
+      print("brands list  statusCode =" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        // Future.delayed(Duration(seconds:0),() =>Utils.flushBarSuccessMessages("Product added to cart successfully",context));
+        // Navigator.pushReplacementNamed(context, RoutesName.cart);
+      }
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
+
 }
