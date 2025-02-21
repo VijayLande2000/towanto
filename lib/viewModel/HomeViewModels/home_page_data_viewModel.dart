@@ -3,6 +3,8 @@ import 'dart:developer' as developer;
 import 'package:flutter/cupertino.dart';
 import 'package:towanto/model/HomeModels/home_page_model.dart';
 import '../../model/HomeModels/categories_list_details_model.dart';
+import '../../model/HomeModels/get_all_brands_model.dart';
+import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/network/networkService/app_url.dart';
 import '../../utils/repositories/HomeRepositories/home_page_data_repository.dart';
 
@@ -23,6 +25,11 @@ class HomePageDataViewModel extends ChangeNotifier {
   int get wishlistCount => _wishlistCount;
   List<String> get sliderData => _sliderData;
   Map<int, List<Category>> get categoriesMap => _categoriesMap;
+
+
+    GetAllBrandsModel? _brandsList; // Updated model type
+    GetAllBrandsModel? get brandsList => _brandsList;
+
 
   void _setLoading(bool value) {
     _isLoading = value;
@@ -84,6 +91,32 @@ class HomePageDataViewModel extends ChangeNotifier {
       );
     } finally {
       _setLoading(false);
+    }
+  }
+
+  Future<void> getAllBrandsList(BuildContext context) async {
+    try {
+      _setLoading(true);
+
+      final sessionId = await PreferencesHelper.getString("session_id");
+      if (sessionId == null) {
+        developer.log('Session ID is null', name: 'FilterListViewModel');
+        _setLoading(false);
+        return;
+      }
+      developer.log('Fetching brand list with session ID: $sessionId', name: 'FilterListViewModel');
+
+      final value = await _homePageDataRepository.getAllBrandsListApi(context, sessionId);
+      if (value != null) {
+        _brandsList = value;
+        developer.log('Brand API response received: ${jsonEncode(value)}', name: 'FilterListViewModel');
+      } else {
+        developer.log('No brands received', name: 'FilterListViewModel');
+      }
+    } catch (e, stackTrace) {
+      developer.log('Error fetching brands', name: 'FilterListViewModel', error: e.toString(), stackTrace: stackTrace);
+    } finally {
+     _setLoading(false);
     }
   }
 

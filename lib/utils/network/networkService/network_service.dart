@@ -1108,4 +1108,34 @@ print("bhjug"+headers.toString());
     return responseJson;
   }
 
+  @override
+  Future getAllBrandsListApiResponse(String url, BuildContext context, String sessionId) async {
+    try {
+      print("fvb " + sessionId);
+      var headers = {
+        'Content-Type': 'application/json',
+        'Accept': "application/json",
+        'Cookie': 'session_id=$sessionId'
+      };
+
+      print("url :" + url.toString());
+      print("header :" + headers.toString());
+
+      Response response = await http.get(
+        Uri.parse(url), headers: headers,
+      ).timeout(const Duration(seconds: 60));
+
+      print("brands list response =" + response.body);
+      print("brands List statusCode =" + response.statusCode.toString());
+      if (response.statusCode == 200) {
+        // Future.delayed(Duration(seconds:0),() =>Utils.flushBarSuccessMessages("Product added to cart successfully",context));
+        // Navigator.pushReplacementNamed(context, RoutesName.cart);
+      }
+      responseJson = returnResponse(response);
+    } on SocketException {
+      Utils.flushBarErrorMessages("No Internet Connection", context);
+    }
+    return responseJson;
+  }
+
 }

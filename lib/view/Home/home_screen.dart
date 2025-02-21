@@ -14,6 +14,7 @@ import 'package:towanto/view/Enquiry/enquiry_screen.dart';
 import 'package:towanto/viewModel/HomeViewModels/home_page_data_viewModel.dart';
 
 import '../../model/HomeModels/category_model.dart';
+import '../../model/HomeModels/get_all_brands_model.dart';
 import '../../model/HomeModels/home_page_model.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
 import '../../utils/common_widgets/Utils.dart';
@@ -22,6 +23,7 @@ import '../../utils/routes/route_names.dart';
 import '../../viewModel/HomeViewModels/categories_list_viewModel.dart';
 import '../Orders/orders_screen.dart';
 import '../WhishList/whish_list_screen.dart';
+import 'all_brands.dart';
 import 'category_detail_screen.dart';
 
 //checking the git track
@@ -54,9 +56,9 @@ class _HomeGridState extends State<HomeGrid> {
 
   Future<void> fetchHomePageData() async {
     // Obtain the instance of CategoriesListViewModel
-    final homePageViewModel =
-        Provider.of<HomePageDataViewModel>(context, listen: false);
-    await homePageViewModel.fetchHomePageData("6,4", context);
+    final homePageViewModel = Provider.of<HomePageDataViewModel>(context, listen: false);
+    await homePageViewModel.fetchHomePageData("7", context);
+    await homePageViewModel.getAllBrandsList(context);
   }
 
   final List<CategoryItem> categories = [
@@ -194,8 +196,7 @@ class _HomeGridState extends State<HomeGrid> {
   // Initial value
   @override
   Widget build(BuildContext context) {
-    final homePageViewModel =
-        Provider.of<HomePageDataViewModel>(context, listen: false);
+    final homePageViewModel = Provider.of<HomePageDataViewModel>(context, listen: false);
 
     return Scaffold(
       backgroundColor: AppColors.backgroundcolormenu,
@@ -379,7 +380,8 @@ class _HomeGridState extends State<HomeGrid> {
                 //   ),
                 // ),
                 // In your build method
-                buildDynamicCategoryLists(homePageViewModel, context)
+                buildDynamicCategoryLists(homePageViewModel, context),
+                buildDynamicBrandsList(homePageViewModel, context)
               ],
             ),
           );
@@ -819,10 +821,9 @@ Widget buildDynamicCategoryLists(
     }).toList(),
   );
 }
-Widget _buildHorizontalListView(
-    HomePageDataViewModel viewModel, int categoryId) {
-  final categories = viewModel.getCategoriesById(categoryId);
 
+Widget _buildHorizontalListView(HomePageDataViewModel viewModel, int categoryId) {
+  final categories = viewModel.getCategoriesById(categoryId);
   int totalProductCount = 0;
   categories.forEach((category) {
     totalProductCount += category.products.length;
@@ -985,8 +986,151 @@ Widget _buildHorizontalListView(
 }
 
 
+Widget buildDynamicBrandsList(HomePageDataViewModel homePageDataViewModel, BuildContext context) {
+  if (homePageDataViewModel.brandsList == null ||
+      homePageDataViewModel.brandsList!.brands == null ||
+      homePageDataViewModel.brandsList!.brands!.isEmpty) {
+    return const SizedBox.shrink();
+  }
 
+  // Get only first 10 brands
+  final limitedBrands = homePageDataViewModel.brandsList!.brands!.take(10).toList();
 
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 16, bottom: 8),
+        child: Text(
+          "Brands",
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: AppColors.appBarTitleTextColor,
+            fontFamily: MyFonts.font_regular,
+          ),
+        ),
+      ),
+      LayoutBuilder(
+        builder: (context, constraints) {
+          return Container(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.35,
+            ),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: limitedBrands.length,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              itemBuilder: (context, index) {
+                final brand = limitedBrands[index];
+                final screenWidth = MediaQuery.of(context).size.width;
+
+                return Container(
+                  width: screenWidth * 0.45,
+                  margin: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Card(
+                    color: AppColors.white,
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(color: Colors.grey.shade200),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        // Navigate to brand detail page if needed
+                      },
+                      child: LayoutBuilder(
+                        builder: (context, cardConstraints) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Center(
+                                    child: brand.id != null
+                                        ? Image.network(
+                                      '${AppUrl.baseurlauth}web/image?model=product.product&id=${brand.id}&field=image_1920',
+                                      fit: BoxFit.contain,
+                                      errorBuilder: (context, error, stackTrace) => Icon(
+                                        Icons.business,
+                                        size: 32,
+                                        color: Colors.grey.shade400,
+                                      ),
+                                    )
+                                        : Icon(
+                                      Icons.business,
+                                      size: 32,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    brand.name ?? 'Unknown Brand',
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.appBarTitleTextColor,
+                                      fontFamily: MyFonts.font_regular,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+      Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.brightBlue,
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100),
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AllBrands(),));
+              // Navigate to all brands page if needed
+            },
+            child: Text(
+              "View All Brands",
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.whiteColor,
+                fontFamily: MyFonts.font_regular,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}
 
 // Widget _buildHorizontalSeasonalListView(HomePageDataViewModel viewModel) {
 //   // Calculate the total number of products across all categories

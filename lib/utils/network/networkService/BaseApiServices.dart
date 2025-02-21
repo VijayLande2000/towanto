@@ -13,6 +13,7 @@ abstract class BaseApiServices {
   Future<dynamic> postAddToCartApiResponse(String url, dynamic data, BuildContext context,String SessionId);
   Future<dynamic> getCartListApiResponse(String url, String categoryId, BuildContext context,String SessionId);
   Future<dynamic> getFiltersListApiResponse(String url,BuildContext context,String sessionId);
+  Future<dynamic> getAllBrandsListApiResponse(String url,BuildContext context,String sessionId);
 
   Future<dynamic> getOrdersListApiResponse(String url, String partnerId, BuildContext context,String sessionId);
 
