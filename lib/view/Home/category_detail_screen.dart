@@ -510,32 +510,67 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     );
   }
 
-  Future<void> loadFilterProducts() async {
-    final CategoryListViewModel =
+  Future<void> loadFilterProducts(Map<String, dynamic> filterResult) async {
+    final categoryListViewModel =
     Provider.of<CategoriesListViewModel>(context, listen: false);
-    final body =
-      {
-        "params":
-        {
-          "brand": ["Shiva agro Seeds Pvt ltd"],
-          // "category":["Seeds / Vegetables Seeds / Carrot" , "Seeds / Vegetables Seeds / Kakri"],
-          // "min_price":100,
-          // "max_price":150,
-          "variety":"PBW-154"
-        }
 
+    // Extract values from filter result
+    final Map<String, dynamic> params = {};
+
+    // Handle brands
+    if (filterResult['brands'] != null && (filterResult['brands'] as Set).isNotEmpty) {
+      params['brand'] = (filterResult['brands'] as Set).toList();
+    }
+
+    // Handle varieties
+    if (filterResult['varieties'] != null && (filterResult['varieties'] as Set).isNotEmpty) {
+      params['variety'] = (filterResult['varieties'] as Set).toList();
+    }
+
+    // Handle package sizes
+    if (filterResult['package_sizes'] != null && (filterResult['package_sizes'] as Set).isNotEmpty) {
+      params['package_size'] = (filterResult['package_sizes'] as Set).toList();
+    }
+// Handle categories
+    if (filterResult['categories'] != null && (filterResult['categories'] as Set).isNotEmpty) {
+      params['category'] = (filterResult['categories'] as Set).first; // Send a single value
+    } else if (levelSelections.isNotEmpty) {
+      // Use the selectedId from levelSelections if available
+      params['category'] = levelSelections.last.selectedId.toString();
+    } else if (widget.category != null) {
+      // Fallback to the current category if no other options are available
+      params['category'] = widget.category.id;
+    }
+
+
+    // Handle price range
+    if (filterResult['priceRange'] != null) {
+      final priceRange = filterResult['priceRange'] as Map<String, dynamic>;
+      if (priceRange['min'] != null) {
+        params['min_price'] = priceRange['min'];
+      }
+      if (priceRange['max'] != null) {
+        params['max_price'] = priceRange['max'];
+      }
+    }
+
+    // Create the request body
+    final body = {
+      "params": params
     };
 
+    print("iusgfiug"+body.toString());
+
+    // Make the API call
     if (levelSelections.isNotEmpty) {
       print("Last Selected Product ID: ${levelSelections.last.selectedId}");
-      await CategoryListViewModel.filterCategoriesListViewModelApi(body, context);
+      await categoryListViewModel.filterCategoriesListViewModelApi(body, context);
     } else {
       print("No Product Selected.");
-      print("Category Id " + widget.category.id.toString());
-      await CategoryListViewModel.filterCategoriesListViewModelApi(body, context);
+      print("Category Id: ${widget.category.id}");
+      await categoryListViewModel.filterCategoriesListViewModelApi(body, context);
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -598,7 +633,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                 );
                 if (result != null) {
                   print('Applied filters: $result');
-                  loadFilterProducts();
+                  loadFilterProducts(result);
                 }
               },
             )
