@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/view/Cart/cart_screen.dart';
 import 'package:towanto/view/Enquiry/enquiry_screen.dart';
@@ -119,8 +120,31 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           // print("frjbngvh"+productDetailsList[0].productPrice.toString());
           // Check if the list is empty
           if (productDetailsList.isEmpty) {
-            return Center(child: Text('No product details available.'));
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Keeps the column compact
+                mainAxisAlignment: MainAxisAlignment.center, // Centers vertically
+                crossAxisAlignment: CrossAxisAlignment.center, // Centers horizontally
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: LottieBuilder.asset("assets/lottie/notfound.json"),
+                  ),
+                  const SizedBox(height: 16), // Space between animation and text
+                  Text(
+                    "No Products Found",
+                    style: TextStyle(
+                      color: AppColors.black,
+                      fontFamily: MyFonts.font_regular,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            );
           }
+
 
           return Padding(
             padding: const EdgeInsets.all(16.0),

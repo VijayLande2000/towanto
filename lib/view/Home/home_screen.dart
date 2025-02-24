@@ -58,7 +58,7 @@ class _HomeGridState extends State<HomeGrid> {
   Future<void> fetchHomePageData() async {
     // Obtain the instance of CategoriesListViewModel
     final homePageViewModel = Provider.of<HomePageDataViewModel>(context, listen: false);
-    await homePageViewModel.fetchHomePageData("11", context);
+    await homePageViewModel.fetchHomePageData("6", context);
     await homePageViewModel.getAllBrandsList(context);
   }
 
