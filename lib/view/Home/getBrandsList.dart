@@ -17,8 +17,10 @@ import 'home_screen.dart';
 
 class BrandProductsList extends StatefulWidget {
   final String? brandName; // Optional parameter
+  final dynamic brandid; // Optional parameter
 
-  const BrandProductsList({Key? key, this.brandName}) : super(key: key);
+
+  const BrandProductsList({Key? key, this.brandName,this.brandid}) : super(key: key);
 
   @override
   State<BrandProductsList> createState() => _BrandProductsListState();
@@ -27,19 +29,27 @@ class BrandProductsList extends StatefulWidget {
 class _BrandProductsListState extends State<BrandProductsList> {
   String? partnerId;
 
+
+
   Future<void> fetchBrandProductsList() async {
     // Obtain the instance of GetBrandsByIDViewModel
     final getBrandsViewModel = Provider.of<GetBrandsByIDViewModel>(
         context, listen: false);
-    await getBrandsViewModel.getBrandsbyIDViewModelApi(10, context);
+    await getBrandsViewModel.getBrandsbyIDViewModelApi(widget.brandid, context);
+  }
+
+  Future<void> fetchPartnerID() async {
+    // Obtain the instance of GetBrandsByIDViewModel
+    partnerId = await PreferencesHelper.getString("partnerId");
   }
 
   @override
   void initState() {
     super.initState();
+
     // Fetch data after the initial build is complete
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      partnerId = await PreferencesHelper.getString("partnerId");
+      await fetchPartnerID();
       fetchBrandProductsList();
     });
   }
@@ -89,7 +99,7 @@ class _BrandProductsListState extends State<BrandProductsList> {
           } else if (viewModel.responseData == null) {
             return Center(child: Text("No products found"));
           } else {
-            return buildProductGrid(context, viewModel, partnerId ?? "49");
+            return buildProductGrid(context, viewModel, partnerId);
           }
         },
       ),
@@ -98,7 +108,7 @@ class _BrandProductsListState extends State<BrandProductsList> {
 
   Widget buildProductGrid(BuildContext context,
       GetBrandsByIDViewModel viewModel,
-      String partnerId) {
+      String? partnerId) {
     // Don't use Expanded here as it's not inside a flex widget
     return Padding(
       padding: const EdgeInsets.all(12.0),
@@ -176,6 +186,8 @@ class _BrandProductsListState extends State<BrandProductsList> {
                       ),
                     ),
                     const SizedBox(height: 4),
+                    buildRatingRow(product.rating,
+                        product.ratingCount),
                     const SizedBox(height: 8),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -199,8 +211,11 @@ class _BrandProductsListState extends State<BrandProductsList> {
                         ),
                       ],
                     ),
+
                     const SizedBox(height: 8),
-                    Consumer<AddToCartViewModel>(
+                    (product.price == null ||
+                        product.price == 0 ||
+                        product.price.toString().isEmpty)?SizedBox.shrink(): Consumer<AddToCartViewModel>(
                       builder: (context, cartViewModel, child) {
                         bool isInCart = product.id != null && cartViewModel.isInCart(product.id!);
                         bool isLoading = product.id != null && cartViewModel.isLoading(product.id!);
@@ -214,7 +229,7 @@ class _BrandProductsListState extends State<BrandProductsList> {
                                 : () async {
                               if (!isInCart) {
                                 cartViewModel.toggleCartStatus(
-                                  partnerId,
+                                  partnerId!,
                                   product.id!,
                                   1,
                                   context,
@@ -262,6 +277,59 @@ class _BrandProductsListState extends State<BrandProductsList> {
           );
         },
       ),
+    );
+  }
+
+  Widget buildRatingRow(double ratingAvg, int ratingCount) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final reviewText = ratingCount <= 1 ? 'review)' : 'reviews)';
+
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Star rating (not flexible to preserve stars)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(5, (index) {
+                if (index < ratingAvg.floor()) {
+                  return const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                    size: 14,
+                  );
+                } else if (index < ratingAvg && ratingAvg % 1 != 0) {
+                  return const Icon(
+                    Icons.star_half,
+                    color: Colors.amber,
+                    size: 14,
+                  );
+                } else {
+                  return const Icon(
+                    Icons.star_border,
+                    color: Colors.amber,
+                    size: 14,
+                  );
+                }
+              }),
+            ),
+            const SizedBox(width: 4),
+            // Review count in a flexible container
+            Flexible(
+              child: Text(
+                '($ratingCount $reviewText',
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: TextStyle(
+                  fontFamily: MyFonts.font_regular,
+                  color: Colors.grey.shade600,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -205,7 +205,7 @@ print("bhjug"+headers.toString());
       print("ProductDetails response =" + response.body);
       print("ProductDetails statusCode =" + response.statusCode.toString());
       var decodedJson = jsonDecode(response.body);
-      print("Is in in_cart: ${decodedJson[0]['in_cart']}");
+      // print("Is in in_cart: ${decodedJson[0]['in_cart']}");
 
       // final response = await http.get(Uri.parse(url));
       responseJson = returnResponse(response);

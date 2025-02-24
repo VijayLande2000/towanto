@@ -6,6 +6,7 @@ import '../../utils/network/networkService/app_url.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/HomeViewModels/home_page_data_viewModel.dart';
+import 'getBrandsList.dart';
 
 class AllBrands extends StatefulWidget {
   const AllBrands({Key? key}) : super(key: key);
@@ -130,6 +131,12 @@ class _AllBrandsState extends State<AllBrands> {
                     ),
                     child: InkWell(
                       onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BrandProductsList(brandName: brand.name,brandid: brand.id,),
+                          ),
+                        );
                         // Navigate to brand detail page if needed
                       },
                       borderRadius: BorderRadius.circular(12),

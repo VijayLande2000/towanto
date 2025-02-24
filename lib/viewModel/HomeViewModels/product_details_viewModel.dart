@@ -33,26 +33,35 @@ class ProductdetailsViewModel extends ChangeNotifier {
       this.context = context;
       setLoading(true);
       developer.log(
-          'Starting ProductdetailsViewModel process with data: ${jsonEncode(
-              categoryId)}', name: 'ProductdetailsViewModel');
+          'Starting ProductdetailsViewModel process with data: ${jsonEncode(categoryId)}',
+          name: 'ProductdetailsViewModel'
+      );
 
       final value = await _myRepo.getProductDetailsApi(categoryId, context);
-          responseData.clear();
-          responseData.addAll(value);
-          print("vhfdbhvbdf"+value[0].productPrice.toString());
+
+      // Clear existing data
+      responseData.clear();
+
+      // Only add and access data if the list is not empty
+      if (value.isNotEmpty) {
+        responseData.addAll(value);
+        developer.log(
+            'Product price: ${value[0].productPrice}',
+            name: 'ProductdetailsViewModel'
+        );
+      } else {
+        developer.log(
+            'No product details returned from API',
+            name: 'ProductdetailsViewModel'
+        );
+        // Handle empty response - maybe show a message to the user
+        // You might want to add error handling logic here
+      }
+
       developer.log(
           'ProductdetailsViewModel API response received: ${responseData.toString()}',
-          name: 'ProductdetailsViewModel');
-      //
-      // if (value != null && value.result != null) {
-      //   await PreferencesHelper.saveString("login", value.result.username);
-      //   developer.log('Username saved: ${value.result.username}', name: 'CategoriesListViewModel');
-      //
-      //   final savedUsername = await PreferencesHelper.getString("login");
-      //   developer.log('Retrieved saved username: $savedUsername', name: 'LoginViewModel');
-      // } else {
-      //   developer.log('Login API response or result was null', name: 'LoginViewModel', error: 'Null Response');
-      // }
+          name: 'ProductdetailsViewModel'
+      );
 
     } catch (e, stackTrace) {
       developer.log(
@@ -61,7 +70,7 @@ class ProductdetailsViewModel extends ChangeNotifier {
           error: e.toString(),
           stackTrace: stackTrace
       );
-      // You might want to show an error message to the user here
+      // Show error message to the user
     } finally {
       setLoading(false);
     }

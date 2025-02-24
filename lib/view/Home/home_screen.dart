@@ -58,7 +58,7 @@ class _HomeGridState extends State<HomeGrid> {
   Future<void> fetchHomePageData() async {
     // Obtain the instance of CategoriesListViewModel
     final homePageViewModel = Provider.of<HomePageDataViewModel>(context, listen: false);
-    await homePageViewModel.fetchHomePageData("7", context);
+    await homePageViewModel.fetchHomePageData("11", context);
     await homePageViewModel.getAllBrandsList(context);
   }
 
@@ -265,7 +265,7 @@ class _HomeGridState extends State<HomeGrid> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BrandProductsList(),
+                        builder: (context) => CartScreen(),
                       ),
                     );
                   },
@@ -1038,6 +1038,12 @@ Widget buildDynamicBrandsList(HomePageDataViewModel homePageDataViewModel, Build
                     ),
                     child: InkWell(
                       onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BrandProductsList(brandName: brand.name,brandid: brand.id,),
+                          ),
+                        );
                         // Navigate to brand detail page if needed
                       },
                       child: LayoutBuilder(
