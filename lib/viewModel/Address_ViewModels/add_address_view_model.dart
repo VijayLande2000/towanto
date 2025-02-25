@@ -167,7 +167,7 @@ class AddAddressViewModel extends ChangeNotifier {
           as TextEditingController)
               .text
               .trim(),
-          "firm_name": (formFields.firstWhere((field) => field['key'] == 'proprietorName')['controller']
+          "firm_name": (formFields.firstWhere((field) => field['key'] == 'name')['controller']
           as TextEditingController)
               .text
               .trim(),
