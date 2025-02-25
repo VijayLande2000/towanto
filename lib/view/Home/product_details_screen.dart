@@ -344,7 +344,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
                         SizedBox(height: 10),
                         // Buy Now Button
-                        productDetails.lstPrice== 0.0
+                        productDetails.listPrice == 0.0
                             ? ElevatedButton(
                                 onPressed: () {
                                   Navigator.push(
@@ -371,7 +371,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             : SizedBox(), // Optionally, return an empty widget or another fallback widget when the condition is false
 
                         // Buy Now Button
-                        productDetails.lstPrice != 0.0
+                        productDetails.listPrice != 0.0
                             ? Container(
                                 width: double.infinity,
                                 height: 55,

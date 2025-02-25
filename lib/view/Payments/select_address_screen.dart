@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:towanto/model/Address_Models/payment_address_model.dart';
@@ -182,13 +183,17 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                             children: [
                               const Icon(Icons.email_outlined, size: 20, color: Colors.grey),
                               const SizedBox(width: 8),
-                              Text(
-                                address.email.toString(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color:  AppColors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: MyFonts.font_regular
+                              Expanded(
+                                child: Text(
+                                  maxLines: 1,
+                                  address.email.toString(),
+                                  style: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                      fontSize: 14,
+                                      color:  AppColors.black,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: MyFonts.font_regular
+                                  ),
                                 ),
                               ),
                             ],

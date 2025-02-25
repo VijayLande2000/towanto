@@ -887,7 +887,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                               .isInCart(product.id!);
                                           bool isLoading = cartViewModel
                                               .isLoading(product.id!);
-
                                           return SizedBox(
                                             width: double.infinity,
                                             height: 32,
@@ -896,7 +895,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                                   ? null
                                                   : () async {
                                                       if (!(isInCart ||
-                                                          alreadyAddedToCart)) {
+                                                          alreadyAddedToCart||product.isInCart)) {
                                                         cartViewModel
                                                             .toggleCartStatus(
                                                           partnerId,
@@ -907,7 +906,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                                       }
                                                     },
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor: isInCart ||
+                                                backgroundColor:product.isInCart|| isInCart ||
                                                         alreadyAddedToCart
                                                     ? Colors.grey[300]
                                                     : const Color(0xFFFFD814),
@@ -931,7 +930,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                                       ),
                                                     )
                                                   : Text(
-                                                      alreadyAddedToCart ||
+                                                     product.isInCart|| alreadyAddedToCart ||
                                                               isInCart
                                                           ? 'Added to Cart'
                                                           : 'Add to Cart',

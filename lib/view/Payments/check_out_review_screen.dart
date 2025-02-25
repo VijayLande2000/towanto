@@ -141,72 +141,79 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
         ),
         SizedBox(height: 8),
         Container(
-          height:MediaQuery.of(context).size.height*0.25,
+          // height: MediaQuery.of(context).size.height * 0.25,
           child: orderLines?.isNotEmpty == true
-              ? ListView.builder(
+              ? SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.symmetric(horizontal: 16),
-            itemCount: orderLines!.length,
-            itemBuilder: (context, index) {
-              final orderLine = orderLines[index];
-              return Card(
-                margin: EdgeInsets.only(right: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Container(
-                  width: 160,
-                  padding: EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: AppColors.whiteColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Center(
-                          child: Image.network(
-                            "${AppUrl.baseurlauth}web/image?model=product.product&id=${orderLine.productId}&field=image_1920",
+            child: Row(
+              children: [
+                for (var orderLine in orderLines!)
+                  Card(
+                    margin: EdgeInsets.only(right: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Container(
+                      width: 160,
+                      padding: EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: AppColors.whiteColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: Image.network(
+                                "${AppUrl.baseurlauth}web/image?model=product.product&id=${orderLine.productId}&field=image_1920",
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) => Icon(
+                                  Icons.error,
+                                  size: 32,
+                                  color: Colors.grey.shade400,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(height: 8),
+                          Text(
+                            orderLine.productName ?? '',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: AppColors.black,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: MyFonts.font_regular,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Qty: ${orderLine.productUomQty ?? 0}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.tabtxt_color,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: MyFonts.font_regular,
+                            ),
+                          ),
+                          Text(
+                            '₹${orderLine.priceTotal ?? 0.0}',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: AppColors.tabtxt_color,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: MyFonts.font_regular,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 8),
-                      Text(
-                        orderLine.productName ?? '',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: MyFonts.font_regular,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'Qty: ${orderLine.productUomQty ?? 0}',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppColors.tabtxt_color,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: MyFonts.font_regular,
-                        ),
-                      ),
-                      Text(
-                        '₹${orderLine.priceTotal ?? 0.0}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.tabtxt_color,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: MyFonts.font_regular,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              );
-            },
+              ],
+            ),
           )
               : Center(
             child: Text(
@@ -214,7 +221,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
           ),
-        ),
+        )
       ],
     );
   }

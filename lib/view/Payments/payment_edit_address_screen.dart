@@ -7,6 +7,7 @@ import 'package:towanto/utils/common_widgets/Utils.dart';
 import 'package:towanto/viewModel/Address_ViewModels/edit_address_view_model.dart';
 
 import '../../viewModel/Address_ViewModels/add_address_view_model.dart';
+import '../../viewModel/Address_ViewModels/get_Address_list_view_model.dart';
 import '../../viewModel/profileViewModels/update_account_information_view_model.dart';
 import '../Auth/login_screen.dart';
 
@@ -73,10 +74,10 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
         provider.formFields.forEach((field) {
           switch (field['key']) {
             case 'firmName':
-              field['controller'].text = widget.addressData!['firm_name'] ?? '';
+              field['controller'].text = widget.addressData!['name'] ?? '';
               break;
             case 'name':
-              field['controller'].text = widget.addressData!['name'] ?? '';
+              field['controller'].text = widget.addressData!['firm_name'] ?? '';
               break;
             // case 'name':
             //   field['controller'].text =
@@ -298,7 +299,7 @@ class _PaymentEditAddressScreenContentState extends State<PaymentEditAddressScre
 
                   Utils.createButton(
                       text: "update Address",
-                      onClick: () {
+                      onClick: () async {
                         print("sdced"+widget.addressData!['addressId'].toString());
                         provider.submitAccountInfo(
                             context,
