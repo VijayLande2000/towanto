@@ -153,25 +153,23 @@ class _AllBrandsState extends State<AllBrands> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Center(
-                                  child: brand.id != null
+                                  child: brand.imageUrl != null
                                       ? ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
                                     child: Image.network(
-                                      '${AppUrl
-                                          .baseurlauth}web/image?model=product.product&id=${brand
-                                          .id}&field=image_1920',
+                                      '${brand.imageUrl}',
                                       fit: BoxFit.contain,
                                       errorBuilder: (context, error,
                                           stackTrace) =>
                                           Icon(
-                                            Icons.business,
+                                            Icons.camera,
                                             size: dynamicIconSize,
                                             color: Colors.grey.shade400,
                                           ),
                                     ),
                                   )
                                       : Icon(
-                                    Icons.business,
+                                    Icons.camera,
                                     size: dynamicIconSize,
                                     color: Colors.grey.shade400,
                                   ),

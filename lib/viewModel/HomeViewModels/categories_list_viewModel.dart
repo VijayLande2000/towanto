@@ -204,8 +204,8 @@ class CategoriesListViewModel extends ChangeNotifier {
 
   Future<void> filterCategoriesListViewModelApi(dynamic data, BuildContext context) async {
     try {
-      responseData = null;
-      categoryTree.clear(); // Reset tree before updating
+      // responseData = null;
+      // categoryTree.clear(); // Reset tree before updating
       this.context = context;
       final sessionId = await PreferencesHelper.getString("session_id");
 
@@ -237,14 +237,14 @@ class CategoriesListViewModel extends ChangeNotifier {
 
 
 
-      for (var category in value.categories) {
-        String categoryName = category.displayName ?? "Unknown";
-        String categoryId = category.id?.toString() ?? "Unknown"; // Convert int to String
-        categoryTree[categoryName] = {
-          'id': categoryId,
-          'subcategories': buildCategoryTree(category.subcategories)
-        };
-      }
+      // for (var category in value.categories) {
+      //   String categoryName = category.displayName ?? "Unknown";
+      //   String categoryId = category.id?.toString() ?? "Unknown"; // Convert int to String
+      //   categoryTree[categoryName] = {
+      //     'id': categoryId,
+      //     'subcategories': buildCategoryTree(category.subcategories)
+      //   };
+      // }
 
       // developer.log('Category Tree: ${jsonEncode(categoryTree)}', name: 'CategoriesListViewModel');
       developer.log(

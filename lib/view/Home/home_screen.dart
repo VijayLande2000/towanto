@@ -58,7 +58,7 @@ class _HomeGridState extends State<HomeGrid> {
   Future<void> fetchHomePageData() async {
     // Obtain the instance of CategoriesListViewModel
     final homePageViewModel = Provider.of<HomePageDataViewModel>(context, listen: false);
-    await homePageViewModel.fetchHomePageData("11", context);
+    await homePageViewModel.fetchHomePageData("6", context);
     await homePageViewModel.getAllBrandsList(context);
   }
 
@@ -258,8 +258,7 @@ class _HomeGridState extends State<HomeGrid> {
                     fontWeight: FontWeight.normal,
                   ),
                 ),
-                badgeStyle:
-                    badges.BadgeStyle(badgeColor: AppColors.yellow_color),
+                badgeStyle: badges.BadgeStyle(badgeColor: AppColors.yellow_color),
                 child: InkWell(
                   onTap: () {
                     Navigator.push(
@@ -772,7 +771,7 @@ Widget buildDynamicCategoryLists(
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.35,
+            height: MediaQuery.of(context).size.height * 0.29,
             width: double.maxFinite,
             child: _buildHorizontalListView(viewModel, categoryId),
           ),
@@ -879,7 +878,7 @@ Widget _buildHorizontalListView(HomePageDataViewModel viewModel, int categoryId)
                           final ratingPriceHeight = contentHeight * 0.25;
 
                           return Column(
-                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Image container
@@ -955,6 +954,7 @@ Widget _buildHorizontalListView(HomePageDataViewModel viewModel, int categoryId)
                                       ),
                                     ],
                                   ),
+                                  const SizedBox(height: 4),
                                   Text(
                                     (product.price != null && product.price > 0)
                                         ? '₹ ${product.price}'
@@ -1062,17 +1062,17 @@ Widget buildDynamicBrandsList(HomePageDataViewModel homePageDataViewModel, Build
                                   child: Center(
                                     child: brand.id != null
                                         ? Image.network(
-                                      '${AppUrl.baseurlauth}web/image?model=product.product&id=${brand.id}&field=image_1920',
+                                      '${brand.imageUrl}',
                                       fit: BoxFit.contain,
                                       errorBuilder: (context, error, stackTrace) => Icon(
-                                        Icons.business,
-                                        size: 32,
+                                        Icons.camera,
+                                        size: 48,
                                         color: Colors.grey.shade400,
                                       ),
                                     )
                                         : Icon(
-                                      Icons.business,
-                                      size: 32,
+                                      Icons.camera,
+                                      size: 48,
                                       color: Colors.grey.shade400,
                                     ),
                                   ),

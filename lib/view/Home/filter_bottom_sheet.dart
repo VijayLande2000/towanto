@@ -22,7 +22,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   @override
   void initState() {
     super.initState();
-    final filterViewModel = Provider.of<FilterListViewModel>(context, listen: false);
+    final filterViewModel = Provider.of<FilterListViewModel>(
+        context, listen: false);
     selectedFilters = Map.from(filterViewModel.selectedFilters);
     selectedPriceRange = filterViewModel.selectedPriceRange;
   }
@@ -71,7 +72,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     padding: EdgeInsets.only(top: 12, bottom: 8),
                     decoration: BoxDecoration(
                       color: AppColors.whiteColor,
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(
+                          24)),
                     ),
                     child: Center(
                       child: Container(
@@ -251,9 +253,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   ),
                 ),
               ),
-          ] else if (type == FilterType.range) ...[
-            _buildPriceRangeSlider(),
-          ],
+          ] else
+            if (type == FilterType.range) ...[
+              _buildPriceRangeSlider(),
+            ],
           Divider(
             height: 16,
             thickness: 1,
@@ -286,10 +289,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         title: Text(
           item.displayName,
           style: TextStyle(
-            color: AppColors.black,
-            fontSize: 14,
-            fontFamily: MyFonts.font_regular,
-            fontWeight: FontWeight.normal
+              color: AppColors.black,
+              fontSize: 14,
+              fontFamily: MyFonts.font_regular,
+              fontWeight: FontWeight.normal
           ),
         ),
         value: selectedFilters[section]!.contains(item.value),
@@ -314,7 +317,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   }
 
   Widget _buildPriceRangeSlider() {
-    final filters = Provider.of<FilterListViewModel>(context, listen: false).filterList;
+    final filters = Provider
+        .of<FilterListViewModel>(context, listen: false)
+        .filterList;
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -416,25 +421,45 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   void _clearAll() {
     setState(() {
       selectedFilters.clear();
-      final filters = Provider.of<FilterListViewModel>(context, listen: false).filterList;
+      final filters = Provider
+          .of<FilterListViewModel>(context, listen: false)
+          .filterList;
       selectedPriceRange = RangeValues(
         filters!.priceRange?.minPrice?.toDouble() ?? 0.0,
         filters.priceRange?.maxPrice?.toDouble() ?? 100.0,
       );
-      Provider.of<FilterListViewModel>(context, listen: false).clearSelections();
+      Provider.of<FilterListViewModel>(context, listen: false)
+          .clearSelections();
     });
   }
 
   void _applyFilters(BuildContext context) {
-    final selectedFiltersMap = {
-      ...selectedFilters,
-      'priceRange': {
-        'min': selectedPriceRange?.start,
-        'max': selectedPriceRange?.end,
-      },
-    };
+    final filterViewModel = Provider.of<FilterListViewModel>(
+        context, listen: false);
+    final initialMinPrice = filterViewModel.filterList?.priceRange?.minPrice
+        .toDouble() ?? 0.0;
+    final initialMaxPrice = filterViewModel.filterList?.priceRange?.maxPrice
+        .toDouble() ?? 100.0;
+
+    // Check if price range has been modified
+    final isPriceRangeModified =
+        selectedPriceRange!.start != initialMinPrice ||
+            selectedPriceRange!.end != initialMaxPrice;
+
+    // Create the base filter map with the selected checkbox filters
+    final selectedFiltersMap = Map<String, dynamic>.from(selectedFilters);
+
+    // Only add price range if modified
+    if (isPriceRangeModified) {
+      selectedFiltersMap['priceRange'] = {
+        'min': selectedPriceRange!.start,
+        'max': selectedPriceRange!.end,
+      };
+    }
+
     Provider.of<FilterListViewModel>(context, listen: false)
         .updateSelectedFilters(selectedFilters, selectedPriceRange);
+
     Navigator.pop(context, selectedFiltersMap);
   }
 }

@@ -9,6 +9,7 @@ import 'package:towanto/view/Home/product_details_screen.dart';
 import 'package:towanto/viewModel/CartViewModels/cart_list_view_model.dart';
 import 'package:towanto/viewModel/HomeViewModels/filter_list_view_model.dart';
 import 'dart:developer' as developer;
+import 'package:badges/badges.dart' as badges; // Import the badges package
 
 import '../../model/HomeModels/category_model.dart';
 import '../../utils/common_widgets/PreferencesHelper.dart';
@@ -16,6 +17,7 @@ import '../../utils/network/networkService/app_url.dart';
 import '../../utils/resources/colors.dart';
 import '../../utils/resources/fonts.dart';
 import '../../viewModel/CartViewModels/add_to_cart_viewModel.dart';
+import '../../viewModel/HomeViewModels/applied_filter_count_view_model.dart';
 import '../../viewModel/HomeViewModels/categories_list_viewModel.dart';
 import '../../viewModel/HomeViewModels/home_page_data_viewModel.dart';
 import '../Cart/cart_screen.dart';
@@ -512,28 +514,33 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
 
   Future<void> loadFilterProducts(Map<String, dynamic> filterResult) async {
     final categoryListViewModel =
-    Provider.of<CategoriesListViewModel>(context, listen: false);
+        Provider.of<CategoriesListViewModel>(context, listen: false);
 
     // Extract values from filter result
     final Map<String, dynamic> params = {};
 
     // Handle brands
-    if (filterResult['brands'] != null && (filterResult['brands'] as Set).isNotEmpty) {
+    if (filterResult['brands'] != null &&
+        (filterResult['brands'] as Set).isNotEmpty) {
       params['brand'] = (filterResult['brands'] as Set).toList();
     }
 
     // Handle varieties
-    if (filterResult['varieties'] != null && (filterResult['varieties'] as Set).isNotEmpty) {
+    if (filterResult['varieties'] != null &&
+        (filterResult['varieties'] as Set).isNotEmpty) {
       params['variety'] = (filterResult['varieties'] as Set).toList();
     }
 
     // Handle package sizes
-    if (filterResult['package_sizes'] != null && (filterResult['package_sizes'] as Set).isNotEmpty) {
+    if (filterResult['package_sizes'] != null &&
+        (filterResult['package_sizes'] as Set).isNotEmpty) {
       params['package_size'] = (filterResult['package_sizes'] as Set).toList();
     }
 // Handle categories
-    if (filterResult['categories'] != null && (filterResult['categories'] as Set).isNotEmpty) {
-      params['category'] = (filterResult['categories'] as Set).first; // Send a single value
+    if (filterResult['categories'] != null &&
+        (filterResult['categories'] as Set).isNotEmpty) {
+      params['category'] =
+          (filterResult['categories'] as Set).first; // Send a single value
     } else if (levelSelections.isNotEmpty) {
       // Use the selectedId from levelSelections if available
       params['category'] = levelSelections.last.selectedId.toString();
@@ -541,7 +548,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       // Fallback to the current category if no other options are available
       params['category'] = widget.category.id;
     }
-
 
     // Handle price range
     if (filterResult['priceRange'] != null) {
@@ -555,22 +561,23 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     }
 
     // Create the request body
-    final body = {
-      "params": params
-    };
+    final body = {"params": params};
 
-    print("iusgfiug"+body.toString());
+    print("iusgfiug" + body.toString());
 
     // Make the API call
     if (levelSelections.isNotEmpty) {
       print("Last Selected Product ID: ${levelSelections.last.selectedId}");
-      await categoryListViewModel.filterCategoriesListViewModelApi(body, context);
+      await categoryListViewModel.filterCategoriesListViewModelApi(
+          body, context);
     } else {
       print("No Product Selected.");
       print("Category Id: ${widget.category.id}");
-      await categoryListViewModel.filterCategoriesListViewModelApi(body, context);
+      await categoryListViewModel.filterCategoriesListViewModelApi(
+          body, context);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -620,23 +627,79 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                 );
               },
             ),
-            IconButton(
-              icon: Icon(Icons.filter_list),
-              onPressed: () async {
-                // await context.read<FilterListViewModel>().getFilterList(context);
+            Consumer<AppliedFilterListViewModel>(
+              builder: (context, viewModel, child) {
+                int totalCount = 0;
 
-                final result = await showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  backgroundColor: Colors.transparent,
-                  builder: (context) => FilterBottomSheet(),
-                );
-                if (result != null) {
-                  print('Applied filters: $result');
-                  loadFilterProducts(result);
+                if (viewModel.filters != null) {
+                  viewModel.filters!.forEach((key, value) {
+                    if (key == 'priceRange' && value is Map) {
+                      // Count price range as 1 filter if it exists
+                      totalCount += 1;
+                    } else if (value is Set) {
+                      // For Sets like {Advanta Enterprises Limited, Ahuja Seeds - Wheat Seeds}
+                      totalCount += value.length;
+                    } else if (value is Map) {
+                      // For Map type filters
+                      totalCount += value.length;
+                    } else if (value is List) {
+                      // For List type filters
+                      totalCount += value.length;
+                    } else if (value is String) {
+                      // For single string values
+                      totalCount += 1;
+                    }
+                  });
                 }
+
+                return totalCount > 0
+                    ? badges.Badge(
+                  position: badges.BadgePosition.topEnd(top: 6, end: 6),
+                  badgeStyle: badges.BadgeStyle(badgeColor: AppColors.yellow_color),
+                  badgeContent: Text(
+                    '$totalCount',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 8,
+                      fontFamily: MyFonts.font_regular,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.filter_list),
+                    onPressed: () async {
+                      final result = await showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) => FilterBottomSheet(),
+                      );
+                      if (result != null) {
+                        print('Applied filters: $result');
+                        loadFilterProducts(result);
+                        context.read<AppliedFilterListViewModel>().updateFilters(result);
+                      }
+                    },
+                  ),
+                )
+                    : IconButton(
+                  icon: Icon(Icons.filter_list),
+                  onPressed: () async {
+                    final result = await showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => FilterBottomSheet(),
+                    );
+                    if (result != null) {
+                      print('Applied filters: $result');
+                      loadFilterProducts(result);
+                      context.read<AppliedFilterListViewModel>().updateFilters(result);
+                    }
+                  },
+                );
               },
-            )
+            ),
           ],
         ),
         body: Consumer<CategoriesListViewModel>(
@@ -663,15 +726,22 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                         true) {
                       return Center(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center, // Centers content vertically
-                          crossAxisAlignment: CrossAxisAlignment.center, // Centers content horizontally
+                          mainAxisAlignment: MainAxisAlignment
+                              .center, // Centers content vertically
+                          crossAxisAlignment: CrossAxisAlignment
+                              .center, // Centers content horizontally
                           children: [
                             Container(
                               width: MediaQuery.of(context).size.width * 0.6,
-                              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.3),
-                              child: LottieBuilder.asset("assets/lottie/empty_products.json"),
+                              margin: EdgeInsets.only(
+                                  top:
+                                      MediaQuery.of(context).size.height * 0.3),
+                              child: LottieBuilder.asset(
+                                  "assets/lottie/empty_products.json"),
                             ),
-                            const SizedBox(height: 16), // Adds some spacing between animation and text
+                            const SizedBox(
+                                height:
+                                    16), // Adds some spacing between animation and text
                             Text(
                               "No Products Available",
                               style: TextStyle(
@@ -703,7 +773,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                             final product = categoriesViewModel
                                 .responseList!.products[index];
                             bool alreadyAddedToCart = false;
-
+                            // print("dfdscv"+product.lstPrice.toString());
                             return Card(
                               color: Colors.white,
                               elevation: 2,
@@ -774,15 +844,19 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                         children: [
                                           Flexible(
                                             child: Text(
-                                              (product.lstPrice == null ||
-                                                  product.lstPrice == 0 ||
-                                                  product.lstPrice == 0.0 ||
-                                                  product.lstPrice.toString().isEmpty)
+                                              (product.listPrice == null ||
+                                                      product.listPrice == 0 ||
+                                                      product.listPrice ==
+                                                          0.0 ||
+                                                      product.listPrice
+                                                          .toString()
+                                                          .isEmpty)
                                                   ? 'Price Locked'
-                                                  : '₹${product.lstPrice}',
+                                                  : '₹${product.listPrice}',
                                               style: const TextStyle(
                                                 fontSize: 18,
-                                                fontFamily: MyFonts.font_regular,
+                                                fontFamily:
+                                                    MyFonts.font_regular,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                               overflow: TextOverflow.ellipsis,

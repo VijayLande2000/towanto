@@ -22,6 +22,7 @@ import 'package:towanto/viewModel/CartViewModels/delete_Cartitem_viewModel.dart'
 import 'package:towanto/viewModel/CartViewModels/updateCart_viewModel.dart';
 import 'package:towanto/viewModel/EnquireyViewModel/enquirey_view_model.dart';
 import 'package:towanto/viewModel/HomeViewModels/GetBrandsByID_ViewModel.dart';
+import 'package:towanto/viewModel/HomeViewModels/applied_filter_count_view_model.dart';
 import 'package:towanto/viewModel/HomeViewModels/categories_list_viewModel.dart';
 import 'package:towanto/viewModel/HomeViewModels/filter_list_view_model.dart';
 import 'package:towanto/viewModel/HomeViewModels/get_search_product_list_view_model.dart';
@@ -86,7 +87,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PaymentConfirmationViewModel()),
         ChangeNotifierProvider(create: (_) => DeactivateAccountViewModel()),
         ChangeNotifierProvider(create: (_) => FilterListViewModel()),
-        ChangeNotifierProvider(create: (_)=> GetBrandsByIDViewModel())
+        ChangeNotifierProvider(create: (_)=> GetBrandsByIDViewModel()),
+        ChangeNotifierProvider(create: (_)=> AppliedFilterListViewModel())
       ],
       child: MaterialApp(
         title: 'Towanto',
