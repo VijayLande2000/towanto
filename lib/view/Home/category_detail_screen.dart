@@ -896,13 +896,13 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                                   : () async {
                                                       if (!(isInCart ||
                                                           alreadyAddedToCart||product.isInCart)) {
-                                                        cartViewModel
-                                                            .toggleCartStatus(
+                                                        cartViewModel.toggleCartStatus(
                                                           partnerId,
                                                           product.id!,
-                                                          1,
+                                                          int.tryParse(product.minimumOrderQty.replaceAll(RegExp(r'[^0-9]'), '')) ?? 1,
                                                           context,
                                                         );
+
                                                       }
                                                     },
                                               style: ElevatedButton.styleFrom(

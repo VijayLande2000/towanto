@@ -231,6 +231,7 @@ class _BrandProductsListState extends State<BrandProductsList> {
                                 cartViewModel.toggleCartStatus(
                                   partnerId!,
                                   product.id!,
+                                  // int.tryParse(product.minimumOrderQty.replaceAll(RegExp(r'[^0-9]'), '')) ?? 1,
                                   1,
                                   context,
                                 );
