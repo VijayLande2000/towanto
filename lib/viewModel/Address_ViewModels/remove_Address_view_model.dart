@@ -46,15 +46,15 @@ class RemoveAddressViewModel extends ChangeNotifier {
       return;
     }
 
-    final body = {
-      "params": {
-        "address_id": int.tryParse(addressId),
-      },
-    };
+    // final body = {
+    //   "params": {
+    //     "address_id": int.tryParse(addressId),
+    //   },
+    // };
 
     _startLoading(addressId); // Mark the specific item as loading
     try {
-      await removeAddressPostApi(jsonEncode(body), context, sessionId);
+      await removeAddressPostApi(addressId, context, sessionId);
     } catch (e) {
       developer.log('Error removing address: $e', name: 'RemoveAddressViewModel');
     } finally {

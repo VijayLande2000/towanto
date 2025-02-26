@@ -57,6 +57,7 @@ class CategoryChilds {
 class Product {
   Product({
     required this.id,
+    required this.isInCart,
     required this.activityIds,
     required this.activityState,
     required this.activityUserId,
@@ -279,6 +280,7 @@ class Product {
   });
 
   final dynamic? id;
+  final dynamic isInCart;
   final List<dynamic> activityIds;
   final dynamic? activityState;
   final dynamic? activityUserId;
@@ -502,6 +504,7 @@ class Product {
   factory Product.fromJson(Map<dynamic, dynamic> json){
     return Product(
       id: json["id"],
+      isInCart: json["is_in_cart"],
       activityIds: json["activity_ids"] == null ? [] : List<dynamic>.from(json["activity_ids"]!.map((x) => x)),
       activityState: json["activity_state"],
       activityUserId: json["activity_user_id"],

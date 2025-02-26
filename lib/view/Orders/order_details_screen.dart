@@ -255,18 +255,18 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           ),
         ),
         SizedBox(height: 8),
-        Container(
-          height:MediaQuery.of(context).size.height*0.25,
-          child: orderDetailsViewModel.orderDetails.orderLine?.isNotEmpty ==
-                  true
-              ? ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  itemCount:
-                      orderDetailsViewModel.orderDetails.orderLine!.length,
-                  itemBuilder: (context, index) {
+        LayoutBuilder(
+          builder: (context, constraints) {
+            return orderDetailsViewModel.orderDetails.orderLine?.isNotEmpty == true
+                ? SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: List.generate(
+                  orderDetailsViewModel.orderDetails.orderLine!.length,
+                      (index) {
                     final orderLine =
-                        orderDetailsViewModel.orderDetails.orderLine![index];
+                    orderDetailsViewModel.orderDetails.orderLine![index];
                     return Card(
                       margin: EdgeInsets.only(right: 12),
                       shape: RoundedRectangleBorder(
@@ -277,6 +277,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         padding: EdgeInsets.all(12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Container(
                               height: 80,
@@ -323,14 +324,17 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       ),
                     );
                   },
-                )
-              : Center(
-                  child: Text(
-                    'No items to display',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
                 ),
-        ),
+              ),
+            )
+                : Center(
+              child: Text(
+                'No items to display',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+            );
+          },
+        )
       ],
     );
   }

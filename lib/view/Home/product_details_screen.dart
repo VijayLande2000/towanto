@@ -43,7 +43,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     });
   }
 
-  int quantity = 0; // Initialize the quantity to 1
+  // int quantity = 1; // Initialize the quantity to 1
   bool isInWishlist = false;
   bool isLoading = false;
   Future<void> _fetchCartItems() async {
@@ -299,10 +299,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             Text(
                               'Quantity :',
                               style: TextStyle(
-                                  fontSize: 16,
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: MyFonts.font_regular),
+                                fontSize: 16,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: MyFonts.font_regular,
+                              ),
                             ),
                             IconButton(
                               icon: Icon(
@@ -310,21 +311,19 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 size: 14,
                               ),
                               onPressed: () {
-                                if (quantity > 0) {
-                                  setState(() => quantity--);
+                                if (viewModel.minQuantity != null && viewModel.minQuantity! > 1) {
+                                  viewModel.decrementQuantity(); // Use a method from the ViewModel
                                 }
                               },
                             ),
                             Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 4, vertical: 2),
+                              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                               decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: AppColors.textbox_textcolor),
+                                border: Border.all(color: AppColors.textbox_textcolor),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
-                                quantity.toString(),
+                                viewModel.minQuantity.toString(), // Use ViewModel's minQuantity
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: MyFonts.font_regular,
@@ -337,7 +336,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 Icons.add,
                                 size: 14,
                               ),
-                              onPressed: () => setState(() => quantity++),
+                              onPressed: () {
+                                viewModel.incrementQuantity(); // Use a method from the ViewModel
+                              },
                             ),
                           ],
                         ),
@@ -411,11 +412,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                     if (productDetails.isIncart) {
                                       await updateCart(
                                           productDetails.cartId.toString(),
-                                          quantity.toString(),
+                                          viewModel.minQuantity.toString(),
                                           context);
                                     } else {
                                       await _addToCart(
-                                          productDetails.id, quantity);
+                                          productDetails.id,  viewModel.minQuantity);
                                     }
                                     setState(() {
                                       isLoading =

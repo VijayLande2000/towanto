@@ -178,7 +178,7 @@ setState(() {
                   //     ),
                   //   ),
                   // ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 12),
                   Utils.buildDropdownButtonFormField(
                       value: selectedCountryId,
                       items: editAddressViewModel.countryMap,

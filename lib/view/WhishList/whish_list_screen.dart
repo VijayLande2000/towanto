@@ -75,10 +75,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
     });
   }
 
-  Future<void> _addToCart(int productId) async {
-    final addToCart = Provider.of<AddToCartViewModel>(context, listen: false);
-    await addToCart.toggleCartStatus(partnerId!, productId, 1, context!);
-  }
+
 
   @override
   Widget build(BuildContext context) {

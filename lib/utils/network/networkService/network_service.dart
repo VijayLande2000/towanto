@@ -74,6 +74,10 @@ class NetworkApiService extends BaseApiServices {
         Future.delayed(Duration(seconds: 0), () =>
             Utils.flushBarSuccessMessages("User does not exist", context));
       }
+      if (response.statusCode == 401) {
+        Future.delayed(Duration(seconds: 0), () =>
+            Utils.flushBarSuccessMessages("Invalid login or password.", context));
+      }
      else if (response.statusCode == 500) {
         Future.delayed(Duration(seconds: 0), () =>
             Utils.flushBarSuccessMessages("Incorrect Credientials", context));
@@ -560,9 +564,15 @@ print("bhjug"+headers.toString());
         'Accept': "application/json",
         'Cookie': 'session_id=$sessionId'
       };
+  print("hfchrdsvf"+data.toString());
 
-      Response response = await post(
-          Uri.parse(url), body: data, headers: headers).timeout(
+      // Append categoryId to the URL
+      Uri updatedUrl = Uri.parse(url).replace(queryParameters: {
+        'address_id': data, // Append categoryId as query parameter
+      });
+
+      Response response = await delete(
+          updatedUrl, headers: headers).timeout(
           const Duration(seconds: 60));
       print("remove address info data :" + data.toString());
       print("remove address info data :" + url.toString());
@@ -577,6 +587,14 @@ print("bhjug"+headers.toString());
         // Future.delayed(Duration(seconds:0),() =>Utils.flushBarSuccessMessages("Account Updated successfully!",context));
         // Navigator.pushReplacementNamed(context, RoutesName.home);
       }
+      else if (response.statusCode == 403) {
+        Future.delayed(Duration(seconds:0),() =>Utils.flushBarErrorMessages("Cannot delete address linked to an active user.",context));
+      }
+      else if (response.statusCode == 409) {
+        Future.delayed(Duration(seconds:0),() =>Utils.flushBarErrorMessages("Cannot delete this address as it is referenced in payment transactions.",context));
+      }
+
+
       responseJson = returnResponse(response);
     } on SocketException {
       Utils.flushBarErrorMessages("No Internet Connection", context);
