@@ -298,7 +298,7 @@ class _CheckOutReviewScreenState extends State<CheckOutReviewScreen>  {
           _buildContactInfo(
             name: partnerId.name ?? '',
             email: partnerId.email ?? '',
-            phone: partnerId.phone ?? '',
+            phone: partnerId.phone.toString() ?? '',
           ),
           SizedBox(height: 24),
           _buildSectionHeader('BILLING ADDRESS'),

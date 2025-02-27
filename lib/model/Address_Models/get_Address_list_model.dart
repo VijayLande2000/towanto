@@ -54,7 +54,7 @@ class Address {
   final dynamic? firmName;
   final String? proprietorName;
   final String? email;
-  final String? phone;
+  final dynamic phone;
   final String? street;
   final String? city;
   final dynamic? zipcode;

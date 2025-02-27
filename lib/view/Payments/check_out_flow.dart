@@ -135,7 +135,7 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
       'description': 'Test Payment',
       'prefill': {
         'contact': savedPhone.toString(),
-        'email': 'test@example.com',
+        'email': '',
       },
       'theme': {'color': '#59A8EB'},
     };
@@ -156,7 +156,6 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
     paymentConfirmationViewModel.paymentConfirmation(context);
     final addtoCartViewModel = Provider.of<AddToCartViewModel>(context, listen: false);
     addtoCartViewModel.clearCart();
-
 
   }
 
@@ -264,6 +263,7 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
       if (orderId != null) {
         // final paymentConfirmationViewModel = Provider.of<PaymentConfirmationViewModel>(context, listen: false);
         // paymentConfirmationViewModel.paymentConfirmation(context);
+     print("dfregfireogfirei");
         Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirmationScreen(),));
       }
     }
