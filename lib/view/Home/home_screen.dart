@@ -58,7 +58,7 @@ class _HomeGridState extends State<HomeGrid> {
   Future<void> fetchHomePageData() async {
     // Obtain the instance of CategoriesListViewModel
     final homePageViewModel = Provider.of<HomePageDataViewModel>(context, listen: false);
-    await homePageViewModel.fetchHomePageData("1", context);
+    await homePageViewModel.fetchHomePageData("", context);
     await homePageViewModel.getAllBrandsList(context);
   }
 
@@ -202,14 +202,25 @@ class _HomeGridState extends State<HomeGrid> {
     return Scaffold(
       backgroundColor: AppColors.backgroundcolormenu,
       appBar: AppBar(
-        title: const Text(
-          'Towanto',
-          style: TextStyle(
-            fontSize: 20,
-            fontFamily: MyFonts.font_regular,
-            // color: AppColors.black,
-            fontWeight: FontWeight.w500,
-          ),
+        title: Row(
+          mainAxisSize: MainAxisSize.min, // This will make the Row take only the space it needs
+          children: [
+            Image.asset(
+              "assets/images/ic_launcher_foreground.png",
+              fit: BoxFit.contain,
+              height: 40,
+            ),
+            // Reduce this width value or remove the SizedBox completely for no gap
+            const Text(
+              'owanto',
+              style: TextStyle(
+                fontSize: 20,
+                fontFamily: MyFonts.font_regular,
+                // color: AppColors.black,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
         ),
         elevation: 0,
         // backgroundColor: AppColors.brightBlue,

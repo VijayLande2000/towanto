@@ -36,10 +36,10 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
               if (widget.type == "Billing Address" && address.type == "billing") {
                 _savedAddresses.add(PaymentAddressModel(
                   addressId: address.id!,
-                  name: address.firmName,
+                  name: address.firmName.toString(),
                   proprietorName: address.proprietorName!,
                   email: address.email!,
-                  phone: address.phone!,
+                  phone: address.phone!.toString(),
                   street: address.street!,
                   city: address.city!,
                   zipcode: address.zipcode,
@@ -53,7 +53,7 @@ class _SelectAddressScreenState extends State<SelectAddressScreen> {
                 {
                   _savedAddresses.add(PaymentAddressModel(
                     addressId: address.id!,
-                    name: address.firmName,
+                    name: address.firmName.toString(),
                     proprietorName: address.proprietorName!,
                     email: address.email!,
                     phone: address.phone!,

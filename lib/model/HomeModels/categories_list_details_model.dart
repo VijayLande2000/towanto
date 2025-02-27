@@ -680,8 +680,9 @@ class Product {
       expensePolicy: json["expense_policy"],
       visibleExpensePolicy: json["visible_expense_policy"],
       invoicePolicy: json["invoice_policy"],
-      productBrandId: json["product_brand_id"] == null ? [] : List<dynamic>.from(json["product_brand_id"].map((x) => x)),
-      optionalProductIds: json["optional_product_ids"] == null ? [] : List<dynamic>.from(json["optional_product_ids"]!.map((x) => x)),
+      productBrandId: json["product_brand_id"] == null || json["product_brand_id"] is! List ?
+      [] :
+      List<dynamic>.from(json["product_brand_id"].map((x) => x)),      optionalProductIds: json["optional_product_ids"] == null ? [] : List<dynamic>.from(json["optional_product_ids"]!.map((x) => x)),
       expensePolicyTooltip: json["expense_policy_tooltip"],
       hsCode: json["hs_code"],
       countryOfOrigin: json["country_of_origin"],
