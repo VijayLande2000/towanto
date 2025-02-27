@@ -52,7 +52,11 @@ class ProductdetailsViewModel extends ChangeNotifier {
         responseData.addAll(value);
         // Extract and parse the minimum quantity
         if (responseData[0].minimumOrderQty != null) {
-          String minQtyString = responseData[0].minimumOrderQty!;
+// Option 1: If minimumOrderQty could be a boolean or a String
+          String minQtyString = responseData[0].minimumOrderQty is bool
+              ? (responseData[0].minimumOrderQty ? "1" : "0")
+              : (responseData[0].minimumOrderQty?.toString() ?? "1");
+
           _minQuantity = _parseMinQuantity(minQtyString); // Parse the string to int
           setApiMinQuantity(_minQuantity!);
           developer.log(

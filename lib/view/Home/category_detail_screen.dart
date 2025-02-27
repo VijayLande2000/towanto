@@ -559,7 +559,11 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
         params['max_price'] = priceRange['max'];
       }
     }
-
+// If params is empty, set a limit of 10
+    // If params only contains a category parameter, add a limit of 10
+    if (params.length == 1 && params.containsKey('category')) {
+      params['limit'] = 10;
+    }
     // Create the request body
     final body = {"params": params};
 

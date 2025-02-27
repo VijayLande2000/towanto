@@ -457,7 +457,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         SizedBox(height: 12),
 
                         // Wishlist Button
-                        Consumer<AddToWhishListViewModel>(
+                        productDetails.listPrice == 0.0?SizedBox.shrink():  Consumer<AddToWhishListViewModel>(
                           builder: (context, viewModel, child) {
                             print("dscdecade" +
                                 productDetails.isInWishlist.toString());
