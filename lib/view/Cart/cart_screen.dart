@@ -225,52 +225,54 @@ class _CartScreenState extends State<CartScreen> {
                                     border: Border.all(color: Colors.grey.shade300),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        icon: _decrementLoadingMap[itemId] == true
-                                            ? SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(strokeWidth: 2),
-                                        )
-                                            : const Icon(Icons.remove, color: AppColors.black),
-                                        onPressed: (_decrementLoadingMap[itemId] == true || _incrementLoadingMap[itemId] == true)
-                                            ? null
-                                            : () => updateQuantity(index, false, itemId),
-                                        padding: const EdgeInsets.all(4),
-                                        constraints: const BoxConstraints(),
-                                        iconSize: 20,
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                                        child: Text(
-                                          '${item.productUomQty.toInt()}',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: AppColors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: MyFonts.font_regular,
+                                  child: IntrinsicWidth(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: _decrementLoadingMap[itemId] == true
+                                              ? SizedBox(
+                                            height: 16,
+                                            width: 16,
+                                            child: CircularProgressIndicator(strokeWidth: 2),
+                                          )
+                                              : const Icon(Icons.remove, color: AppColors.black, size: 16),
+                                          onPressed: (_decrementLoadingMap[itemId] == true || _incrementLoadingMap[itemId] == true)
+                                              ? null
+                                              : () => updateQuantity(index, false, itemId),
+                                          padding: EdgeInsets.zero,
+                                          constraints: const BoxConstraints(),
+                                          iconSize: 30,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                                          child: Text(
+                                            '${item.productUomQty.toInt()}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: MyFonts.font_regular,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      IconButton(
-                                        icon: _incrementLoadingMap[itemId] == true
-                                            ? SizedBox(
-                                          height: 20,
-                                          width: 20,
-                                          child: CircularProgressIndicator(strokeWidth: 2),
-                                        )
-                                            : const Icon(Icons.add, color: AppColors.black),
-                                        onPressed: (_decrementLoadingMap[itemId] == true || _incrementLoadingMap[itemId] == true)
-                                            ? null
-                                            : () => updateQuantity(index, true, itemId),
-                                        padding: const EdgeInsets.all(4),
-                                        constraints: const BoxConstraints(),
-                                        iconSize: 20,
-                                      ),
-                                    ],
+                                        IconButton(
+                                          icon: _incrementLoadingMap[itemId] == true
+                                              ? SizedBox(
+                                            height: 16,
+                                            width: 16,
+                                            child: CircularProgressIndicator(strokeWidth: 2),
+                                          )
+                                              : const Icon(Icons.add, color: AppColors.black, size: 16),
+                                          onPressed: (_decrementLoadingMap[itemId] == true || _incrementLoadingMap[itemId] == true)
+                                              ? null
+                                              : () => updateQuantity(index, true, itemId),
+                                          padding: EdgeInsets.zero,
+                                          constraints: const BoxConstraints(),
+                                          iconSize: 30,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],

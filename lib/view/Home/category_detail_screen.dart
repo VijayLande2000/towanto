@@ -654,50 +654,55 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
 
                 return totalCount > 0
                     ? badges.Badge(
-                  position: badges.BadgePosition.topEnd(top: 6, end: 6),
-                  badgeStyle: badges.BadgeStyle(badgeColor: AppColors.yellow_color),
-                  badgeContent: Text(
-                    '$totalCount',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 8,
-                      fontFamily: MyFonts.font_regular,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.filter_list),
-                    onPressed: () async {
-                      final result = await showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (context) => FilterBottomSheet(),
-                      );
-                      if (result != null) {
-                        print('Applied filters: $result');
-                        loadFilterProducts(result);
-                        context.read<AppliedFilterListViewModel>().updateFilters(result);
-                      }
-                    },
-                  ),
-                )
+                        position: badges.BadgePosition.topEnd(top: 6, end: 6),
+                        badgeStyle: badges.BadgeStyle(
+                            badgeColor: AppColors.yellow_color),
+                        badgeContent: Text(
+                          '$totalCount',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                            fontFamily: MyFonts.font_regular,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        child: IconButton(
+                          icon: Icon(Icons.filter_list),
+                          onPressed: () async {
+                            final result = await showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) => FilterBottomSheet(),
+                            );
+                            if (result != null) {
+                              print('Applied filters: $result');
+                              loadFilterProducts(result);
+                              context
+                                  .read<AppliedFilterListViewModel>()
+                                  .updateFilters(result);
+                            }
+                          },
+                        ),
+                      )
                     : IconButton(
-                  icon: Icon(Icons.filter_list),
-                  onPressed: () async {
-                    final result = await showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      builder: (context) => FilterBottomSheet(),
-                    );
-                    if (result != null) {
-                      print('Applied filters: $result');
-                      loadFilterProducts(result);
-                      context.read<AppliedFilterListViewModel>().updateFilters(result);
-                    }
-                  },
-                );
+                        icon: Icon(Icons.filter_list),
+                        onPressed: () async {
+                          final result = await showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => FilterBottomSheet(),
+                          );
+                          if (result != null) {
+                            print('Applied filters: $result');
+                            loadFilterProducts(result);
+                            context
+                                .read<AppliedFilterListViewModel>()
+                                .updateFilters(result);
+                          }
+                        },
+                      );
               },
             ),
           ],
@@ -880,7 +885,13 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
 
                                       const SizedBox(height: 8),
                                       // Replace the ValueListenableBuilder section with:
-                                      Consumer<AddToCartViewModel>(
+                                      (product.listPrice == null ||
+                                          product.listPrice == 0 ||
+                                          product.listPrice ==
+                                              0.0 ||
+                                          product.listPrice
+                                              .toString()
+                                              .isEmpty)?SizedBox.shrink():Consumer<AddToCartViewModel>(
                                         builder:
                                             (context, cartViewModel, child) {
                                           bool isInCart = cartViewModel
@@ -895,18 +906,27 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                                   ? null
                                                   : () async {
                                                       if (!(isInCart ||
-                                                          alreadyAddedToCart||product.isInCart)) {
-                                                        cartViewModel.toggleCartStatus(
+                                                          alreadyAddedToCart ||
+                                                          product.isInCart)) {
+                                                        cartViewModel
+                                                            .toggleCartStatus(
                                                           partnerId,
                                                           product.id!,
-                                                          int.tryParse(product.minimumOrderQty.replaceAll(RegExp(r'[^0-9]'), '')) ?? 1,
+                                                          int.tryParse(product
+                                                                  .minimumOrderQty
+                                                                  .replaceAll(
+                                                                      RegExp(
+                                                                          r'[^0-9]'),
+                                                                      '')) ??
+                                                              1,
                                                           context,
                                                         );
-
                                                       }
                                                     },
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor:product.isInCart|| isInCart ||
+                                                backgroundColor: product
+                                                            .isInCart ||
+                                                        isInCart ||
                                                         alreadyAddedToCart
                                                     ? Colors.grey[300]
                                                     : const Color(0xFFFFD814),
@@ -930,7 +950,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                                       ),
                                                     )
                                                   : Text(
-                                                     product.isInCart|| alreadyAddedToCart ||
+                                                      product.isInCart ||
+                                                              alreadyAddedToCart ||
                                                               isInCart
                                                           ? 'Added to Cart'
                                                           : 'Add to Cart',
