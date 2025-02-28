@@ -52,7 +52,7 @@ abstract class BaseApiServices {
   Future<dynamic> postDeactivateAccountApiResponse(String url, dynamic data, BuildContext context,String sessionId);
 
 
-  Future<dynamic> paymentConfirmationApiResponse(String url, dynamic partnerId, BuildContext context,String sessionId);
+  Future<dynamic> paymentConfirmationApiResponse(dynamic body,String url, dynamic partnerId, BuildContext context,String sessionId);
   Future<dynamic> postFilterProductsApiResponse(String url, dynamic data, BuildContext context,String SessionId);
   Future<dynamic> getBrandsByIDApiResponse(String url, int id, BuildContext context,String sessionId);
 

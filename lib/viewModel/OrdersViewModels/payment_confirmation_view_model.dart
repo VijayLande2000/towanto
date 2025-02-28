@@ -23,13 +23,13 @@ class PaymentConfirmationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> paymentConfirmationApi(dynamic data, BuildContext context, String sessionId) async {
+  Future<void> paymentConfirmationApi(dynamic body,dynamic data, BuildContext context, String sessionId) async {
     try {
       this.context = context;
       setLoading(true);
       developer.log('Starting orders details process with data: ${jsonEncode(data)}', name: 'PaymentConfirmationViewModel');
 
-      final value = await _myRepo.paymentConfirmationApiResponse(data, context, sessionId);
+      final value = await _myRepo.paymentConfirmationApiResponse(body,data, context, sessionId);
 
       developer.log('payment API response received: ${value.toString()}', name: 'PaymentConfirmationViewModel');
     } catch (e, stackTrace) {
@@ -45,14 +45,14 @@ class PaymentConfirmationViewModel extends ChangeNotifier {
   }
 
   // Submit method with dynamic country, state, and city validation
-  Future<void> paymentConfirmation(BuildContext context
+  Future<void> paymentConfirmation(dynamic body,BuildContext context
       ) async {
     setLoading(true);
     final sessionId = await PreferencesHelper.getString("session_id");
     final partnerId = await PreferencesHelper.getString("partnerId");
 
     try {
-      await paymentConfirmationApi(partnerId,context,sessionId!);
+      await paymentConfirmationApi(body,partnerId,context,sessionId!);
     } finally {
       setLoading(false);
     }

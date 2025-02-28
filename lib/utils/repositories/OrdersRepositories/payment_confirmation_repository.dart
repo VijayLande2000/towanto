@@ -7,9 +7,9 @@ import '../../network/networkService/network_service.dart';
 class PaymentConfirmationRepository {
   final BaseApiServices _apiServices = NetworkApiService();
 
-  Future<PaymentConfirmationModel> paymentConfirmationApiResponse(dynamic data, BuildContext context,String sessionId) async {
+  Future<PaymentConfirmationModel> paymentConfirmationApiResponse(dynamic body,dynamic data, BuildContext context,String sessionId) async {
     try {
-      dynamic response = await _apiServices.paymentConfirmationApiResponse(AppUrl.paymentConfirmation, data, context,sessionId);
+      dynamic response = await _apiServices.paymentConfirmationApiResponse(body,AppUrl.paymentConfirmation, data, context,sessionId);
       return PaymentConfirmationModel.fromJson(response);
     } catch (e,stactrace) {
       print("dfyusg" +stactrace.toString());

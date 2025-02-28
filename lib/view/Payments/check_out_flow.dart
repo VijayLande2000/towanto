@@ -1,5 +1,7 @@
 // lib/screens/checkout/checkout_flow_screen.dart
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -152,8 +154,24 @@ class _CheckoutFlowScreenState extends State<CheckoutFlowScreen> with AutomaticK
     debugPrint('Payment Successful: ${response.signature}');
     debugPrint('Payment Successful: ${response.orderId}');
     // await PreferencesHelper.saveString("selectedPaymentMethod","");
+
+    // Create dynamic body
+    final Map<String, dynamic> body = {
+      "params": {
+        "razorpay_payment_id": response.paymentId ?? "",
+        "razorpay_order_id": response.orderId ?? "",
+        "razorpay_signature": response.signature ?? "",
+        "order_id" : 375,
+      }
+    };
+
+    // Convert to JSON
+    final String jsonBody = jsonEncode(body);
+
     final paymentConfirmationViewModel = Provider.of<PaymentConfirmationViewModel>(context, listen: false);
-    paymentConfirmationViewModel.paymentConfirmation(context);
+    paymentConfirmationViewModel.paymentConfirmation(jsonBody,context);
+
+
     final addtoCartViewModel = Provider.of<AddToCartViewModel>(context, listen: false);
     addtoCartViewModel.clearCart();
 

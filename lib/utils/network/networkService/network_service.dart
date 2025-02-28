@@ -955,18 +955,18 @@ print("bhjug"+headers.toString());
   }
 
   @override
-  Future paymentConfirmationApiResponse(String url, partnerId, BuildContext context, String sessionId) async {
+  Future paymentConfirmationApiResponse(dynamic body,String url, partnerId, BuildContext context, String sessionId) async {
     try {
       var headers = {
         'Content-Type': 'application/json',
         'Accept': "application/json",
         'Cookie': 'session_id=$sessionId'
       };
-      String finalUrl = '$url?partner_id=$partnerId';
-      print("finalUrl response =" + finalUrl);
+      // String finalUrl = '$url?partner_id=$partnerId';
+      print("payment conformation body =" + body.toString());
 
-      Response response = await http.get(
-        Uri.parse(finalUrl), headers: headers,
+      Response response = await http.post(
+        Uri.parse(url), headers: headers,body: body
       ).timeout(const Duration(seconds: 60));
       print("payment Confirmation response =" + response.body);
       print("payment Confirmation statusCode =" + response.statusCode
